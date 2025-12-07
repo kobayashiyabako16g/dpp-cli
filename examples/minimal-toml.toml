@@ -1,0 +1,7 @@
+# Minimal TOML configuration for dpp.vim
+
+[[plugins]]
+repo = "Shougo/dpp.vim"
+
+[[plugins]]
+repo = "vim-denops/denops.vim"

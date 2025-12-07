@@ -1,0 +1,7 @@
+# dpp.toml
+
+[[plugins]]
+repo = "Shougo/dpp.vim"
+
+[[plugins]]
+repo = "vim-denops/denops.vim"

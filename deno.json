@@ -1,0 +1,36 @@
+{
+  "name": "@dpp-cli/dpp",
+  "version": "1.0.0",
+  "exports": "./main.ts",
+  "tasks": {
+    "test": "deno test --allow-read --allow-write --allow-env --allow-run",
+    "lint": "deno lint",
+    "check": "deno check main.ts src/**/*.ts",
+    "fmt": "deno fmt",
+    "build": "deno compile --unstable --allow-read --allow-write --allow-env --output ./dist/dpp ./main.ts"
+  },
+  "imports": {
+    "@gunshi/docs": "npm:@gunshi/docs@^0.27.0",
+    "eta": "jsr:@bgub/eta@^4.5.0",
+    "gunshi": "jsr:@gunshi/gunshi@^0.27.0-beta.6",
+    "@shougo/dpp-vim": "jsr:@shougo/dpp-vim@~5.1.0",
+    "@std/path": "jsr:@std/path@^1.0.0",
+    "@std/toml": "jsr:@std/toml@^1.0.0",
+    "@std/fs": "jsr:@std/fs@^1.0.0",
+    "@std/assert": "jsr:@std/assert@1"
+  },
+  "nodeModulesDir": "auto",
+  "lint": {
+    "rules": {
+      "tags": ["recommended"]
+    }
+  },
+  "fmt": {
+    "useTabs": false,
+    "lineWidth": 80,
+    "indentWidth": 2,
+    "semiColons": true,
+    "singleQuote": false,
+    "proseWrap": "preserve"
+  }
+}

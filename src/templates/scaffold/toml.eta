@@ -1,0 +1,32 @@
+# dpp.toml
+# dpp.vim configuration
+# See: https://github.com/Shougo/dpp.vim
+
+# Core plugins - required for dpp.vim to work
+[[plugins]]
+repo = "Shougo/dpp.vim"
+
+[[plugins]]
+repo = "vim-denops/denops.vim"
+
+# Extension plugins for dpp.vim
+[[plugins]]
+repo = "Shougo/dpp-ext-installer"
+
+[[plugins]]
+repo = "Shougo/dpp-ext-lazy"
+
+[[plugins]]
+repo = "Shougo/dpp-protocol-git"
+
+# Example: UI framework
+[[plugins]]
+repo = "Shougo/ddu.vim"
+on_cmd = ["Ddu"]
+depends = ["denops.vim"]
+
+# Example: Completion
+[[plugins]]
+repo = "Shougo/ddc.vim"
+on_event = ["InsertEnter"]
+depends = ["denops.vim"]

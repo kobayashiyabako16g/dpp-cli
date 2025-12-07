@@ -1,0 +1,59 @@
+# Full-featured TOML configuration for dpp.vim
+
+# Core plugins
+[[plugins]]
+repo = "Shougo/dpp.vim"
+
+[[plugins]]
+repo = "vim-denops/denops.vim"
+
+# dpp.vim extensions
+[[plugins]]
+repo = "Shougo/dpp-ext-installer"
+
+[[plugins]]
+repo = "Shougo/dpp-ext-lazy"
+
+[[plugins]]
+repo = "Shougo/dpp-ext-toml"
+
+[[plugins]]
+repo = "Shougo/dpp-protocol-git"
+
+# UI framework
+[[plugins]]
+repo = "Shougo/ddu.vim"
+on_cmd = ["Ddu"]
+depends = ["denops.vim"]
+
+[[plugins]]
+repo = "Shougo/ddu-ui-ff"
+
+[[plugins]]
+repo = "Shougo/ddu-source-file"
+
+# Completion
+[[plugins]]
+repo = "Shougo/ddc.vim"
+on_event = ["InsertEnter"]
+depends = ["denops.vim"]
+
+[[plugins]]
+repo = "Shougo/ddc-ui-native"
+
+[[plugins]]
+repo = "Shougo/ddc-source-around"
+
+# File tree
+[[plugins]]
+repo = "lambdalisue/fern.vim"
+on_cmd = ["Fern"]
+
+# Git integration
+[[plugins]]
+repo = "lewis6991/gitsigns.nvim"
+on_event = ["BufRead"]
+
+# Color scheme
+[[plugins]]
+repo = "folke/tokyonight.nvim"
