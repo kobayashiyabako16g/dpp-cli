@@ -4,11 +4,10 @@ A modern CLI tool for managing [dpp.vim](https://github.com/Shougo/dpp.vim) plug
 
 ## Features
 
-- 🎯 **Type-safe configuration** - Leverage TypeScript types from dpp.vim
-- 📝 **Multiple formats** - Support for TypeScript, TOML, Lua, and Vim script
-- � **Unified plugin management** - All formats use TOML for plugin definitions
-- �🚀 **Easy initialization** - Quick setup with minimal or scaffold templates
-
+- 🎯 **Type-safe configuration** - TypeScript config for loading TOML plugins
+- 📝 **Editor-specific setup** - Lua for Neovim, Vim script for Vim
+- 🔌 **Unified plugin management** - All plugins managed in dpp.toml
+- 🚀 **Easy initialization** - Quick setup with minimal or scaffold templates
 - 🩺 **Environment diagnostics** - Check your setup with `dpp doctor`
 - ✅ **Configuration validation** - Verify your config with `dpp check`
 
@@ -33,17 +32,14 @@ deno install --allow-read --allow-write --allow-env --allow-run --allow-net -n d
 ### 1. Initialize a new configuration
 
 ```bash
-# TypeScript configuration for Neovim (recommended)
-dpp init -f ts -t minimal -e nvim
+# Neovim (creates Lua + TOML + TypeScript config)
+dpp init -t minimal -e nvim
 
-# TOML configuration
-dpp init -f toml -t scaffold -e nvim
+# Vim (creates Vim script + TOML + TypeScript config)
+dpp init -t minimal -e vim
 
-# Lua configuration for Neovim
-dpp init -f lua -t minimal -e nvim
-
-# Vim script for Vim
-dpp init -f vim -t minimal -e vim
+# Scaffold template with more features
+dpp init -t scaffold -e nvim
 ```
 
 ### 2. Add plugins
@@ -90,14 +86,18 @@ dpp doctor
 Initialize a new dpp.vim configuration.
 
 **Options:**
-- `-f, --format <ts|toml|lua|vim>` - Configuration file format (default: ts)
 - `-t, --template <minimal|scaffold>` - Template type (default: minimal)
 - `-e, --editor <vim|nvim>` - Target editor (default: nvim)
-- `-p, --profile <name>` - Profile name (default: default)
+- `-p, --path <dir>` - Custom configuration directory
+- `--profile <name>` - Profile name (default: default)
+
+**What gets created:**
+- **Neovim**: `dpp.lua` (main config) + `dpp.toml` (plugins) + `dpp.ts` (TypeScript loader)
+- **Vim**: `dpp.vim` (main config) + `dpp.toml` (plugins) + `dpp.ts` (TypeScript loader)
 
 **Example:**
 ```bash
-dpp init -f ts -t scaffold -e nvim
+dpp init -t scaffold -e nvim
 ```
 
 ### `dpp add`
@@ -188,9 +188,36 @@ dpp doctor
 
 ### How It Works
 
-**All configuration formats use `dpp.toml` for plugin management.** Your main config file (TypeScript/Lua/Vim) serves as a bootstrap that loads plugins from `dpp.toml`.
+**All configurations use three files:**
+1. **Main config** (`dpp.lua` or `dpp.vim`) - Bootstrap and runtime configuration
+2. **Plugin definitions** (`dpp.toml`) - All plugins managed here
+3. **TypeScript loader** (`dpp.ts`) - Loads and processes TOML file
 
-### TypeScript (Recommended for Neovim)
+The main config calls `dpp#make_state()` with `dpp.ts`, which reads `dpp.toml` and generates the plugin state.
+
+### Neovim (Lua + TOML + TypeScript)
+
+```lua
+-- ~/.config/nvim/dpp.lua
+local dpp_base = vim.fn.expand("~/.cache/dpp")
+local dpp_src = dpp_base .. "/repos/github.com/Shougo/dpp.vim"
+local config_dir = vim.fn.expand("~/.config/nvim")
+local dpp_config = config_dir .. "/dpp.ts"
+
+vim.opt.runtimepath:prepend(dpp_src)
+
+if vim.fn["dpp#min#load_state"](dpp_base) == 1 then
+  -- Initialize from scratch
+  vim.api.nvim_create_autocmd("User", {
+    pattern = "DenopsReady",
+    callback = function()
+      vim.fn["dpp#make_state"](dpp_base, dpp_config)
+    end,
+  })
+end
+```
+
+### Vim (Vim script + TOML + TypeScript)
 
 ```typescript
 // ~/.config/nvim/dpp.ts

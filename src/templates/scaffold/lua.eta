@@ -7,6 +7,7 @@ local dpp_base = vim.fn.expand("~/.cache/dpp")
 local dpp_src = dpp_base .. "/repos/github.com/Shougo/dpp.vim"
 local denops_src = dpp_base .. "/repos/github.com/vim-denops/denops.vim"
 local config_dir = vim.fn.expand("~/.config/<%- it.editor %>")
+local dpp_config = config_dir .. "/dpp.ts"
 
 -- Add dpp.vim to runtimepath
 vim.opt.runtimepath:prepend(dpp_src)
@@ -19,7 +20,7 @@ if vim.fn["dpp#min#load_state"](dpp_base) == 1 then
     pattern = "DenopsReady",
     callback = function()
       vim.notify("dpp: load_state() failed, rebuilding state...")
-      vim.fn["dpp#make_state"](dpp_base, config_dir .. "/dpp.ts")
+      vim.fn["dpp#make_state"](dpp_base, dpp_config)
     end,
   })
 end
@@ -30,7 +31,7 @@ vim.api.nvim_create_autocmd("BufWritePost", {
   callback = function()
     local check_files = vim.fn["dpp#check_files"]()
     if not vim.tbl_isempty(check_files) then
-      vim.fn["dpp#make_state"](dpp_base, config_dir .. "/dpp.ts")
+      vim.fn["dpp#make_state"](dpp_base, dpp_config)
     end
   end,
 })

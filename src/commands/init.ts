@@ -9,7 +9,6 @@ import { logger } from "../utils/logger.ts";
 import type { TemplateContext } from "../types/template.ts";
 import {
   validateEditor,
-  validateFormat,
   validateTemplate,
 } from "../utils/validators.ts";
 import { ensureDir, safeWriteTextFile } from "../utils/filesystem.ts";
@@ -19,12 +18,6 @@ export const initCommand = define({
   name: "init",
   description: "Initialize dpp.vim configuration",
   args: {
-    format: {
-      type: "string",
-      short: "f",
-      description: "Configuration file format (ts, toml, lua, vim)",
-      default: "ts",
-    },
     path: {
       type: "string",
       short: "p",
@@ -49,7 +42,6 @@ export const initCommand = define({
     },
   },
   run: async (ctx) => {
-    const format = ctx.values.format as string;
     const path = ctx.values.path as string | undefined;
     const template = ctx.values.template as string;
     const editor = ctx.values.editor as string;
@@ -58,7 +50,9 @@ export const initCommand = define({
     // Validate inputs
     validateEditor(editor);
     validateTemplate(template);
-    validateFormat(format);
+
+    // Determine format based on editor
+    const format = editor === "nvim" ? "lua" : "vim";
 
     logger.info(`Initializing dpp.vim configuration for ${editor}...`);
 
@@ -80,34 +74,54 @@ export const initCommand = define({
       format,
       paths,
       generatedAt: new Date().toISOString(),
+      tomlFileName: "dpp.toml",
     };
 
     const content = await generateTemplate(templateContext);
     await safeWriteTextFile(paths.configFile, content);
     logger.success(`Created configuration file: ${paths.configFile}`);
 
-    // Create dpp.toml for all formats (except when format is already toml)
+    // Create dpp.toml for plugin management (always created)
     const tomlPath = `${paths.configDir}/dpp.toml`;
-    if (format !== "toml") {
-      const tomlTemplate = template === "minimal"
-        ? await generateTemplate({
-          editor,
-          type: "minimal",
-          format: "toml",
-          paths,
-          generatedAt: new Date().toISOString(),
-        })
-        : await generateTemplate({
-          editor,
-          type: "scaffold",
-          format: "toml",
-          paths,
-          generatedAt: new Date().toISOString(),
-        });
+    const tomlTemplate = template === "minimal"
+      ? await generateTemplate({
+        editor,
+        type: "minimal",
+        format: "toml",
+        paths,
+        generatedAt: new Date().toISOString(),
+      })
+      : await generateTemplate({
+        editor,
+        type: "scaffold",
+        format: "toml",
+        paths,
+        generatedAt: new Date().toISOString(),
+      });
 
-      await safeWriteTextFile(tomlPath, tomlTemplate);
-      logger.success(`Created TOML plugin file: ${tomlPath}`);
-    }
+    await safeWriteTextFile(tomlPath, tomlTemplate);
+    logger.success(`Created TOML plugin file: ${tomlPath}`);
+
+    // Create dpp.ts for dpp#make_state (TypeScript config that loads TOML)
+    const tsPath = `${paths.configDir}/dpp.ts`;
+    const tsTemplate = template === "minimal"
+      ? await generateTemplate({
+        editor,
+        type: "minimal",
+        format: "ts",
+        paths,
+        generatedAt: new Date().toISOString(),
+      })
+      : await generateTemplate({
+        editor,
+        type: "scaffold",
+        format: "ts",
+        paths,
+        generatedAt: new Date().toISOString(),
+      });
+
+    await safeWriteTextFile(tsPath, tsTemplate);
+    logger.success(`Created TypeScript config file: ${tsPath}`);
 
     // Create and save profile
     const profile = createDefaultProfile(editor);
@@ -119,10 +133,10 @@ export const initCommand = define({
     }
 
     // Set default TOML path
-    profile.defaultToml = format === "toml" ? paths.configFile : tomlPath;
+    profile.defaultToml = tomlPath;
     profile.tomlFiles = [{
-      path: profile.defaultToml,
-      relativePath: format === "toml" ? `dpp.${format}` : "dpp.toml",
+      path: tomlPath,
+      relativePath: "dpp.toml",
     }];
 
     await saveProfile(profile);
@@ -130,26 +144,16 @@ export const initCommand = define({
     logger.success(`Profile '${profile.name}' created successfully`);
     logger.info(`Config directory: ${profile.configDir}`);
     logger.info(`Main config: ${profile.mainConfig}`);
-    if (format !== "toml") {
-      logger.info(`Plugin management file: dpp.toml`);
-    }
+    logger.info(`Plugin management file: dpp.toml`);
 
     logger.info("\nNext steps:");
     logger.info("1. Edit your configuration file:");
     logger.info(`   ${paths.configFile}`);
-    if (format !== "toml") {
-      logger.info("2. Manage plugins in:");
-      logger.info(`   ${tomlPath}`);
-      logger.info("3. Add plugins with:");
-    } else {
-      logger.info("2. Add plugins with:");
-    }
+    logger.info("2. Manage plugins in:");
+    logger.info(`   ${tomlPath}`);
+    logger.info("3. Add plugins with:");
     logger.info("   dpp add <repo>");
-    if (format !== "toml") {
-      logger.info("4. Update plugins with:");
-    } else {
-      logger.info("3. Update plugins with:");
-    }
+    logger.info("4. Update plugins with:");
     logger.info("   dpp update --all");
   },
 });

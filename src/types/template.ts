@@ -7,6 +7,7 @@ export interface TemplateContext {
   paths: DppPaths;
   generatedAt?: string;
   userName?: string;
+  tomlFileName?: string; // dpp.tomlのファイル名
 }
 
 export type TemplateGenerator = (context: TemplateContext) => string;
