@@ -9,7 +9,6 @@ A modern CLI tool for managing [dpp.vim](https://github.com/Shougo/dpp.vim) plug
 - 🔌 **Unified plugin management** - All plugins managed in dpp.toml
 - 🚀 **Easy initialization** - Quick setup with minimal or scaffold templates
 - 🩺 **Environment diagnostics** - Check your setup with `dpp doctor`
-- ✅ **Configuration validation** - Verify your config with `dpp check`
 
 ## Installation
 
@@ -63,17 +62,7 @@ dpp add Shougo/ddu-ui-ff --depends denops.vim
 dpp remove Shougo/ddu-ui-ff
 ```
 
-### 4. Check configuration
-
-```bash
-# Basic check
-dpp check
-
-# Strict mode
-dpp check --strict
-```
-
-### 5. Diagnose environment
+### 4. Diagnose environment
 
 ```bash
 dpp doctor
@@ -156,20 +145,6 @@ dpp update --all
 
 # Update specific plugins
 dpp update Shougo/ddu.vim Shougo/ddc.vim
-```
-
-### `dpp check`
-
-Check configuration validity.
-
-**Options:**
-- `--strict` - Enable strict checking
-- `-e, --editor <vim|nvim>` - Target editor
-- `-p, --profile <name>` - Profile to check
-
-**Example:**
-```bash
-dpp check --strict
 ```
 
 ### `dpp doctor`
@@ -353,9 +328,6 @@ dpp init -f ts -t minimal -e nvim --profile work
 
 # Add plugins to work profile
 dpp add Shougo/ddu.vim -p work
-
-# Check work profile
-dpp check -p work
 ```
 
 Profiles are stored in `~/.config/dpp-cli/config.json`.
@@ -403,18 +375,6 @@ This will check:
 - dpp.vim installation
 - Configuration files
 - Network connectivity
-
-### Validate configuration
-
-```bash
-dpp check --strict
-```
-
-This will check:
-- Configuration file syntax
-- Editor compatibility
-- TOML file validity
-- Type correctness (for TypeScript)
 
 ### Common Issues
 
