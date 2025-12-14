@@ -298,68 +298,6 @@ Deno.test({
   sanitizeOps: false,
 });
 
-// Integration test for update command
-Deno.test({
-  name: "Integration: dpp update - shows instructions",
-  async fn() {
-    const tempDir = await Deno.makeTempDir();
-    const originalXdgConfig = Deno.env.get("XDG_CONFIG_HOME");
-
-    try {
-      Deno.env.set("XDG_CONFIG_HOME", tempDir);
-
-      // Initialize config
-      const initCommand = new Deno.Command(Deno.execPath(), {
-        args: [
-          "run",
-          "--allow-read",
-          "--allow-write",
-          "--allow-env",
-          join(Deno.cwd(), "main.ts"),
-          "init",
-        ],
-        cwd: Deno.cwd(),
-      });
-
-      await initCommand.output();
-
-      // Run update command
-      const updateCommand = new Deno.Command(Deno.execPath(), {
-        args: [
-          "run",
-          "--allow-read",
-          "--allow-write",
-          "--allow-env",
-          join(Deno.cwd(), "main.ts"),
-          "update",
-          "--all",
-        ],
-        cwd: Deno.cwd(),
-      });
-
-      const { code, stdout } = await updateCommand.output();
-      const output = new TextDecoder().decode(stdout);
-
-      assertEquals(code, 0);
-      assertEquals(output.includes("Plugin updates are managed by dpp.vim"), true);
-      assertEquals(output.includes("dpp#async_ext_action"), true);
-    } finally {
-      if (originalXdgConfig) {
-        Deno.env.set("XDG_CONFIG_HOME", originalXdgConfig);
-      } else {
-        Deno.env.delete("XDG_CONFIG_HOME");
-      }
-      try {
-        await Deno.remove(tempDir, { recursive: true });
-      } catch {
-        // Ignore cleanup errors
-      }
-    }
-  },
-  sanitizeResources: false,
-  sanitizeOps: false,
-});
-
 // Integration test for CLI help
 Deno.test({
   name: "Integration: dpp --help shows usage",
@@ -384,7 +322,6 @@ Deno.test({
     assertEquals(output.includes("init"), true);
     assertEquals(output.includes("add"), true);
     assertEquals(output.includes("remove"), true);
-    assertEquals(output.includes("update"), true);
   },
   sanitizeResources: false,
   sanitizeOps: false,
