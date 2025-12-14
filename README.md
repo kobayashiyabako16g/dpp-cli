@@ -129,24 +129,6 @@ Remove a plugin from your configuration.
 dpp remove Shougo/ddu-ui-ff
 ```
 
-### `dpp update`
-
-Update plugins (delegates to dpp.vim).
-
-**Options:**
-- `--all` - Update all plugins
-- `--parallel <n>` - Number of parallel updates (default: 4)
-- `--dry-run` - Show what would be updated
-
-**Examples:**
-```bash
-# Update all plugins
-dpp update --all
-
-# Update specific plugins
-dpp update Shougo/ddu.vim Shougo/ddc.vim
-```
-
 ### `dpp doctor`
 
 Diagnose environment and detect issues.

@@ -129,24 +129,6 @@ dpp add Shougo/ddu-ui-ff --depends denops.vim
 dpp remove Shougo/ddu-ui-ff
 ```
 
-### `dpp update`
-
-プラグインを更新します（dpp.vimに委譲）。
-
-**オプション:**
-- `--all` - すべてのプラグインを更新
-- `--parallel <n>` - 並列更新数（デフォルト: 4）
-- `--dry-run` - 更新内容を表示のみ
-
-**例:**
-```bash
-# すべてのプラグインを更新
-dpp update --all
-
-# 特定のプラグインを更新
-dpp update Shougo/ddu.vim Shougo/ddc.vim
-```
-
 ### `dpp doctor`
 
 環境を診断して問題を検出します。

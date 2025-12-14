@@ -153,7 +153,5 @@ export const initCommand = define({
     logger.info(`   ${tomlPath}`);
     logger.info("3. Add plugins with:");
     logger.info("   dpp add <repo>");
-    logger.info("4. Update plugins with:");
-    logger.info("   dpp update --all");
   },
 });

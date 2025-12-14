@@ -101,8 +101,7 @@ export const addCommand = define({
     logger.info("Next steps:");
     logger.info("1. Review your plugins:");
     logger.info(`   ${tomlPath}`);
-    logger.info("2. Update plugins:");
-    logger.info("   dpp update --all");
+    logger.info("2. Restart Vim/Neovim to load the new plugin");
   },
 });
 
