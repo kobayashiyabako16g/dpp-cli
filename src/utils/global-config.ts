@@ -7,7 +7,7 @@ export { createDefaultProfile } from "../types/config.ts";
 const CONFIG_DIR = "dpp-cli";
 const CONFIG_FILE = "config.json";
 
-// グローバル設定ファイルのパスを取得
+// Get global configuration file path
 export function getGlobalConfigPath(): string {
   const home = Deno.env.get("HOME") || Deno.env.get("USERPROFILE") || "~";
   const xdgConfigHome = Deno.env.get("XDG_CONFIG_HOME") ||
@@ -15,7 +15,7 @@ export function getGlobalConfigPath(): string {
   return join(xdgConfigHome, CONFIG_DIR, CONFIG_FILE);
 }
 
-// グローバル設定を読み込む
+// Load global configuration
 export async function loadGlobalConfig(): Promise<GlobalConfig> {
   const configPath = getGlobalConfigPath();
 
@@ -30,7 +30,7 @@ export async function loadGlobalConfig(): Promise<GlobalConfig> {
   }
 }
 
-// グローバル設定を保存
+// Save global configuration
 export async function saveGlobalConfig(
   config: GlobalConfig,
 ): Promise<void> {
@@ -41,13 +41,13 @@ export async function saveGlobalConfig(
   await Deno.writeTextFile(configPath, JSON.stringify(config, null, 2));
 }
 
-// アクティブプロファイルを取得
+// Get active profile
 export async function getActiveProfile(): Promise<Profile | null> {
   const config = await loadGlobalConfig();
   return config.profiles[config.activeProfile] || null;
 }
 
-// プロファイルを取得（名前指定またはアクティブ）
+// Get profile (by name or active)
 export async function getProfile(name?: string): Promise<Profile | null> {
   if (!name) {
     return await getActiveProfile();
@@ -57,7 +57,7 @@ export async function getProfile(name?: string): Promise<Profile | null> {
   return config.profiles[name] || null;
 }
 
-// プロファイルを保存
+// Save profile
 export async function saveProfile(profile: Profile): Promise<void> {
   const config = await loadGlobalConfig();
 
@@ -66,7 +66,7 @@ export async function saveProfile(profile: Profile): Promise<void> {
     lastModified: new Date().toISOString(),
   };
 
-  // 初めてのプロファイルならアクティブに設定
+  // Set as active if this is the first profile
   if (Object.keys(config.profiles).length === 1) {
     config.activeProfile = profile.name;
   }
@@ -74,7 +74,7 @@ export async function saveProfile(profile: Profile): Promise<void> {
   await saveGlobalConfig(config);
 }
 
-// TOMLファイルを検出してプロファイルに追加
+// Detect TOML files and add them to the profile
 export async function detectAndAddTomlFiles(
   profile: Profile,
 ): Promise<TomlFileEntry[]> {
@@ -90,7 +90,7 @@ export async function detectAndAddTomlFiles(
       }
     }
 
-    // plugins/ ディレクトリも検索
+    // Also search plugins/ directory
     const pluginsDir = join(profile.configDir, "plugins");
     try {
       for await (const entry of Deno.readDir(pluginsDir)) {
@@ -102,7 +102,7 @@ export async function detectAndAddTomlFiles(
         }
       }
     } catch {
-      // plugins/ ディレクトリがない場合はスキップ
+      // Skip if plugins/ directory doesn't exist
     }
   } catch (error) {
     console.error("Error detecting TOML files:", error);
@@ -111,7 +111,7 @@ export async function detectAndAddTomlFiles(
   return tomlFiles;
 }
 
-// デフォルトTOMLファイルを取得（指定またはプロファイルのデフォルト）
+// Get target TOML file (specified or profile's default)
 export async function getTargetToml(
   specifiedToml?: string,
   profile?: Profile,
@@ -122,22 +122,22 @@ export async function getTargetToml(
     throw new Error("No active profile found. Run 'dpp init' first.");
   }
 
-  // --toml が指定されていればそれを使用
+  // Use specified TOML if --toml flag is provided
   if (specifiedToml) {
     return join(activeProfile.configDir, specifiedToml);
   }
 
-  // defaultToml が設定されていればそれを使用
+  // Use defaultToml if it's configured
   if (activeProfile.defaultToml) {
     return activeProfile.defaultToml;
   }
 
-  // TOMLファイルが1つしかなければそれを使用
+  // Use the TOML file if there's only one
   if (activeProfile.tomlFiles.length === 1) {
     return activeProfile.tomlFiles[0].path;
   }
 
-  // 複数ある場合はエラー
+  // Error if there are multiple files
   if (activeProfile.tomlFiles.length > 1) {
     throw new Error(
       `Multiple TOML files found. Please specify with --toml option:\n${
@@ -146,6 +146,6 @@ export async function getTargetToml(
     );
   }
 
-  // TOMLファイルがない場合はデフォルトを使用
+  // Use default if no TOML files exist
   return join(activeProfile.configDir, "dpp.toml");
 }

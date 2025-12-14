@@ -1,4 +1,4 @@
-// dpp.vimの公式型定義を使用
+// Use official type definitions from dpp.vim
 import type {
   DppOptions,
   ExtOptions,
@@ -7,7 +7,7 @@ import type {
   ProtocolOptions,
 } from "@shougo/dpp-vim/types";
 
-// CLI用の設定型定義
+// Configuration types for CLI
 export interface Config {
   plugins: Plugin[];
   protocols?: ProtocolName[];
@@ -17,7 +17,7 @@ export interface Config {
   protocolParams?: Record<ProtocolName, Record<string, unknown>>;
 }
 
-// グローバル設定ファイル: XDG_CONFIG_HOME/dpp-cli/config.json
+// Global configuration file: XDG_CONFIG_HOME/dpp-cli/config.json
 export interface GlobalConfig {
   version: string;
   profiles: Record<string, Profile>;
@@ -29,8 +29,8 @@ export interface Profile {
   configDir: string; // ~/.config/nvim
   editor: "vim" | "nvim";
   mainConfig: string; // dpp.ts or dpp.vim
-  tomlFiles: TomlFileEntry[]; // 使用されているTOMLファイルのリスト
-  defaultToml?: string; // addコマンドのデフォルトTOML
+  tomlFiles: TomlFileEntry[]; // List of TOML files in use
+  defaultToml?: string; // Default TOML for add command
   lastModified: string;
 }
 
@@ -40,7 +40,7 @@ export interface TomlFileEntry {
   relativePath: string; // dpp.toml or plugins/lsp.toml
 }
 
-// デフォルト設定
+// Default configuration
 export function createDefaultGlobalConfig(): GlobalConfig {
   return {
     version: "0.1.0",
@@ -65,7 +65,7 @@ export function createDefaultProfile(editor: "vim" | "nvim"): Profile {
   };
 }
 
-// dpp.vimの型をエクスポート
+// Export types from dpp.vim
 export type {
   DppOptions,
   ExtOptions,

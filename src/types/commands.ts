@@ -1,32 +1,32 @@
 import type { CommandContext as GunshiContext } from "gunshi";
 
-// gunshiのCommandContextを拡張
+// Extend gunshi's CommandContext
 export type CommandContext = GunshiContext;
 
-// 各コマンドの値の型
+// Types for each command's values
 export interface InitCommandValues {
   path?: string;
   template: "minimal" | "scaffold";
   editor: "vim" | "nvim";
-  profile?: string; // プロファイル名
+  profile?: string; // Profile name
 }
 
 export interface AddCommandValues {
   repo: string;
-  toml?: string; // 対象TOMLファイル（相対パス）
+  toml?: string; // Target TOML file (relative path)
   onCmd?: string;
   onFt?: string;
   onEvent?: string;
   depends?: string;
   frozen?: boolean;
   branch?: string;
-  profile?: string; // プロファイル名
+  profile?: string; // Profile name
 }
 
 export interface RemoveCommandValues {
   repo: string;
-  toml?: string; // 対象TOMLファイル（相対パス）
-  profile?: string; // プロファイル名
+  toml?: string; // Target TOML file (relative path)
+  profile?: string; // Profile name
 }
 
 export interface UpdateCommandValues {
@@ -34,5 +34,5 @@ export interface UpdateCommandValues {
   all?: boolean;
   parallel?: number;
   dryRun?: boolean;
-  profile?: string; // プロファイル名
+  profile?: string; // Profile name
 }
