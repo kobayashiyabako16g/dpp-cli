@@ -1,14 +1,76 @@
 // Minimal TypeScript configuration for dpp.vim
 // This is the simplest possible setup to get dpp.vim working
+// Plugins are defined in dpp.toml
 
-import type { Plugin } from "jsr:@shougo/dpp-vim/types";
+import type {
+  ContextBuilder,
+  ExtOptions,
+} from "jsr:@shougo/dpp-vim@~4.5.0/types";
+import type { Protocol } from "jsr:@shougo/dpp-vim@~4.5.0/protocol";
+import type { Dpp } from "jsr:@shougo/dpp-vim@~4.5.0/dpp";
+import {
+  BaseConfig,
+  type ConfigReturn,
+} from "jsr:@shougo/dpp-vim@~4.5.0/config";
+import type {
+  Ext as TomlExt,
+  Params as TomlParams,
+} from "jsr:@shougo/dpp-ext-toml@~1.3.0";
 
-export const config = {
-  plugins: [
-    // Core dpp.vim - the plugin manager itself
-    { repo: "Shougo/dpp.vim" },
-    
-    // denops.vim - required for dpp.vim to work
-    { repo: "vim-denops/denops.vim" },
-  ] satisfies Plugin[],
-};
+import type { Denops } from "jsr:@denops/std@~7.6.0";
+
+const BASE_PATH = Deno.env.get("HOME") + "/.config/nvim";
+
+export class Config extends BaseConfig {
+  override async config(args: {
+    denops: Denops;
+    contextBuilder: ContextBuilder;
+    basePath: string;
+    dpp: Dpp;
+  }): Promise<ConfigReturn> {
+    args.contextBuilder.setGlobal({
+      protocols: ["git"],
+    });
+
+    const [context, options] = await args.contextBuilder.get(args.denops);
+    const protocols = await args.denops.dispatcher.getProtocols() as Record<
+      string,
+      Protocol
+    >;
+
+    // Load toml plugins
+    const [tomlExt, tomlOptions, tomlParams]: [
+      TomlExt | undefined,
+      ExtOptions,
+      TomlParams,
+    ] = await args.denops.dispatcher.getExt(
+      "toml",
+    ) as [TomlExt | undefined, ExtOptions, TomlParams];
+
+    if (!tomlExt) {
+      return {
+        plugins: [],
+      };
+    }
+
+    const action = tomlExt.actions.load;
+    const toml = await action.callback({
+      denops: args.denops,
+      context,
+      options,
+      protocols,
+      extOptions: tomlOptions,
+      extParams: tomlParams,
+      actionParams: {
+        path: `${BASE_PATH}/dpp.toml`,
+        options: {
+          lazy: false,
+        },
+      },
+    });
+
+    return {
+      plugins: toml.plugins ?? [],
+    };
+  }
+}

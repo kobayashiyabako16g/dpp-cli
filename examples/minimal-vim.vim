@@ -1,17 +1,26 @@
 " Minimal Vim script configuration for dpp.vim
+" Plugins are managed in dpp.toml
 
 let s:dpp_base = expand('~/.cache/dpp')
 let s:dpp_src = s:dpp_base .. '/repos/github.com/Shougo/dpp.vim'
+let s:denops_src = s:dpp_base .. '/repos/github.com/vim-denops/denops.vim'
+let s:config_dir = expand('~/.config/vim')
 
-if !isdirectory(s:dpp_src)
-  execute '!git clone https://github.com/Shougo/dpp.vim' s:dpp_src
-endif
-
+" Add dpp.vim to runtimepath
 execute 'set runtimepath^=' .. s:dpp_src
 
-call dpp#begin(s:dpp_base)
+if dpp#min#load_state(s:dpp_base)
+  " dpp_base state is not loaded, initialize from scratch
+  execute 'set runtimepath^=' .. s:denops_src
 
-call dpp#add('Shougo/dpp.vim')
-call dpp#add('vim-denops/denops.vim')
+  autocmd User DenopsReady
+  \ : call dpp#make_state(s:dpp_base, s:config_dir .. '/dpp.ts')
+endif
 
-call dpp#end()
+" Enable filetype detection, plugins and indentation
+filetype indent plugin on
+
+" Enable syntax highlighting
+if has('syntax')
+  syntax on
+endif
