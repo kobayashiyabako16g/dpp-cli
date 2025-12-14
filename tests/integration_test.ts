@@ -4,7 +4,7 @@ import { exists } from "@std/fs";
 
 // Integration test for init command
 Deno.test({
-  name: "Integration: dpp init - minimal TypeScript template",
+  name: "Integration: dpp init - minimal Lua template",
   async fn() {
     const tempDir = await Deno.makeTempDir();
     const originalXdgConfig = Deno.env.get("XDG_CONFIG_HOME");
@@ -22,8 +22,6 @@ Deno.test({
           "--allow-env",
           join(Deno.cwd(), "main.ts"),
           "init",
-          "-f",
-          "ts",
           "-t",
           "minimal",
           "-e",
@@ -43,15 +41,16 @@ Deno.test({
       assertEquals(output.includes("created successfully"), true, `Output doesn't contain "created successfully": ${output}`);
 
       // Verify config file was created
-      const configPath = join(tempDir, "nvim", "dpp.ts");
+      const configPath = join(tempDir, "nvim", "dpp.lua");
       const fileExists = await exists(configPath);
-      assertEquals(fileExists, true);
+      assertEquals(fileExists, true, `Config file not found at: ${configPath}`);
 
       // Verify config file content
       const content = await Deno.readTextFile(configPath);
-      assertEquals(content.includes('export class Config extends BaseConfig'), true);
-      assertEquals(content.includes('override async config('), true);
-      assertEquals(content.includes('dpp-ext-toml'), true);
+      assertEquals(content.includes('local dpp_base'), true, "Missing: local dpp_base");
+      assertEquals(content.includes('local dpp_config'), true, "Missing: local dpp_config");
+      assertEquals(content.includes('/dpp.ts"'), true, "Missing: /dpp.ts reference");
+      assertEquals(content.includes('dpp#make_state'), true, "Missing: dpp#make_state");
       
       // Verify dpp.toml was created
       const tomlPath = join(tempDir, "nvim", "dpp.toml");
@@ -94,7 +93,7 @@ Deno.test({
 
 // Integration test for init with scaffold template
 Deno.test({
-  name: "Integration: dpp init - scaffold TypeScript template",
+  name: "Integration: dpp init - scaffold Lua template",
   async fn() {
     const tempDir = await Deno.makeTempDir();
     const originalXdgConfig = Deno.env.get("XDG_CONFIG_HOME");
@@ -110,8 +109,6 @@ Deno.test({
           "--allow-env",
           join(Deno.cwd(), "main.ts"),
           "init",
-          "-f",
-          "ts",
           "-t",
           "scaffold",
           "-e",
@@ -124,11 +121,11 @@ Deno.test({
       assertEquals(code, 0);
 
       // Verify scaffold template has more plugins
-      const configPath = join(tempDir, "nvim", "dpp.ts");
+      const configPath = join(tempDir, "nvim", "dpp.lua");
       const content = await Deno.readTextFile(configPath);
-      assertEquals(content.includes("export class Config extends BaseConfig"), true);
-      assertEquals(content.includes("dpp-ext-lazy"), true);
-      assertEquals(content.includes("dpp-ext-toml"), true);
+      assertEquals(content.includes("local dpp_base"), true);
+      assertEquals(content.includes("local dpp_config"), true);
+      assertEquals(content.includes("BufWritePost"), true); // scaffold has autocmd
       
       // Verify dpp.toml was created with scaffold plugins
       const tomlPath = join(tempDir, "nvim", "dpp.toml");
@@ -174,8 +171,6 @@ Deno.test({
           "--allow-env",
           join(Deno.cwd(), "main.ts"),
           "init",
-          "-f",
-          "ts",
           "-t",
           "minimal",
           "-e",
@@ -250,8 +245,6 @@ Deno.test({
           "--allow-env",
           join(Deno.cwd(), "main.ts"),
           "init",
-          "-f",
-          "ts",
           "-t",
           "scaffold",
           "-e",
@@ -423,179 +416,8 @@ Deno.test({
   sanitizeOps: false,
 });
 
-// Integration test for TOML format
-Deno.test({
-  name: "Integration: dpp init - TOML minimal",
-  async fn() {
-    const tempDir = await Deno.makeTempDir();
-    const originalXdgConfig = Deno.env.get("XDG_CONFIG_HOME");
-
-    try {
-      Deno.env.set("XDG_CONFIG_HOME", tempDir);
-
-      const command = new Deno.Command(Deno.execPath(), {
-        args: [
-          "run",
-          "--allow-read",
-          "--allow-write",
-          "--allow-env",
-          join(Deno.cwd(), "main.ts"),
-          "init",
-          "-f",
-          "toml",
-          "-t",
-          "minimal",
-          "-e",
-          "nvim",
-        ],
-        cwd: Deno.cwd(),
-      });
-
-      const { code } = await command.output();
-      assertEquals(code, 0);
-
-      // Verify TOML config file was created
-      const configPath = join(tempDir, "nvim", "dpp.toml");
-      const fileExists = await exists(configPath);
-      assertEquals(fileExists, true);
-
-      // Verify TOML content
-      const content = await Deno.readTextFile(configPath);
-      assertEquals(content.includes('repo = "Shougo/dpp.vim"'), true);
-      assertEquals(content.includes('repo = "vim-denops/denops.vim"'), true);
-      assertEquals(content.includes("[[plugins]]"), true);
-    } finally {
-      if (originalXdgConfig) {
-        Deno.env.set("XDG_CONFIG_HOME", originalXdgConfig);
-      } else {
-        Deno.env.delete("XDG_CONFIG_HOME");
-      }
-      try {
-        await Deno.remove(tempDir, { recursive: true });
-      } catch {
-        // Ignore cleanup errors
-      }
-    }
-  },
-  sanitizeResources: false,
-  sanitizeOps: false,
-});
-
-// Integration test for TOML scaffold
-Deno.test({
-  name: "Integration: dpp init - TOML scaffold",
-  async fn() {
-    const tempDir = await Deno.makeTempDir();
-    const originalXdgConfig = Deno.env.get("XDG_CONFIG_HOME");
-
-    try {
-      Deno.env.set("XDG_CONFIG_HOME", tempDir);
-
-      const command = new Deno.Command(Deno.execPath(), {
-        args: [
-          "run",
-          "--allow-read",
-          "--allow-write",
-          "--allow-env",
-          join(Deno.cwd(), "main.ts"),
-          "init",
-          "-f",
-          "toml",
-          "-t",
-          "scaffold",
-          "-e",
-          "nvim",
-        ],
-        cwd: Deno.cwd(),
-      });
-
-      const { code } = await command.output();
-      assertEquals(code, 0);
-
-      const configPath = join(tempDir, "nvim", "dpp.toml");
-      const content = await Deno.readTextFile(configPath);
-      assertEquals(content.includes("dpp-ext-installer"), true);
-      assertEquals(content.includes("dpp-ext-lazy"), true);
-      assertEquals(content.includes("ddu.vim"), true);
-    } finally {
-      if (originalXdgConfig) {
-        Deno.env.set("XDG_CONFIG_HOME", originalXdgConfig);
-      } else {
-        Deno.env.delete("XDG_CONFIG_HOME");
-      }
-      try {
-        await Deno.remove(tempDir, { recursive: true });
-      } catch {
-        // Ignore cleanup errors
-      }
-    }
-  },
-  sanitizeResources: false,
-  sanitizeOps: false,
-});
-
-// Integration test for Lua format
-Deno.test({
-  name: "Integration: dpp init - Lua minimal",
-  async fn() {
-    const tempDir = await Deno.makeTempDir();
-    const originalXdgConfig = Deno.env.get("XDG_CONFIG_HOME");
-
-    try {
-      Deno.env.set("XDG_CONFIG_HOME", tempDir);
-
-      const command = new Deno.Command(Deno.execPath(), {
-        args: [
-          "run",
-          "--allow-read",
-          "--allow-write",
-          "--allow-env",
-          join(Deno.cwd(), "main.ts"),
-          "init",
-          "-f",
-          "lua",
-          "-t",
-          "minimal",
-          "-e",
-          "nvim",
-        ],
-        cwd: Deno.cwd(),
-      });
-
-      const { code } = await command.output();
-      assertEquals(code, 0);
-
-      const configPath = join(tempDir, "nvim", "dpp.lua");
-      const fileExists = await exists(configPath);
-      assertEquals(fileExists, true);
-
-      const content = await Deno.readTextFile(configPath);
-      assertEquals(content.includes('vim.fn["dpp#min#load_state"]'), true);
-      assertEquals(content.includes('vim.fn["dpp#make_state"]'), true);
-      
-      // Verify dpp.toml was created
-      const tomlPath = join(tempDir, "nvim", "dpp.toml");
-      const tomlExists = await exists(tomlPath);
-      assertEquals(tomlExists, true);
-      
-      const tomlContent = await Deno.readTextFile(tomlPath);
-      assertEquals(tomlContent.includes('repo = "Shougo/dpp.vim"'), true);
-    } finally {
-      if (originalXdgConfig) {
-        Deno.env.set("XDG_CONFIG_HOME", originalXdgConfig);
-      } else {
-        Deno.env.delete("XDG_CONFIG_HOME");
-      }
-      try {
-        await Deno.remove(tempDir, { recursive: true });
-      } catch {
-        // Ignore cleanup errors
-      }
-    }
-  },
-  sanitizeResources: false,
-  sanitizeOps: false,
-});
+// Integration test for Lua format is tested above
+// TOML-only format is removed as nvim uses lua + toml, vim uses vim + toml
 
 // Integration test for Vim script format
 Deno.test({
@@ -615,8 +437,6 @@ Deno.test({
           "--allow-env",
           join(Deno.cwd(), "main.ts"),
           "init",
-          "-f",
-          "vim",
           "-t",
           "minimal",
           "-e",
@@ -660,7 +480,7 @@ Deno.test({
   sanitizeOps: false,
 });
 
-// Integration test for TOML add/remove
+// Integration test for add/remove with nvim
 Deno.test({
   name: "Integration: dpp add/remove - TOML format",
   async fn() {
@@ -670,7 +490,7 @@ Deno.test({
     try {
       Deno.env.set("XDG_CONFIG_HOME", tempDir);
 
-      // Initialize with TOML
+      // Initialize with nvim (creates lua + toml)
       const initCommand = new Deno.Command(Deno.execPath(), {
         args: [
           "run",
@@ -679,8 +499,6 @@ Deno.test({
           "--allow-env",
           join(Deno.cwd(), "main.ts"),
           "init",
-          "-f",
-          "toml",
           "-t",
           "minimal",
           "-e",
@@ -769,8 +587,6 @@ Deno.test({
           "--allow-env",
           join(Deno.cwd(), "main.ts"),
           "init",
-          "-f",
-          "ts",
           "-t",
           "minimal",
           "-e",

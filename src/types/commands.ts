@@ -5,7 +5,6 @@ export type CommandContext = GunshiContext;
 
 // 各コマンドの値の型
 export interface InitCommandValues {
-  format: "ts" | "toml" | "lua" | "vim";
   path?: string;
   template: "minimal" | "scaffold";
   editor: "vim" | "nvim";
