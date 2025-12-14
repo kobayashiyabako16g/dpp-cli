@@ -8,7 +8,7 @@ A modern CLI tool for managing [dpp.vim](https://github.com/Shougo/dpp.vim) plug
 - 📝 **Multiple formats** - Support for TypeScript, TOML, Lua, and Vim script
 - � **Unified plugin management** - All formats use TOML for plugin definitions
 - �🚀 **Easy initialization** - Quick setup with minimal or scaffold templates
-- 🔄 **Migration support** - Migrate from dein, vim-plug, or packer
+
 - 🩺 **Environment diagnostics** - Check your setup with `dpp doctor`
 - ✅ **Configuration validation** - Verify your config with `dpp check`
 
@@ -170,27 +170,6 @@ Check configuration validity.
 **Example:**
 ```bash
 dpp check --strict
-```
-
-### `dpp migrate`
-
-Migrate from other plugin managers.
-
-**Arguments:**
-- `--from <dein|vim-plug|packer>` - Plugin manager to migrate from
-
-**Options:**
-- `-c, --config <path>` - Source configuration file
-- `--dry-run` - Show conversion without creating files
-- `-f, --format <ts|toml|lua|vim>` - Output format (default: ts)
-
-**Examples:**
-```bash
-# Migrate from dein
-dpp migrate --from dein --dry-run
-
-# Migrate from vim-plug with specific config
-dpp migrate --from vim-plug -c ~/.vimrc -f toml
 ```
 
 ### `dpp doctor`
