@@ -1,13 +1,15 @@
 # Full-featured TOML configuration for dpp.vim
+# This file defines all plugins used by your configuration
+# Use with full-typescript.ts or any other bootstrap file
 
-# Core plugins
+# Core plugins - Required for dpp.vim to work
 [[plugins]]
 repo = "Shougo/dpp.vim"
 
 [[plugins]]
 repo = "vim-denops/denops.vim"
 
-# dpp.vim extensions
+# dpp.vim extensions - Add plugin management features
 [[plugins]]
 repo = "Shougo/dpp-ext-installer"
 

@@ -6,7 +6,8 @@ A modern CLI tool for managing [dpp.vim](https://github.com/Shougo/dpp.vim) plug
 
 - 🎯 **Type-safe configuration** - Leverage TypeScript types from dpp.vim
 - 📝 **Multiple formats** - Support for TypeScript, TOML, Lua, and Vim script
-- 🚀 **Easy initialization** - Quick setup with minimal or scaffold templates
+- � **Unified plugin management** - All formats use TOML for plugin definitions
+- �🚀 **Easy initialization** - Quick setup with minimal or scaffold templates
 - 🔄 **Migration support** - Migrate from dein, vim-plug, or packer
 - 🩺 **Environment diagnostics** - Check your setup with `dpp doctor`
 - ✅ **Configuration validation** - Verify your config with `dpp check`
@@ -47,6 +48,8 @@ dpp init -f vim -t minimal -e vim
 
 ### 2. Add plugins
 
+All plugins are managed in `dpp.toml` regardless of your configuration format:
+
 ```bash
 # Add a plugin
 dpp add Shougo/ddu.vim
@@ -54,8 +57,8 @@ dpp add Shougo/ddu.vim
 # Add with lazy loading
 dpp add Shougo/ddc.vim --on-cmd Ddc
 
-# Add to specific TOML file
-dpp add Shougo/ddu-ui-ff -t plugins/ui.toml
+# Add with dependencies
+dpp add Shougo/ddu-ui-ff --depends denops.vim
 ```
 
 ### 3. Remove plugins
@@ -204,26 +207,59 @@ dpp doctor
 
 ## Configuration Formats
 
+### How It Works
+
+**All configuration formats use `dpp.toml` for plugin management.** Your main config file (TypeScript/Lua/Vim) serves as a bootstrap that loads plugins from `dpp.toml`.
+
 ### TypeScript (Recommended for Neovim)
 
 ```typescript
 // ~/.config/nvim/dpp.ts
-import type { Plugin } from "jsr:@shougo/dpp-vim/types";
+import type { Denops } from "jsr:@denops/std@~7.6.0";
+import type {
+  ContextBuilder,
+  Dpp,
+} from "jsr:@shougo/dpp-vim@~4.5.0/types";
+import {
+  BaseConfig,
+  type ConfigReturn,
+} from "jsr:@shougo/dpp-vim@~4.5.0/config";
 
-export const config = {
-  plugins: [
-    { repo: "Shougo/dpp.vim" },
-    { repo: "vim-denops/denops.vim" },
-    {
-      repo: "Shougo/ddu.vim",
-      on_cmd: ["Ddu"],
-      depends: ["denops.vim"],
-    },
-  ] satisfies Plugin[],
-};
+export class Config extends BaseConfig {
+  override async config(args: {
+    denops: Denops;
+    contextBuilder: ContextBuilder;
+    basePath: string;
+    dpp: Dpp;
+  }): Promise<ConfigReturn> {
+    args.contextBuilder.setGlobal({
+      protocols: ["git"],
+    });
+
+    const tomlPromises = [
+      args.dpp.extAction(
+        args.denops,
+        args.contextBuilder,
+        "toml",
+        "load",
+        {
+          path: await args.denops.call("expand", "~/.config/nvim/dpp.toml") as string,
+        },
+      ),
+    ];
+
+    await Promise.all(tomlPromises);
+
+    return {
+      checkFiles: [],
+    };
+  }
+}
 ```
 
-### TOML
+### TOML (Plugin Definitions)
+
+This file is used by **all** configuration formats:
 
 ```toml
 # ~/.config/nvim/dpp.toml
@@ -232,6 +268,9 @@ repo = "Shougo/dpp.vim"
 
 [[plugins]]
 repo = "vim-denops/denops.vim"
+
+[[plugins]]
+repo = "Shougo/dpp-ext-toml"
 
 [[plugins]]
 repo = "Shougo/ddu.vim"
@@ -243,17 +282,24 @@ depends = ["denops.vim"]
 
 ```lua
 -- ~/.config/nvim/dpp.lua
-return {
-  plugins = {
-    { repo = "Shougo/dpp.vim" },
-    { repo = "vim-denops/denops.vim" },
-    {
-      repo = "Shougo/ddu.vim",
-      on_cmd = { "Ddu" },
-      depends = { "denops.vim" },
-    },
-  },
-}
+local dpp_base = vim.fn.expand("~/.cache/dpp")
+local dpp_config = vim.fn.expand("~/.config/nvim")
+
+if vim.fn["dpp#min#load_state"](dpp_base) then
+  vim.opt.runtimepath:prepend(dpp_base .. "/repos/github.com/Shougo/dpp.vim")
+  vim.opt.runtimepath:prepend(dpp_base .. "/repos/github.com/vim-denops/denops.vim")
+  vim.opt.runtimepath:prepend(dpp_base .. "/repos/github.com/Shougo/dpp-ext-toml")
+
+  vim.api.nvim_create_autocmd("User", {
+    pattern = "DenopsReady",
+    callback = function()
+      vim.fn["dpp#make_state"](dpp_base, dpp_config .. "/dpp.toml")
+    end,
+  })
+end
+
+vim.cmd("filetype indent plugin on")
+vim.cmd("syntax on")
 ```
 
 ### Vim Script (Vim)
@@ -261,24 +307,19 @@ return {
 ```vim
 " ~/.config/vim/dpp.vim
 let s:dpp_base = expand('~/.cache/dpp')
-let s:dpp_src = s:dpp_base .. '/repos/github.com/Shougo/dpp.vim'
+let s:dpp_config = expand('~/.config/vim')
 
-if !isdirectory(s:dpp_src)
-  execute '!git clone https://github.com/Shougo/dpp.vim' s:dpp_src
+if dpp#min#load_state(s:dpp_base)
+  set runtimepath+=$HOME/.cache/dpp/repos/github.com/Shougo/dpp.vim
+  set runtimepath+=$HOME/.cache/dpp/repos/github.com/vim-denops/denops.vim
+  set runtimepath+=$HOME/.cache/dpp/repos/github.com/Shougo/dpp-ext-toml
+
+  autocmd User DenopsReady
+    \ call dpp#make_state(s:dpp_base, s:dpp_config .. '/dpp.toml')
 endif
 
-execute 'set runtimepath^=' .. s:dpp_src
-
-call dpp#begin(s:dpp_base)
-
-call dpp#add('Shougo/dpp.vim')
-call dpp#add('vim-denops/denops.vim')
-call dpp#add('Shougo/ddu.vim', {
-\   'on_cmd': ['Ddu'],
-\   'depends': ['denops.vim'],
-\ })
-
-call dpp#end()
+filetype indent plugin on
+syntax on
 ```
 
 ## Templates
@@ -320,11 +361,12 @@ Profiles are stored in `~/.config/dpp-cli/config.json`.
 ├── dpp-cli/
 │   └── config.json         # Profile configuration
 ├── nvim/                   # Neovim configuration
-│   ├── dpp.ts             # Main config (TypeScript)
-│   ├── dpp.toml           # Or TOML config
-│   └── dpp.lua            # Or Lua config
+│   ├── dpp.ts             # Bootstrap (TypeScript)
+│   ├── dpp.lua            # Or bootstrap (Lua)
+│   └── dpp.toml           # Plugin definitions (always present)
 └── vim/                    # Vim configuration
-    └── dpp.vim            # Vim script config
+    ├── dpp.vim            # Bootstrap (Vim script)
+    └── dpp.toml           # Plugin definitions (always present)
 
 ~/.cache/dpp/              # Plugin cache (managed by dpp.vim)
 └── repos/
