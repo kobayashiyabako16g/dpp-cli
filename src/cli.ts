@@ -4,7 +4,6 @@ import { addCommand } from "./commands/add.ts";
 import { removeCommand } from "./commands/remove.ts";
 import { updateCommand } from "./commands/update.ts";
 import { checkCommand } from "./commands/check.ts";
-import { migrateCommand } from "./commands/migrate.ts";
 import { doctorCommand } from "./commands/doctor.ts";
 
 export const mainCommand = define({
@@ -21,7 +20,6 @@ export const mainCommand = define({
     console.log("  remove    Remove a plugin from configuration");
     console.log("  update    Update plugins (delegates to dpp.vim)");
     console.log("  check     Check configuration file validity");
-    console.log("  migrate   Migrate from other plugin managers");
     console.log("  doctor    Diagnose environment and detect issues");
     console.log("");
     console.log("Run 'dpp <command> --help' for more information on a command.");
@@ -34,6 +32,5 @@ export const subCommands = {
   remove: removeCommand,
   update: updateCommand,
   check: checkCommand,
-  migrate: migrateCommand,
   doctor: doctorCommand,
 };
