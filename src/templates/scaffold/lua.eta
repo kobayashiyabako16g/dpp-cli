@@ -3,10 +3,10 @@
 -- Plugins are managed in dpp.toml
 -- See: https://github.com/Shougo/dpp.vim
 
-local dpp_base = vim.fn.expand("~/.cache/dpp")
+local dpp_base = "~/.cache/dpp"
 local dpp_src = dpp_base .. "/repos/github.com/Shougo/dpp.vim"
 local denops_src = dpp_base .. "/repos/github.com/vim-denops/denops.vim"
-local config_dir = vim.fn.expand("~/.config/<%- it.editor %>")
+local config_dir = "~/.config/<%- it.editor %>"
 local dpp_config = config_dir .. "/dpp.ts"
 
 -- Add dpp.vim to runtimepath

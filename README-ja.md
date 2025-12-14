@@ -4,12 +4,11 @@
 
 ## 特徴
 
-- 🎯 **型安全な設定** - dpp.vimのTypeScript型を活用
-- 📝 **複数のフォーマット対応** - TypeScript、TOML、Lua、Vim scriptをサポート
-- 🔌 **統一されたプラグイン管理** - すべてのフォーマットでTOMLによるプラグイン定義を使用
+- 🎯 **型安全な設定** - TOMLプラグインを読み込むTypeScript設定
+- 📝 **エディタ固有のセットアップ** - NeovimはLua、VimはVim script
+- 🔌 **統一されたプラグイン管理** - すべてのプラグインはdpp.tomlで管理
 - 🚀 **簡単な初期化** - minimalまたはscaffoldテンプレートで素早くセットアップ
 - 🩺 **環境診断** - `dpp doctor`で環境をチェック
-- ✅ **設定の検証** - `dpp check`で設定を検証
 
 ## インストール
 
@@ -32,17 +31,14 @@ deno install --allow-read --allow-write --allow-env --allow-run --allow-net -n d
 ### 1. 新しい設定を初期化
 
 ```bash
-# Neovim用TypeScript設定（推奨）
-dpp init -f ts -t minimal -e nvim
+# Neovim（Lua + TOML + TypeScript設定を作成）
+dpp init -t minimal -e nvim
 
-# TOML設定
-dpp init -f toml -t scaffold -e nvim
+# Vim（Vim script + TOML + TypeScript設定を作成）
+dpp init -t minimal -e vim
 
-# Neovim用Lua設定
-dpp init -f lua -t minimal -e nvim
-
-# Vim用Vim script設定
-dpp init -f vim -t minimal -e vim
+# より多くの機能を持つscaffoldテンプレート
+dpp init -t scaffold -e nvim
 ```
 
 ### 2. プラグインの追加
@@ -66,17 +62,7 @@ dpp add Shougo/ddu-ui-ff --depends denops.vim
 dpp remove Shougo/ddu-ui-ff
 ```
 
-### 4. 設定のチェック
-
-```bash
-# 基本チェック
-dpp check
-
-# 厳格モード
-dpp check --strict
-```
-
-### 5. 環境診断
+### 4. 環境診断
 
 ```bash
 dpp doctor
@@ -89,14 +75,18 @@ dpp doctor
 新しいdpp.vim設定を初期化します。
 
 **オプション:**
-- `-f, --format <ts|toml|lua|vim>` - 設定ファイルのフォーマット（デフォルト: ts）
 - `-t, --template <minimal|scaffold>` - テンプレートタイプ（デフォルト: minimal）
 - `-e, --editor <vim|nvim>` - 対象エディタ（デフォルト: nvim）
-- `-p, --profile <name>` - プロファイル名（デフォルト: default）
+- `-p, --path <dir>` - カスタム設定ディレクトリ
+- `--profile <name>` - プロファイル名（デフォルト: default）
+
+**作成されるファイル:**
+- **Neovim**: `dpp.lua` (メイン設定) + `dpp.toml` (プラグイン) + `dpp.ts` (TypeScriptローダー)
+- **Vim**: `dpp.vim` (メイン設定) + `dpp.toml` (プラグイン) + `dpp.ts` (TypeScriptローダー)
 
 **例:**
 ```bash
-dpp init -f ts -t scaffold -e nvim
+dpp init -t scaffold -e nvim
 ```
 
 ### `dpp add`
@@ -155,20 +145,6 @@ dpp update --all
 
 # 特定のプラグインを更新
 dpp update Shougo/ddu.vim Shougo/ddc.vim
-```
-
-### `dpp check`
-
-設定の妥当性をチェックします。
-
-**オプション:**
-- `--strict` - 厳格なチェックを有効化
-- `-e, --editor <vim|nvim>` - 対象エディタ
-- `-p, --profile <name>` - チェックするプロファイル
-
-**例:**
-```bash
-dpp check --strict
 ```
 
 ### `dpp doctor`
@@ -325,9 +301,6 @@ dpp init -f ts -t minimal -e nvim --profile work
 
 # workプロファイルにプラグインを追加
 dpp add Shougo/ddu.vim -p work
-
-# workプロファイルをチェック
-dpp check -p work
 ```
 
 プロファイルは`~/.config/dpp-cli/config.json`に保存されます。
@@ -375,18 +348,6 @@ dpp doctor
 - dpp.vimのインストール
 - 設定ファイル
 - ネットワーク接続
-
-### 設定の検証
-
-```bash
-dpp check --strict
-```
-
-以下の項目をチェックします：
-- 設定ファイルの構文
-- エディタの互換性
-- TOMLファイルの妥当性
-- 型の正確性（TypeScript用）
 
 ### よくある問題
 
