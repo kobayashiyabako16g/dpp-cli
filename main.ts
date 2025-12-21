@@ -6,5 +6,6 @@ if (import.meta.main) {
     name: "dpp",
     version: "1.0.0",
     subCommands,
+    usageOptionType: true,
   });
 }
