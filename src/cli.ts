@@ -7,9 +7,17 @@ import { doctorCommand } from "./commands/doctor.ts";
 export const mainCommand = define({
   name: "dpp",
   description: "Dark powered plugin manager CLI",
-  run: (_ctx) => {
-    console.log("dpp - Dark powered plugin manager CLI");
-    console.log("Run /\"manage --help\" for more information'.");
+  run: () => {
+    // Show help-style output when no subcommand is provided
+    console.log("Dark powered plugin manager CLI");
+    console.log("");
+    console.log("Commands:");
+    console.log("  init      Initialize dpp.vim configuration");
+    console.log("  add       Add a plugin to dpp.vim configuration");
+    console.log("  remove    Remove a plugin from dpp.vim configuration");
+    console.log("  doctor    Diagnose environment and detect issues");
+    console.log("");
+    console.log('Run "dpp --help" for more information');
   },
   examples: `
   # Initialize dpp.vim with minimal template for Neovim
@@ -20,7 +28,7 @@ export const mainCommand = define({
 
   # Remove a plugin from the configuration
   $ dpp remove -n nerdtree
-  `
+  `,
 });
 
 export const subCommands = {

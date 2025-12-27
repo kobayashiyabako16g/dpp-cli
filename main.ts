@@ -7,5 +7,6 @@ if (import.meta.main) {
     version: "1.0.0",
     subCommands,
     usageOptionType: true,
+    fallbackToEntry: true,
   });
 }
