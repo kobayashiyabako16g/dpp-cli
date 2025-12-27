@@ -8,7 +8,6 @@ A modern CLI tool for managing [dpp.vim](https://github.com/Shougo/dpp.vim) plug
 - 📝 **Editor-specific setup** - Lua for Neovim, Vim script for Vim
 - 🔌 **Unified plugin management** - All plugins managed in dpp.toml
 - 🚀 **Easy initialization** - Quick setup with minimal or scaffold templates
-- 🩺 **Environment diagnostics** - Check your setup with `dpp doctor`
 
 ## Installation
 
@@ -60,12 +59,6 @@ dpp add Shougo/ddu-ui-ff --depends denops.vim
 
 ```bash
 dpp remove Shougo/ddu-ui-ff
-```
-
-### 4. Diagnose environment
-
-```bash
-dpp doctor
 ```
 
 ## Commands
@@ -127,18 +120,6 @@ Remove a plugin from your configuration.
 **Example:**
 ```bash
 dpp remove Shougo/ddu-ui-ff
-```
-
-### `dpp doctor`
-
-Diagnose environment and detect issues.
-
-**Options:**
-- `-p, --profile <name>` - Profile to check
-
-**Example:**
-```bash
-dpp doctor
 ```
 
 ## Configuration Formats
@@ -343,20 +324,6 @@ Profiles are stored in `~/.config/dpp-cli/config.json`.
 - **denops.vim** (automatically installed by dpp.vim)
 
 ## Troubleshooting
-
-### Check your environment
-
-```bash
-dpp doctor
-```
-
-This will check:
-- Deno installation and version
-- Vim/Neovim installation and version
-- Git installation
-- dpp.vim installation
-- Configuration files
-- Network connectivity
 
 ### Common Issues
 
