@@ -8,7 +8,6 @@
 - 📝 **エディタ固有のセットアップ** - NeovimはLua、VimはVim script
 - 🔌 **統一されたプラグイン管理** - すべてのプラグインはdpp.tomlで管理
 - 🚀 **簡単な初期化** - minimalまたはscaffoldテンプレートで素早くセットアップ
-- 🩺 **環境診断** - `dpp doctor`で環境をチェック
 
 ## インストール
 
@@ -60,12 +59,6 @@ dpp add Shougo/ddu-ui-ff --depends denops.vim
 
 ```bash
 dpp remove Shougo/ddu-ui-ff
-```
-
-### 4. 環境診断
-
-```bash
-dpp doctor
 ```
 
 ## コマンド
@@ -127,18 +120,6 @@ dpp add Shougo/ddu-ui-ff --depends denops.vim
 **例:**
 ```bash
 dpp remove Shougo/ddu-ui-ff
-```
-
-### `dpp doctor`
-
-環境を診断して問題を検出します。
-
-**オプション:**
-- `-p, --profile <name>` - チェックするプロファイル
-
-**例:**
-```bash
-dpp doctor
 ```
 
 ## 設定フォーマット
@@ -316,20 +297,6 @@ dpp add Shougo/ddu.vim -p work
 - **denops.vim**（dpp.vimが自動的にインストール）
 
 ## トラブルシューティング
-
-### 環境のチェック
-
-```bash
-dpp doctor
-```
-
-以下の項目をチェックします：
-- Denoのインストールとバージョン
-- Vim/Neovimのインストールとバージョン
-- Gitのインストール
-- dpp.vimのインストール
-- 設定ファイル
-- ネットワーク接続
 
 ### よくある問題
 

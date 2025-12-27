@@ -2,7 +2,6 @@ import { define } from "gunshi";
 import { initCommand } from "./commands/init.ts";
 import { addCommand } from "./commands/add.ts";
 import { removeCommand } from "./commands/remove.ts";
-import { doctorCommand } from "./commands/doctor.ts";
 
 export const mainCommand = define({
   name: "dpp",
@@ -15,7 +14,6 @@ export const mainCommand = define({
     console.log("  init      Initialize dpp.vim configuration");
     console.log("  add       Add a plugin to dpp.vim configuration");
     console.log("  remove    Remove a plugin from dpp.vim configuration");
-    console.log("  doctor    Diagnose environment and detect issues");
     console.log("");
     console.log('Run "dpp --help" for more information');
   },
@@ -35,5 +33,4 @@ export const subCommands = {
   init: initCommand,
   add: addCommand,
   remove: removeCommand,
-  doctor: doctorCommand,
 };
