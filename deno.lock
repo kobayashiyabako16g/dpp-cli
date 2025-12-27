@@ -1,5 +1,5 @@
 {
-  "version": "4",
+  "version": "5",
   "specifiers": {
     "jsr:@bgub/eta@^4.5.0": "4.5.0",
     "jsr:@cliffy/ansi@1.0.0-rc.8": "1.0.0-rc.8",
@@ -24,6 +24,7 @@
     "jsr:@std/crypto@^1.0.5": "1.0.5",
     "jsr:@std/encoding@~1.0.5": "1.0.10",
     "jsr:@std/fmt@0.223": "0.223.0",
+    "jsr:@std/fmt@^1.0.8": "1.0.8",
     "jsr:@std/fmt@~1.0.2": "1.0.8",
     "jsr:@std/fs@0.223": "0.223.0",
     "jsr:@std/fs@1": "1.0.20",
@@ -222,7 +223,8 @@
       "dependencies": [
         "@antfu/install-pkg",
         "tinyexec"
-      ]
+      ],
+      "bin": true
     },
     "@gunshi/plugin-global@0.27.0-beta.6": {
       "integrity": "sha512-sG4m5+l3bg21vlBABKNW7te6pYEvu0sln4V8lu8lU2R5YUrvHh4WrpNDHhjgRFz54zzGrQ1l1cl89aDeUq4MCw==",
@@ -234,6 +236,9 @@
       "integrity": "sha512-+/EqLdHoRtnxHxmliayK2SIy+GSackkXibVxEs0kxgKFPPnXc37yQLgkRRqpK3rCcNFsWMpQdyh3c7qtxBObNQ==",
       "dependencies": [
         "@gunshi/plugin",
+        "@gunshi/plugin-global"
+      ],
+      "optionalPeers": [
         "@gunshi/plugin-global"
       ]
     },
@@ -273,6 +278,7 @@
       "jsr:@gunshi/gunshi@~0.27.0-beta.6",
       "jsr:@shougo/dpp-vim@5.1",
       "jsr:@std/assert@1",
+      "jsr:@std/fmt@^1.0.8",
       "jsr:@std/fs@1",
       "jsr:@std/path@1",
       "jsr:@std/toml@1",

@@ -179,16 +179,18 @@ export const initCommand = define({
     await saveProfile(profile);
 
     logger.success(`Profile '${profile.name}' created successfully`);
-    logger.info(`Config directory: ${profile.configDir}`);
-    logger.info(`Main config: ${profile.mainConfig}`);
-    logger.info(`Plugin management file: dpp.toml`);
+    logger.info(`
+Config directory: ${profile.configDir}
+Main config: ${profile.mainConfig}
+Plugin management file: dpp.toml
 
-    logger.info("\nNext steps:");
-    logger.info("1. Edit your configuration file:");
-    logger.info(`   ${paths.configFile}`);
-    logger.info("2. Manage plugins in:");
-    logger.info(`   ${tomlPath}`);
-    logger.info("3. Add plugins with:");
-    logger.info("   dpp add <repo>");
+Next steps:
+  1. Edit your configuration file:
+      ${paths.configFile}
+  2. Manage plugins in:
+      ${tomlPath}
+  3. Add plugins with:
+      dpp add <repo>   
+    `);
   },
 });

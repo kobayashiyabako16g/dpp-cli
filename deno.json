@@ -12,6 +12,7 @@
   "imports": {
     "@cliffy/prompt": "jsr:@cliffy/prompt@^1.0.0-rc.5",
     "@gunshi/docs": "npm:@gunshi/docs@^0.27.0",
+    "@std/fmt": "jsr:@std/fmt@^1.0.8",
     "eta": "jsr:@bgub/eta@^4.5.0",
     "gunshi": "jsr:@gunshi/gunshi@^0.27.0-beta.6",
     "@shougo/dpp-vim": "jsr:@shougo/dpp-vim@~5.1.0",

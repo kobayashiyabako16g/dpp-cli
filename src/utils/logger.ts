@@ -1,3 +1,5 @@
+import { blue, green, red, yellow } from "@std/fmt/colors";
+
 export enum LogLevel {
   DEBUG = 0,
   INFO = 1,
@@ -14,31 +16,31 @@ class Logger {
 
   debug(...args: unknown[]) {
     if (this.level <= LogLevel.DEBUG) {
-      console.log("🔍", ...args);
+      console.log(blue("[DEBUG]"), ...args);
     }
   }
 
   info(...args: unknown[]) {
     if (this.level <= LogLevel.INFO) {
-      console.log("ℹ️", ...args);
+      console.log(blue("[INFO]"), ...args);
     }
   }
 
   warn(...args: unknown[]) {
     if (this.level <= LogLevel.WARN) {
-      console.warn("⚠️", ...args);
+      console.warn(yellow("[WARN]"), ...args);
     }
   }
 
   error(...args: unknown[]) {
     if (this.level <= LogLevel.ERROR) {
-      console.error("❌", ...args);
+      console.error(red("[ERROR]"), ...args);
     }
   }
 
   success(...args: unknown[]) {
     if (this.level <= LogLevel.INFO) {
-      console.log("✅", ...args);
+      console.log(green("[SUCCESS]"), ...args);
     }
   }
 }
