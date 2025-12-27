@@ -13,6 +13,12 @@ import {
 } from "../utils/validators.ts";
 import { ensureDir, safeWriteTextFile } from "../utils/filesystem.ts";
 import { DEFAULT_PROFILE_NAME } from "../constants.ts";
+import { detectInstalledEditors } from "../utils/editor-detection.ts";
+import {
+  isInteractive,
+  promptForEditor,
+  promptForTemplate,
+} from "../utils/prompts.ts";
 
 export const initCommand = define({
   name: "init",
@@ -27,13 +33,11 @@ export const initCommand = define({
       type: "string",
       short: "t",
       description: "Template to use (minimal or scaffold)",
-      default: "minimal",
     },
     editor: {
       type: "string",
       short: "e",
       description: "Target editor (vim or nvim)",
-      default: "nvim",
     },
     profile: {
       type: "string",
@@ -43,9 +47,42 @@ export const initCommand = define({
   },
   run: async (ctx) => {
     const path = ctx.values.path as string | undefined;
-    const template = ctx.values.template as string;
-    const editor = ctx.values.editor as string;
+    let template = ctx.values.template as string | undefined;
+    let editor = ctx.values.editor as string | undefined;
     const profileName = ctx.values.profile as string;
+
+    // Auto-detect and prompt for editor if not provided
+    if (!editor) {
+      const detection = await detectInstalledEditors();
+
+      if (isInteractive()) {
+        // Interactive mode: show prompt with detected editors
+        editor = await promptForEditor(detection);
+      } else {
+        // Non-interactive mode (CI/scripts): use detected editor or error
+        if (detection.detected) {
+          editor = detection.detected;
+          logger.info(
+            `Non-interactive mode: using detected editor (${editor})`,
+          );
+        } else {
+          logger.error("No editor detected in non-interactive mode.");
+          logger.error("Please specify an editor: dpp init --editor nvim");
+          Deno.exit(1);
+        }
+      }
+    }
+
+    // Prompt for template if not provided and in interactive mode
+    if (!template) {
+      if (isInteractive()) {
+        template = await promptForTemplate();
+      } else {
+        // Default to minimal in non-interactive mode
+        template = "minimal";
+        logger.info("Non-interactive mode: using minimal template");
+      }
+    }
 
     // Validate inputs
     validateEditor(editor);

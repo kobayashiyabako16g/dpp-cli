@@ -10,6 +10,7 @@
     "build": "deno compile --unstable --allow-read --allow-write --allow-env --output ./dist/dpp ./main.ts"
   },
   "imports": {
+    "@cliffy/prompt": "jsr:@cliffy/prompt@^1.0.0-rc.5",
     "@gunshi/docs": "npm:@gunshi/docs@^0.27.0",
     "eta": "jsr:@bgub/eta@^4.5.0",
     "gunshi": "jsr:@gunshi/gunshi@^0.27.0-beta.6",
