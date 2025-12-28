@@ -5,6 +5,12 @@ export interface DppPaths {
   pluginsDir: string; // XDG_CACHE_HOME/dpp/repos/github.com
 }
 
+/**
+ * Resolve dpp.vim related paths based on options or defaults
+ *
+ * @param options Optional settings for paths
+ * @returns Resolved DppPaths
+ */
 export function resolveDppPaths(options?: {
   configDir?: string;
   cacheDir?: string;
