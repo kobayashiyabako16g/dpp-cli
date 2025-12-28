@@ -1,16 +1,10 @@
 import { define } from "gunshi";
 import { resolveDppPaths } from "../utils/paths.ts";
 import { generateTemplate } from "../templates/generator.ts";
-import {
-  createDefaultProfile,
-  saveProfile,
-} from "../utils/global-config.ts";
+import { createDefaultProfile, saveProfile } from "../utils/global-config.ts";
 import { logger } from "../utils/logger.ts";
 import type { TemplateContext } from "../types/template.ts";
-import {
-  validateEditor,
-  validateTemplate,
-} from "../utils/validators.ts";
+import { validateEditor, validateTemplate } from "../utils/validators.ts";
 import { ensureDir, safeWriteTextFile } from "../utils/filesystem.ts";
 import { DEFAULT_PROFILE_NAME } from "../constants.ts";
 import { detectInstalledEditors } from "../utils/editor-detection.ts";
@@ -46,10 +40,8 @@ export const initCommand = define({
     },
   },
   run: async (ctx) => {
-    const path = ctx.values.path as string | undefined;
-    let template = ctx.values.template as string | undefined;
-    let editor = ctx.values.editor as string | undefined;
-    const profileName = ctx.values.profile as string;
+    const { path, profile: profileName } = ctx.values;
+    let { template, editor } = ctx.values;
 
     // Auto-detect and prompt for editor if not provided
     if (!editor) {

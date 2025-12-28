@@ -59,4 +59,3 @@ export const removeCommand = define({
     logger.info(`  ~/.cache/dpp/repos/github.com/${repo}`);
   },
 });
-

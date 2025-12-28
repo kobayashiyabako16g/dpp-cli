@@ -12,7 +12,9 @@ async function loadTemplate(format: string, type: string): Promise<string> {
   return await Deno.readTextFile(templatePath);
 }
 
-export async function generateTemplate(context: TemplateContext): Promise<string> {
+export async function generateTemplate(
+  context: TemplateContext,
+): Promise<string> {
   try {
     const template = await loadTemplate(context.format, context.type);
     return eta.renderString(template, context);

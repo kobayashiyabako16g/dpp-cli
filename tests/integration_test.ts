@@ -38,7 +38,11 @@ Deno.test({
       assertEquals(code, 0, `Command failed: ${errorOutput}`);
 
       // Check output messages
-      assertEquals(output.includes("created successfully"), true, `Output doesn't contain "created successfully": ${output}`);
+      assertEquals(
+        output.includes("created successfully"),
+        true,
+        `Output doesn't contain "created successfully": ${output}`,
+      );
 
       // Verify config file was created
       const configPath = join(tempDir, "nvim", "dpp.lua");
@@ -47,19 +51,38 @@ Deno.test({
 
       // Verify config file content
       const content = await Deno.readTextFile(configPath);
-      assertEquals(content.includes('local dpp_base'), true, "Missing: local dpp_base");
-      assertEquals(content.includes('local dpp_config'), true, "Missing: local dpp_config");
-      assertEquals(content.includes('/dpp.ts"'), true, "Missing: /dpp.ts reference");
-      assertEquals(content.includes('dpp#make_state'), true, "Missing: dpp#make_state");
-      
+      assertEquals(
+        content.includes("local dpp_base"),
+        true,
+        "Missing: local dpp_base",
+      );
+      assertEquals(
+        content.includes("local dpp_config"),
+        true,
+        "Missing: local dpp_config",
+      );
+      assertEquals(
+        content.includes('/dpp.ts"'),
+        true,
+        "Missing: /dpp.ts reference",
+      );
+      assertEquals(
+        content.includes("dpp#make_state"),
+        true,
+        "Missing: dpp#make_state",
+      );
+
       // Verify dpp.toml was created
       const tomlPath = join(tempDir, "nvim", "dpp.toml");
       const tomlExists = await exists(tomlPath);
       assertEquals(tomlExists, true);
-      
+
       const tomlContent = await Deno.readTextFile(tomlPath);
       assertEquals(tomlContent.includes('repo = "Shougo/dpp.vim"'), true);
-      assertEquals(tomlContent.includes('repo = "vim-denops/denops.vim"'), true);
+      assertEquals(
+        tomlContent.includes('repo = "vim-denops/denops.vim"'),
+        true,
+      );
 
       // Verify profile was saved
       const profilePath = join(tempDir, "dpp-cli", "config.json");
@@ -126,12 +149,12 @@ Deno.test({
       assertEquals(content.includes("local dpp_base"), true);
       assertEquals(content.includes("local dpp_config"), true);
       assertEquals(content.includes("BufWritePost"), true); // scaffold has autocmd
-      
+
       // Verify dpp.toml was created with scaffold plugins
       const tomlPath = join(tempDir, "nvim", "dpp.toml");
       const tomlExists = await exists(tomlPath);
       assertEquals(tomlExists, true);
-      
+
       const tomlContent = await Deno.readTextFile(tomlPath);
       assertEquals(tomlContent.includes("dpp-ext-installer"), true);
       assertEquals(tomlContent.includes("dpp-protocol-git"), true);
@@ -208,7 +231,7 @@ Deno.test({
       const tomlPath = join(tempDir, "nvim", "dpp.toml");
       const tomlContent = await Deno.readTextFile(tomlPath);
       assertEquals(tomlContent.includes("Shougo/ddu-ui-ff"), true);
-      assertEquals(tomlContent.includes('on_cmd'), true);
+      assertEquals(tomlContent.includes("on_cmd"), true);
     } finally {
       if (originalXdgConfig) {
         Deno.env.set("XDG_CONFIG_HOME", originalXdgConfig);
@@ -392,12 +415,12 @@ Deno.test({
       const content = await Deno.readTextFile(configPath);
       assertEquals(content.includes("dpp#min#load_state("), true);
       assertEquals(content.includes("call dpp#make_state("), true);
-      
+
       // Verify dpp.toml was created
       const tomlPath = join(tempDir, "vim", "dpp.toml");
       const tomlExists = await exists(tomlPath);
       assertEquals(tomlExists, true);
-      
+
       const tomlContent = await Deno.readTextFile(tomlPath);
       assertEquals(tomlContent.includes('repo = "Shougo/dpp.vim"'), true);
     } finally {
@@ -504,4 +527,3 @@ Deno.test({
   sanitizeResources: false,
   sanitizeOps: false,
 });
-

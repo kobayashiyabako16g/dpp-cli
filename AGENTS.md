@@ -161,16 +161,18 @@ docs: comprehensive command documentation update
 - Throw descriptive errors
 
 **Good:**
+
 ```typescript
 if (!await exists(configPath)) {
   throw new Error(
     `Configuration file not found: ${configPath}\n` +
-    `Run 'dpp init' to create a configuration.`
+      `Run 'dpp init' to create a configuration.`,
   );
 }
 ```
 
 **Avoid:**
+
 ```typescript
 if (!await exists(configPath)) {
   throw new Error("File not found");

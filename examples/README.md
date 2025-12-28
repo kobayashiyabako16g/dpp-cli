@@ -9,12 +9,14 @@ This directory contains example configurations for different use cases.
 ## Files
 
 ### Bootstrap Files (TypeScript/Lua/Vim)
+
 - `minimal-typescript.ts` - Minimal TypeScript bootstrap for Neovim
 - `minimal-lua.lua` - Minimal Lua bootstrap for Neovim
 - `minimal-vim.vim` - Minimal Vim script bootstrap for Vim
 - `full-typescript.ts` - Full-featured TypeScript bootstrap with lazy loading
 
 ### Plugin Definitions (TOML)
+
 - `minimal-toml.toml` - Minimal plugin list (core plugins only)
 - `full-toml.toml` - Full-featured plugin list with extensions and common plugins
 
@@ -62,4 +64,3 @@ This architecture provides several benefits:
 2. **Format Flexibility** - Choose your preferred language (TypeScript/Lua/Vim) without sacrificing functionality
 3. **Type Safety** - TypeScript users get full type checking and autocomplete
 4. **Official Patterns** - Follows dpp.vim's recommended configuration structure
-

@@ -20,20 +20,25 @@ If you find a bug, please create an issue with:
 6. **Config** - Your dpp-cli configuration (if relevant)
 
 **Example:**
+
 ```markdown
 ## Bug: `dpp add` fails with TOML format
 
 ### Steps to Reproduce
+
 1. Run `dpp init -f toml`
 2. Run `dpp add Shougo/ddu.vim`
 
 ### Expected
+
 Plugin should be added to dpp.toml
 
 ### Actual
+
 Error: "Cannot read property 'plugins'"
 
 ### Environment
+
 - OS: macOS 14.0
 - Deno: 2.0.0
 - Neovim: 0.10.0
@@ -131,6 +136,7 @@ dpp-cli/
 - Use descriptive variable names
 
 **Good:**
+
 ```typescript
 export interface PluginConfig {
   repo: string;
@@ -144,6 +150,7 @@ async function addPluginToConfig(plugin: PluginConfig): Promise<void> {
 ```
 
 **Avoid:**
+
 ```typescript
 function add(p: any) {
   // Implementation
@@ -164,7 +171,9 @@ function add(p: any) {
  * @returns Array of plugin configurations
  * @throws {Error} If file cannot be read or parsed
  */
-export async function parseTomlConfig(filePath: string): Promise<PluginConfig[]> {
+export async function parseTomlConfig(
+  filePath: string,
+): Promise<PluginConfig[]> {
   try {
     const content = await Deno.readTextFile(filePath);
     const parsed = parse(content);
@@ -182,16 +191,18 @@ export async function parseTomlConfig(filePath: string): Promise<PluginConfig[]>
 - Suggest solutions when possible
 
 **Good:**
+
 ```typescript
 if (!await exists(configPath)) {
   throw new Error(
     `Configuration file not found: ${configPath}\n` +
-    `Run 'dpp init' to create a configuration.`
+      `Run 'dpp init' to create a configuration.`,
   );
 }
 ```
 
 **Avoid:**
+
 ```typescript
 if (!await exists(configPath)) {
   throw new Error("File not found");
@@ -211,7 +222,10 @@ Deno.test({
     // Setup
     const tempDir = await Deno.makeTempDir();
     const tomlPath = join(tempDir, "dpp.toml");
-    await Deno.writeTextFile(tomlPath, "[[plugins]]\nrepo = \"Shougo/dpp.vim\"\n");
+    await Deno.writeTextFile(
+      tomlPath,
+      '[[plugins]]\nrepo = "Shougo/dpp.vim"\n',
+    );
 
     // Execute
     await addPluginToToml(tomlPath, { repo: "Shougo/ddu.vim" });
@@ -239,6 +253,7 @@ Use conventional commits for clear history:
 - `chore:` - Build process or auxiliary tool changes
 
 **Examples:**
+
 ```
 feat: add JSON configuration support
 fix: handle empty TOML files correctly
