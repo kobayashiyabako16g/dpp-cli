@@ -100,16 +100,14 @@ Please specify an editor: dpp init --editor nvim
     await ensureDir(paths.cacheDir);
 
     // Generate configuration file
-    const templateContext: TemplateContext = {
+    const content = await generateTemplate({
       editor,
       type: template,
       format,
       paths,
       generatedAt: new Date().toISOString(),
       tomlFileName: "dpp.toml",
-    };
-
-    const content = await generateTemplate(templateContext);
+    });
     await safeWriteTextFile(paths.configFile, content);
     logger.success(`Created configuration file: ${paths.configFile}`);
 
