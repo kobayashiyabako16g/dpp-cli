@@ -24,8 +24,7 @@ export const removeCommand = define({
     },
   },
   run: async (ctx) => {
-    const repo = ctx.values.repo as string;
-    const profileName = ctx.values.profile as string | undefined;
+    const { repo, profile: profileName } = ctx.values;
 
     // Get profile (validates it exists)
     const profile = await requireProfile(profileName);
