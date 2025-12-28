@@ -3,7 +3,6 @@ import { resolveDppPaths } from "../utils/paths.ts";
 import { generateTemplate } from "../templates/generator.ts";
 import { createDefaultProfile, saveProfile } from "../utils/global-config.ts";
 import { logger } from "../utils/logger.ts";
-import type { TemplateContext } from "../types/template.ts";
 import { validateEditor, validateTemplate } from "../utils/validators.ts";
 import { ensureDir, safeWriteTextFile } from "../utils/filesystem.ts";
 import { DEFAULT_PROFILE_NAME } from "../constants.ts";

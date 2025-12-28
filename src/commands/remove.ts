@@ -52,9 +52,11 @@ export const removeCommand = define({
       Deno.exit(1);
     }
 
-    logger.info("\nPlugin removed successfully!");
-    logger.info("Note: The plugin directory will be kept in cache.");
-    logger.info("To clean up, manually delete:");
-    logger.info(`  ~/.cache/dpp/repos/github.com/${repo}`);
+    logger.info(`
+Plugin removed successfully!
+Note: The plugin directory will be kept in cache.
+To clean up, manually delete:
+  ~/.cache/dpp/repos/github.com/${repo}
+    `);
   },
 });

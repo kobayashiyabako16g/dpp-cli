@@ -99,10 +99,12 @@ export const addCommand = define({
       Deno.exit(1);
     }
 
-    logger.info("\nPlugin added successfully!");
-    logger.info("Next steps:");
-    logger.info("1. Review your plugins:");
-    logger.info(`   ${tomlPath}`);
-    logger.info("2. Restart Vim/Neovim to load the new plugin");
+    logger.info(`
+Plugin added successfully!
+Next steps:
+1. Review your plugins:
+   ${tomlPath}
+2. Restart Vim/Neovim to load the new plugin
+    `);
   },
 });
