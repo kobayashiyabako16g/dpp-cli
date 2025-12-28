@@ -23,16 +23,27 @@ export const DEFAULT_TEMPLATE: TemplateType = "minimal";
 export const ERROR_MESSAGES = {
   NO_PROFILE: "No profile found. Run 'dpp init' first.",
   INVALID_EDITOR: (editor: string) =>
-    `Invalid editor: ${editor}. Must be one of: ${SUPPORTED_EDITORS.join(", ")}`,
+    `Invalid editor: ${editor}. Must be one of: ${
+      SUPPORTED_EDITORS.join(", ")
+    }`,
   INVALID_FORMAT: (format: string) =>
-    `Invalid format: ${format}. Must be one of: ${SUPPORTED_FORMATS.join(", ")}`,
+    `Invalid format: ${format}. Must be one of: ${
+      SUPPORTED_FORMATS.join(", ")
+    }`,
   INVALID_TEMPLATE: (template: string) =>
-    `Invalid template: ${template}. Must be one of: ${SUPPORTED_TEMPLATES.join(", ")}`,
-  CREATE_DIR_FAILED: (error: unknown) => `Failed to create directories: ${error}`,
-  CREATE_FILE_FAILED: (error: unknown) => `Failed to create configuration file: ${error}`,
-  READ_FILE_FAILED: (path: string, error: unknown) => `Failed to read file ${path}: ${error}`,
-  WRITE_FILE_FAILED: (path: string, error: unknown) => `Failed to write file ${path}: ${error}`,
-  PLUGIN_NOT_FOUND: (repo: string) => `Plugin ${repo} not found in configuration`,
+    `Invalid template: ${template}. Must be one of: ${
+      SUPPORTED_TEMPLATES.join(", ")
+    }`,
+  CREATE_DIR_FAILED: (error: unknown) =>
+    `Failed to create directories: ${error}`,
+  CREATE_FILE_FAILED: (error: unknown) =>
+    `Failed to create configuration file: ${error}`,
+  READ_FILE_FAILED: (path: string, error: unknown) =>
+    `Failed to read file ${path}: ${error}`,
+  WRITE_FILE_FAILED: (path: string, error: unknown) =>
+    `Failed to write file ${path}: ${error}`,
+  PLUGIN_NOT_FOUND: (repo: string) =>
+    `Plugin ${repo} not found in configuration`,
   UNSUPPORTED_FORMAT_OPERATION: (format: string, operation: string) =>
     `${operation} for ${format} format is not yet supported. Please manually edit the configuration file.`,
 } as const;

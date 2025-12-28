@@ -104,4 +104,3 @@ export const addCommand = define({
     logger.info("2. Restart Vim/Neovim to load the new plugin");
   },
 });
-

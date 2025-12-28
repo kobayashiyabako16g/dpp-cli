@@ -2,12 +2,12 @@ import { logger } from "./logger.ts";
 import { getProfile } from "./global-config.ts";
 import type { Profile } from "../types/config.ts";
 import {
+  type ConfigFormat,
+  type EditorType,
   ERROR_MESSAGES,
   SUPPORTED_EDITORS,
   SUPPORTED_FORMATS,
   SUPPORTED_TEMPLATES,
-  type ConfigFormat,
-  type EditorType,
   type TemplateType,
 } from "../constants.ts";
 

@@ -68,16 +68,19 @@ dpp remove Shougo/ddu-ui-ff
 新しいdpp.vim設定を初期化します。
 
 **オプション:**
+
 - `-t, --template <minimal|scaffold>` - テンプレートタイプ（デフォルト: minimal）
 - `-e, --editor <vim|nvim>` - 対象エディタ（デフォルト: nvim）
 - `-p, --path <dir>` - カスタム設定ディレクトリ
 - `--profile <name>` - プロファイル名（デフォルト: default）
 
 **作成されるファイル:**
+
 - **Neovim**: `dpp.lua` (メイン設定) + `dpp.toml` (プラグイン) + `dpp.ts` (TypeScriptローダー)
 - **Vim**: `dpp.vim` (メイン設定) + `dpp.toml` (プラグイン) + `dpp.ts` (TypeScriptローダー)
 
 **例:**
+
 ```bash
 dpp init -t scaffold -e nvim
 ```
@@ -87,9 +90,11 @@ dpp init -t scaffold -e nvim
 設定にプラグインを追加します。
 
 **引数:**
+
 - `<repo>` - プラグインリポジトリ（例: Shougo/ddu.vim）
 
 **オプション:**
+
 - `--on-cmd <cmd>` - コマンド実行時に遅延読み込み
 - `--on-ft <filetype>` - ファイルタイプに応じて遅延読み込み
 - `--on-event <event>` - イベント発生時に遅延読み込み
@@ -99,6 +104,7 @@ dpp init -t scaffold -e nvim
 - `-p, --profile <name>` - 使用するプロファイル
 
 **例:**
+
 ```bash
 # シンプルな追加
 dpp add Shougo/ddu.vim
@@ -115,9 +121,11 @@ dpp add Shougo/ddu-ui-ff --depends denops.vim
 設定からプラグインを削除します。
 
 **引数:**
+
 - `<repo>` - 削除するプラグインリポジトリ
 
 **例:**
+
 ```bash
 dpp remove Shougo/ddu-ui-ff
 ```
@@ -133,10 +141,7 @@ dpp remove Shougo/ddu-ui-ff
 ```typescript
 // ~/.config/nvim/dpp.ts
 import type { Denops } from "jsr:@denops/std@~7.6.0";
-import type {
-  ContextBuilder,
-  Dpp,
-} from "jsr:@shougo/dpp-vim@~4.5.0/types";
+import type { ContextBuilder, Dpp } from "jsr:@shougo/dpp-vim@~4.5.0/types";
 import {
   BaseConfig,
   type ConfigReturn,
@@ -160,7 +165,10 @@ export class Config extends BaseConfig {
         "toml",
         "load",
         {
-          path: await args.denops.call("expand", "~/.config/nvim/dpp.toml") as string,
+          path: await args.denops.call(
+            "expand",
+            "~/.config/nvim/dpp.toml",
+          ) as string,
         },
       ),
     ];
@@ -244,12 +252,14 @@ syntax on
 ### Minimalテンプレート
 
 必須プラグインのみを含みます：
+
 - `Shougo/dpp.vim` - プラグインマネージャー本体
 - `vim-denops/denops.vim` - dpp.vimの動作に必要
 
 ### Scaffoldテンプレート
 
 追加の推奨プラグインを含みます：
+
 - コアdpp.vimプラグイン
 - 拡張プラグイン（installer、lazy loader、git protocol）
 - サンプルプラグイン（ddu.vim、ddc.vim）と遅延読み込み設定

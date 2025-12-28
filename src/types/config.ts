@@ -66,10 +66,4 @@ export function createDefaultProfile(editor: "vim" | "nvim"): Profile {
 }
 
 // Export types from dpp.vim
-export type {
-  DppOptions,
-  ExtOptions,
-  Plugin,
-  ProtocolName,
-  ProtocolOptions,
-};
+export type { DppOptions, ExtOptions, Plugin, ProtocolName, ProtocolOptions };

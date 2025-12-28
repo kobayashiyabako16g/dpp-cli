@@ -68,16 +68,19 @@ dpp remove Shougo/ddu-ui-ff
 Initialize a new dpp.vim configuration.
 
 **Options:**
+
 - `-t, --template <minimal|scaffold>` - Template type (default: minimal)
 - `-e, --editor <vim|nvim>` - Target editor (default: nvim)
 - `-p, --path <dir>` - Custom configuration directory
 - `--profile <name>` - Profile name (default: default)
 
 **What gets created:**
+
 - **Neovim**: `dpp.lua` (main config) + `dpp.toml` (plugins) + `dpp.ts` (TypeScript loader)
 - **Vim**: `dpp.vim` (main config) + `dpp.toml` (plugins) + `dpp.ts` (TypeScript loader)
 
 **Example:**
+
 ```bash
 dpp init -t scaffold -e nvim
 ```
@@ -87,9 +90,11 @@ dpp init -t scaffold -e nvim
 Add a plugin to your configuration.
 
 **Arguments:**
+
 - `<repo>` - Plugin repository (e.g., Shougo/ddu.vim)
 
 **Options:**
+
 - `--on-cmd <cmd>` - Lazy load on command
 - `--on-ft <filetype>` - Lazy load on filetype
 - `--on-event <event>` - Lazy load on event
@@ -99,6 +104,7 @@ Add a plugin to your configuration.
 - `-p, --profile <name>` - Profile to use
 
 **Examples:**
+
 ```bash
 # Simple add
 dpp add Shougo/ddu.vim
@@ -115,9 +121,11 @@ dpp add Shougo/ddu-ui-ff --depends denops.vim
 Remove a plugin from your configuration.
 
 **Arguments:**
+
 - `<repo>` - Plugin repository to remove
 
 **Example:**
+
 ```bash
 dpp remove Shougo/ddu-ui-ff
 ```
@@ -127,6 +135,7 @@ dpp remove Shougo/ddu-ui-ff
 ### How It Works
 
 **All configurations use three files:**
+
 1. **Main config** (`dpp.lua` or `dpp.vim`) - Bootstrap and runtime configuration
 2. **Plugin definitions** (`dpp.toml`) - All plugins managed here
 3. **TypeScript loader** (`dpp.ts`) - Loads and processes TOML file
@@ -160,10 +169,7 @@ end
 ```typescript
 // ~/.config/nvim/dpp.ts
 import type { Denops } from "jsr:@denops/std@~7.6.0";
-import type {
-  ContextBuilder,
-  Dpp,
-} from "jsr:@shougo/dpp-vim@~4.5.0/types";
+import type { ContextBuilder, Dpp } from "jsr:@shougo/dpp-vim@~4.5.0/types";
 import {
   BaseConfig,
   type ConfigReturn,
@@ -187,7 +193,10 @@ export class Config extends BaseConfig {
         "toml",
         "load",
         {
-          path: await args.denops.call("expand", "~/.config/nvim/dpp.toml") as string,
+          path: await args.denops.call(
+            "expand",
+            "~/.config/nvim/dpp.toml",
+          ) as string,
         },
       ),
     ];
@@ -271,12 +280,14 @@ syntax on
 ### Minimal Template
 
 Includes only essential plugins:
+
 - `Shougo/dpp.vim` - The plugin manager itself
 - `vim-denops/denops.vim` - Required for dpp.vim
 
 ### Scaffold Template
 
 Includes additional recommended plugins:
+
 - Core dpp.vim plugins
 - Extension plugins (installer, lazy loader, git protocol)
 - Example plugins (ddu.vim, ddc.vim) with lazy loading
