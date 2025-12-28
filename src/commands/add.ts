@@ -49,13 +49,15 @@ export const addCommand = define({
     },
   },
   run: async (ctx) => {
-    const repo = ctx.values.repo as string;
-    const onCmd = ctx.values.onCmd as string | undefined;
-    const onFt = ctx.values.onFt as string | undefined;
-    const onEvent = ctx.values.onEvent as string | undefined;
-    const depends = ctx.values.depends as string | undefined;
-    const branch = ctx.values.branch as string | undefined;
-    const profileName = ctx.values.profile as string | undefined;
+    const {
+      repo,
+      onCmd,
+      onFt,
+      onEvent,
+      depends,
+      branch,
+      profile: profileName,
+    } = ctx.values;
 
     // Get profile (validates it exists)
     const profile = await requireProfile(profileName);

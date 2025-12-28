@@ -24,14 +24,16 @@ export const initCommand = define({
       description: "Configuration file path",
     },
     template: {
-      type: "string",
+      type: "enum",
+      choices: ["minimal", "scaffold"] as const,
       short: "t",
-      description: "Template to use (minimal or scaffold)",
+      description: "Template to use",
     },
     editor: {
-      type: "string",
+      type: "enum",
+      choices: ["vim", "nvim"] as const,
       short: "e",
-      description: "Target editor (vim or nvim)",
+      description: "Target editor",
     },
     profile: {
       type: "string",
@@ -58,8 +60,9 @@ export const initCommand = define({
             `Non-interactive mode: using detected editor (${editor})`,
           );
         } else {
-          logger.error("No editor detected in non-interactive mode.");
-          logger.error("Please specify an editor: dpp init --editor nvim");
+          logger.error(`No editor detected in non-interactive mode.
+Please specify an editor: dpp init --editor nvim         
+            `);
           Deno.exit(1);
         }
       }
