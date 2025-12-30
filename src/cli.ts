@@ -4,12 +4,8 @@ import { addCommand } from "./commands/add.ts";
 import { removeCommand } from "./commands/remove.ts";
 import { cleanCommand } from "./commands/clean.ts";
 
-export const mainCommand = define({
-  name: "dpp",
-  description: "Dark powered plugin manager CLI",
-  run: () => {
-    // Show help-style output when no subcommand is provided
-    console.log(`Dark powered plugin manager CLI
+const runConsoleText = `
+Dark powered plugin manager CLI
 
 Commands:
   init      Initialize dpp.vim configuration
@@ -18,7 +14,14 @@ Commands:
   clean     Remove all dpp configuration files, cache, and profile
 
 Run "dpp --help" for more information
-  `); 
+`
+
+export const mainCommand = define({
+  name: "dpp",
+  description: "Dark powered plugin manager CLI",
+  run: () => {
+    // Show help-style output when no subcommand is provided
+    console.log(runConsoleText); 
   },
   examples: `
   # Initialize dpp.vim with minimal template for Neovim
