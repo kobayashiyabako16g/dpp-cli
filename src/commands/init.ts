@@ -18,6 +18,7 @@ import {
   promptForEditor,
   promptForTemplate,
 } from "../utils/prompts.ts";
+import { Confirm } from "@cliffy/prompt";
 
 /**
  * Check if init.lua or init.vim already contains dpp configuration
@@ -73,6 +74,30 @@ async function updateInitFile(
   await Deno.writeTextFile(initFilePath, content + appendContent);
 
   return backupPath;
+}
+
+/**
+ * Create a new init.lua or init.vim file with dpp configuration
+ */
+async function createInitFile(
+  initFilePath: string,
+  editor: "vim" | "nvim",
+): Promise<void> {
+  const content = editor === "nvim"
+    ? `-- init.lua
+-- Neovim configuration
+
+-- Load dpp.vim configuration
+require('dpp')
+`
+    : `" init.vim
+" Vim configuration
+
+" Load dpp.vim configuration
+call dpp#load()
+`;
+
+  await Deno.writeTextFile(initFilePath, content);
 }
 
 export const initCommand = define({
@@ -264,19 +289,67 @@ Please specify an editor: dpp init --editor nvim
         }
       }
     } else {
-      logger.info(
-        `${
+      // init.lua/init.vim does not exist - prompt to create
+      if (isInteractive()) {
+        const shouldCreate = await Confirm.prompt({
+          message: `${
+            editor === "nvim" ? "init.lua" : "init.vim"
+          } not found. Do you want to create it?`,
+          default: true,
+        });
+
+        if (shouldCreate) {
+          try {
+            await createInitFile(initFile, editor);
+            logger.success(
+              `Created ${editor === "nvim" ? "init.lua" : "init.vim"}`,
+            );
+            initFileMessage = `✅ Created ${
+              editor === "nvim" ? "init.lua" : "init.vim"
+            } with dpp configuration`;
+          } catch (error) {
+            logger.error(
+              `Failed to create ${
+                editor === "nvim" ? "init.lua" : "init.vim"
+              }: ${error}`,
+            );
+            initFileMessage = `❌ Failed to create ${
+              editor === "nvim" ? "init.lua" : "init.vim"
+            }\n  Please create manually and add: ${
+              editor === "nvim" ? "require('dpp')" : "call dpp#load()"
+            }`;
+          }
+        } else {
+          logger.info(
+            `Skipped creating ${
+              editor === "nvim" ? "init.lua" : "init.vim"
+            }. Please add the following line manually:`,
+          );
+          logger.info(
+            editor === "nvim" ? "  require('dpp')" : "  call dpp#load()",
+          );
+          initFileMessage = `ℹ️  ${
+            editor === "nvim" ? "init.lua" : "init.vim"
+          } not created\n  Please add manually: ${
+            editor === "nvim" ? "require('dpp')" : "call dpp#load()"
+          }`;
+        }
+      } else {
+        // Non-interactive mode - just show instructions
+        logger.info(
+          `${
+            editor === "nvim" ? "init.lua" : "init.vim"
+          } not found. Please add the following line manually:`,
+        );
+        logger.info(
+          editor === "nvim" ? "  require('dpp')" : "  call dpp#load()",
+        );
+        initFileMessage = `ℹ️  ${
           editor === "nvim" ? "init.lua" : "init.vim"
-        } not found. Please add the following line manually:`,
-      );
-      logger.info(
-        editor === "nvim" ? "  require('dpp')" : "  call dpp#load()",
-      );
-      initFileMessage = `ℹ️  ${
-        editor === "nvim" ? "init.lua" : "init.vim"
-      } not found\n  Please add manually: ${
-        editor === "nvim" ? "require('dpp')" : "call dpp#load()"
-      }`;
+        } not found\n  Please add manually: ${
+          editor === "nvim" ? "require('dpp')" : "call dpp#load()"
+        }`;
+      }
     }
 
     // Create and save profile
