@@ -20,10 +20,26 @@ Deno.test("resolveDppPaths - custom format", () => {
   assertEquals(paths.configFile.endsWith("/nvim/dpp.toml"), true);
 });
 
+Deno.test("resolveDppPaths - nvim lua format", () => {
+  const paths = resolveDppPaths({ editor: "nvim", format: "lua" });
+
+  assertEquals(paths.configFile.endsWith("/nvim/lua/dpp.lua"), true);
+  assertExists(paths.luaDir);
+  assertEquals(paths.luaDir?.endsWith("/nvim/lua"), true);
+});
+
 Deno.test("resolveDppPaths - vim editor", () => {
   const paths = resolveDppPaths({ editor: "vim" });
 
   assertEquals(paths.configFile.endsWith("/vim/dpp.ts"), true);
+});
+
+Deno.test("resolveDppPaths - vim format", () => {
+  const paths = resolveDppPaths({ editor: "vim", format: "vim" });
+
+  assertEquals(paths.configFile.endsWith("/vim/autoload/dpp.vim"), true);
+  assertExists(paths.autoloadDir);
+  assertEquals(paths.autoloadDir?.endsWith("/vim/autoload"), true);
 });
 
 Deno.test("resolveDppPaths - custom config dir", () => {

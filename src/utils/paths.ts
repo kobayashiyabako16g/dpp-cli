@@ -1,8 +1,10 @@
 export interface DppPaths {
   configDir: string; // XDG_CONFIG_HOME/nvim (or vim)
-  configFile: string; // XDG_CONFIG_HOME/nvim/dpp.{format}
+  configFile: string; // XDG_CONFIG_HOME/nvim/lua/dpp.lua (or autoload/dpp.vim)
   cacheDir: string; // XDG_CACHE_HOME/dpp
   pluginsDir: string; // XDG_CACHE_HOME/dpp/repos/github.com
+  luaDir?: string; // XDG_CONFIG_HOME/nvim/lua (Neovim only)
+  autoloadDir?: string; // XDG_CONFIG_HOME/vim/autoload (Vim only)
 }
 
 /**
@@ -27,10 +29,27 @@ export function resolveDppPaths(options?: {
   const cacheDir = options?.cacheDir || `${xdgCacheHome}/dpp`;
   const format = options?.format || "ts";
 
-  return {
+  const paths: DppPaths = {
     configDir,
     configFile: `${configDir}/dpp.${format}`,
     cacheDir,
     pluginsDir: `${cacheDir}/repos/github.com`,
   };
+
+  // Add editor-specific directories
+  if (editor === "nvim") {
+    paths.luaDir = `${configDir}/lua`;
+    // For lua format, place file in lua directory
+    if (format === "lua") {
+      paths.configFile = `${paths.luaDir}/dpp.lua`;
+    }
+  } else if (editor === "vim") {
+    paths.autoloadDir = `${configDir}/autoload`;
+    // For vim format, place file in autoload directory
+    if (format === "vim") {
+      paths.configFile = `${paths.autoloadDir}/dpp.vim`;
+    }
+  }
+
+  return paths;
 }

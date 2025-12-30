@@ -8,6 +8,7 @@ import {
 import { logger } from "../utils/logger.ts";
 import { Confirm } from "@cliffy/prompt";
 import { isInteractive } from "../utils/prompts.ts";
+import { resolveDppPaths } from "../utils/paths.ts";
 
 export const cleanCommand = define({
   name: "clean",
@@ -41,9 +42,18 @@ export const cleanCommand = define({
     const configFiles: string[] = [];
     const cacheItems: string[] = [];
 
-    // Main config file
-    const mainConfigPath = join(profile.configDir, profile.mainConfig);
-    configFiles.push(mainConfigPath);
+    // Determine format from mainConfig extension
+    const format = profile.mainConfig.split(".").pop() as "lua" | "vim" | "ts";
+
+    // Resolve paths using the same logic as init command
+    const paths = resolveDppPaths({
+      configDir: profile.configDir,
+      format,
+      editor: profile.editor,
+    });
+
+    // Main config file (use resolved path from resolveDppPaths)
+    configFiles.push(paths.configFile);
 
     // TypeScript config file
     if (profile.tsConfigFile) {

@@ -45,7 +45,7 @@ Deno.test({
       );
 
       // Verify config file was created
-      const configPath = join(tempDir, "nvim", "dpp.lua");
+      const configPath = join(tempDir, "nvim", "lua", "dpp.lua");
       const fileExists = await exists(configPath);
       assertEquals(fileExists, true, `Config file not found at: ${configPath}`);
 
@@ -144,7 +144,7 @@ Deno.test({
       assertEquals(code, 0);
 
       // Verify scaffold template has more plugins
-      const configPath = join(tempDir, "nvim", "dpp.lua");
+      const configPath = join(tempDir, "nvim", "lua", "dpp.lua");
       const content = await Deno.readTextFile(configPath);
       assertEquals(content.includes("local dpp_base"), true);
       assertEquals(content.includes("local dpp_config"), true);
@@ -408,7 +408,7 @@ Deno.test({
       const { code } = await command.output();
       assertEquals(code, 0);
 
-      const configPath = join(tempDir, "vim", "dpp.vim");
+      const configPath = join(tempDir, "vim", "autoload", "dpp.vim");
       const fileExists = await exists(configPath);
       assertEquals(fileExists, true);
 
@@ -561,7 +561,7 @@ Deno.test({
 
       // Verify files were created
       const nvimConfigDir = join(tempDir, "nvim");
-      const mainConfig = join(nvimConfigDir, "dpp.lua");
+      const mainConfig = join(nvimConfigDir, "lua", "dpp.lua");
       const tomlConfig = join(nvimConfigDir, "dpp.toml");
       const tsConfig = join(nvimConfigDir, "dpp.ts");
       const cacheDir = join(tempDir, "dpp");
