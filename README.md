@@ -61,6 +61,16 @@ dpp add Shougo/ddu-ui-ff --depends denops.vim
 dpp remove Shougo/ddu-ui-ff
 ```
 
+### 4. Clean up configuration
+
+```bash
+# Remove all configuration files, cache, and profile
+dpp clean
+
+# Skip confirmation prompt
+dpp clean --force
+```
+
 ## Commands
 
 ### `dpp init`
@@ -129,6 +139,36 @@ Remove a plugin from your configuration.
 ```bash
 dpp remove Shougo/ddu-ui-ff
 ```
+
+### `dpp clean`
+
+Remove all dpp configuration files, cache directory, and profile.
+
+**Options:**
+
+- `-p, --profile <name>` - Profile name to clean (default: active profile)
+- `-f, --force` - Skip confirmation prompt
+
+**What gets deleted:**
+
+- **Configuration files**: Main config (`dpp.lua` or `dpp.vim`), TypeScript config (`dpp.ts`), and TOML files (`dpp.toml`)
+- **Cache directory**: `~/.cache/dpp/` (entire directory)
+- **Profile**: Profile entry from global configuration
+
+**Examples:**
+
+```bash
+# Clean with confirmation prompt
+dpp clean
+
+# Clean specific profile
+dpp clean --profile my-profile
+
+# Clean without confirmation (useful for scripts)
+dpp clean --force
+```
+
+**Note:** In non-interactive mode (e.g., CI/CD), the `--force` flag is required.
 
 ## Configuration Formats
 
