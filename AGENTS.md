@@ -24,6 +24,7 @@ This is a modern CLI tool for managing [dpp.vim](https://github.com/Shougo/dpp.v
 - `deno run --allow-read --allow-write --allow-env --allow-run main.ts init` - Initialize configuration
 - `deno run --allow-read --allow-write --allow-env --allow-run main.ts add <repo>` - Add plugin
 - `deno run --allow-read --allow-write --allow-env --allow-run main.ts remove <repo>` - Remove plugin
+- `deno run --allow-read --allow-write --allow-env --allow-run main.ts clean` - Clean configuration
 
 **CLI Commands:**
 
@@ -41,6 +42,9 @@ This is a modern CLI tool for managing [dpp.vim](https://github.com/Shougo/dpp.v
   - `-t, --toml <file>` - Target TOML file
   - `-p, --profile <name>` - Profile to use
 - `dpp remove <repo>` - Remove a plugin from configuration
+- `dpp clean` - Remove all dpp configuration files, cache, and profile
+  - `-p, --profile <name>` - Profile to clean (default: active profile)
+  - `-f, --force` - Skip confirmation prompt
 
 ## Architecture Overview
 
@@ -54,6 +58,7 @@ This CLI tool follows a clear separation of concerns:
    - [add.ts](src/commands/add.ts) - Plugin addition logic
    - [init.ts](src/commands/init.ts) - Configuration initialization
    - [remove.ts](src/commands/remove.ts) - Plugin removal logic
+   - [clean.ts](src/commands/clean.ts) - Configuration cleanup logic
 4. **Template System** ([src/templates/](src/templates/)) - Eta-based template generation
    - [minimal/](src/templates/minimal/) - Minimal templates (lua, toml, ts, vim)
    - [scaffold/](src/templates/scaffold/) - Full-featured templates
