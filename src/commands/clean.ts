@@ -1,5 +1,4 @@
 import { define } from "gunshi";
-import { join } from "@std/path";
 import { deleteProfile, getProfile } from "../utils/global-config.ts";
 import {
   removeDirectoryIfExists,

@@ -19,6 +19,8 @@ import {
   promptForTemplate,
 } from "../utils/prompts.ts";
 import { Confirm } from "@cliffy/prompt";
+import { readTomlConfig } from "../utils/toml-config.ts";
+import { checkGitInstalled, cloneRepository } from "../utils/git-clone.ts";
 
 /**
  * Check if init.lua or init.vim already contains dpp configuration
@@ -224,6 +226,33 @@ Please specify an editor: dpp init --editor nvim
 
     await safeWriteTextFile(tomlPath, tomlTemplate);
     logger.success(`Created TOML plugin file: ${tomlPath}`);
+
+    // Clone plugins from TOML
+    logger.info("Installing plugins...");
+    try {
+      // Check if git is installed
+      await checkGitInstalled();
+
+      // Read generated TOML to get plugin list
+      const tomlConfig = await readTomlConfig(tomlPath);
+
+      // Clone each plugin
+      for (const plugin of tomlConfig.plugins) {
+        const repo = plugin.repo;
+        const gitUrl = `https://github.com/${repo}.git`;
+        const targetDir = `${paths.cacheDir}/repos/github.com/${repo}`;
+
+        logger.info(`Cloning ${repo}...`);
+        await cloneRepository(gitUrl, targetDir, 60000);
+      }
+    } catch (error) {
+      logger.error(
+        `Failed to install plugins: ${
+          error instanceof Error ? error.message : String(error)
+        }`,
+      );
+      throw error;
+    }
 
     // Create dpp.ts for dpp#make_state (TypeScript config that loads TOML)
     const tsPath = `${paths.configDir}/dpp.ts`;
