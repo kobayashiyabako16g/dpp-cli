@@ -168,6 +168,10 @@ Please specify an editor: dpp init --editor nvim
       relativePath: "dpp.toml",
     }];
 
+    // Save TypeScript config file and cache directory paths for clean command
+    profile.tsConfigFile = tsPath;
+    profile.cacheDir = paths.cacheDir;
+
     await saveProfile(profile);
 
     logger.success(`Profile '${profile.name}' created successfully`);

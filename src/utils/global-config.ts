@@ -149,3 +149,47 @@ export async function getTargetToml(
   // Use default if no TOML files exist
   return join(activeProfile.configDir, "dpp.toml");
 }
+
+/**
+ * Delete a profile from global configuration
+ * @param name - Profile name to delete
+ * @throws Error if profile not found
+ */
+export async function deleteProfile(name: string): Promise<void> {
+  const config = await loadGlobalConfig();
+
+  // Check if profile exists
+  if (!config.profiles[name]) {
+    throw new Error(`Profile "${name}" not found`);
+  }
+
+  // Delete the profile
+  delete config.profiles[name];
+
+  // Handle activeProfile if deleting the active profile
+  if (config.activeProfile === name) {
+    const remainingProfiles = Object.keys(config.profiles);
+    if (remainingProfiles.length > 0) {
+      // Set first remaining profile as active
+      config.activeProfile = remainingProfiles[0];
+    } else {
+      // No profiles remain, set to default
+      config.activeProfile = "default";
+    }
+  }
+
+  // If no profiles remain, delete the entire config file
+  if (Object.keys(config.profiles).length === 0) {
+    const configPath = getGlobalConfigPath();
+    try {
+      await Deno.remove(configPath);
+    } catch (error) {
+      if (!(error instanceof Deno.errors.NotFound)) {
+        throw error;
+      }
+    }
+  } else {
+    // Save updated config
+    await saveGlobalConfig(config);
+  }
+}

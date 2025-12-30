@@ -55,3 +55,41 @@ export async function fileExists(path: string): Promise<boolean> {
     return false;
   }
 }
+
+/**
+ * Remove a file if it exists, log warning if not found, throw on other errors
+ * @param filePath - Absolute path to the file to remove
+ * @returns true if removed, false if not found
+ */
+export async function removeFileIfExists(filePath: string): Promise<boolean> {
+  try {
+    await Deno.remove(filePath);
+    return true;
+  } catch (error) {
+    if (error instanceof Deno.errors.NotFound) {
+      logger.warn(`File not found (skipping): ${filePath}`);
+      return false;
+    }
+    throw error;
+  }
+}
+
+/**
+ * Remove a directory recursively if it exists, log warning if not found, throw on other errors
+ * @param dirPath - Absolute path to the directory to remove
+ * @returns true if removed, false if not found
+ */
+export async function removeDirectoryIfExists(
+  dirPath: string,
+): Promise<boolean> {
+  try {
+    await Deno.remove(dirPath, { recursive: true });
+    return true;
+  } catch (error) {
+    if (error instanceof Deno.errors.NotFound) {
+      logger.warn(`Directory not found (skipping): ${dirPath}`);
+      return false;
+    }
+    throw error;
+  }
+}

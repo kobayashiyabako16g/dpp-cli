@@ -32,6 +32,8 @@ export interface Profile {
   tomlFiles: TomlFileEntry[]; // List of TOML files in use
   defaultToml?: string; // Default TOML for add command
   lastModified: string;
+  tsConfigFile?: string; // TypeScript config file path (e.g., ~/.config/nvim/dpp.ts)
+  cacheDir?: string; // Cache directory path (e.g., ~/.cache/dpp)
 }
 
 export interface TomlFileEntry {

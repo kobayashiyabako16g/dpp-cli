@@ -61,6 +61,16 @@ dpp add Shougo/ddu-ui-ff --depends denops.vim
 dpp remove Shougo/ddu-ui-ff
 ```
 
+### 4. 設定のクリーンアップ
+
+```bash
+# すべての設定ファイル、キャッシュ、プロファイルを削除
+dpp clean
+
+# 確認プロンプトをスキップ
+dpp clean --force
+```
+
 ## コマンド
 
 ### `dpp init`
@@ -129,6 +139,36 @@ dpp add Shougo/ddu-ui-ff --depends denops.vim
 ```bash
 dpp remove Shougo/ddu-ui-ff
 ```
+
+### `dpp clean`
+
+すべてのdpp設定ファイル、キャッシュディレクトリ、プロファイルを削除します。
+
+**オプション:**
+
+- `-p, --profile <name>` - クリーンするプロファイル名（デフォルト: アクティブプロファイル）
+- `-f, --force` - 確認プロンプトをスキップ
+
+**削除される内容:**
+
+- **設定ファイル**: メイン設定（`dpp.lua` または `dpp.vim`）、TypeScript設定（`dpp.ts`）、TOMLファイル（`dpp.toml`）
+- **キャッシュディレクトリ**: `~/.cache/dpp/`（ディレクトリ全体）
+- **プロファイル**: グローバル設定からプロファイルエントリ
+
+**例:**
+
+```bash
+# 確認プロンプト付きでクリーン
+dpp clean
+
+# 特定のプロファイルをクリーン
+dpp clean --profile my-profile
+
+# 確認なしでクリーン（スクリプト用）
+dpp clean --force
+```
+
+**注意:** 非対話モード（CI/CDなど）では、`--force`フラグが必須です。
 
 ## 設定フォーマット
 
