@@ -1,10 +1,16 @@
 import { define } from "gunshi";
+import { join } from "@std/path";
 import { resolveDppPaths } from "../utils/paths.ts";
 import { generateTemplate } from "../templates/generator.ts";
 import { createDefaultProfile, saveProfile } from "../utils/global-config.ts";
 import { logger } from "../utils/logger.ts";
 import { validateEditor, validateTemplate } from "../utils/validators.ts";
-import { ensureDir, safeWriteTextFile } from "../utils/filesystem.ts";
+import {
+  ensureDir,
+  fileExists,
+  safeReadTextFile,
+  safeWriteTextFile,
+} from "../utils/filesystem.ts";
 import { DEFAULT_PROFILE_NAME } from "../constants.ts";
 import { detectInstalledEditors } from "../utils/editor-detection.ts";
 import {
@@ -12,6 +18,62 @@ import {
   promptForEditor,
   promptForTemplate,
 } from "../utils/prompts.ts";
+
+/**
+ * Check if init.lua or init.vim already contains dpp configuration
+ */
+async function checkInitFileForDpp(
+  initFilePath: string,
+  editor: "vim" | "nvim",
+): Promise<boolean> {
+  const content = await safeReadTextFile(initFilePath);
+  if (!content) return false;
+
+  // Check for various forms of require('dpp') or call dpp#load()
+  const pattern = editor === "nvim"
+    ? /require\s*[\(\['"]\s*dpp\s*[\)\]'"]/
+    : /call\s+dpp#load\s*\(/;
+
+  return pattern.test(content);
+}
+
+/**
+ * Update init.lua or init.vim to load dpp configuration
+ * Creates a backup before modification
+ */
+async function updateInitFile(
+  initFilePath: string,
+  editor: "vim" | "nvim",
+): Promise<string> {
+  // Create backup directory
+  const home = Deno.env.get("HOME") || "~";
+  const backupDir = join(home, ".cache", "dpp-cli", "backups");
+  await ensureDir(backupDir);
+
+  // Generate timestamp for backup filename
+  const timestamp = new Date().toISOString().replace(/[:.]/g, "-").slice(
+    0,
+    -5,
+  );
+  const backupPath = join(
+    backupDir,
+    `init.${editor === "nvim" ? "lua" : "vim"}.${timestamp}`,
+  );
+
+  // Read current content and create backup
+  const content = await Deno.readTextFile(initFilePath);
+  await Deno.writeTextFile(backupPath, content);
+
+  // Prepare content to append
+  const appendContent = editor === "nvim"
+    ? "\n-- Load dpp.vim configuration\nrequire('dpp')\n"
+    : '\n" Load dpp.vim configuration\ncall dpp#load()\n';
+
+  // Append to init file
+  await Deno.writeTextFile(initFilePath, content + appendContent);
+
+  return backupPath;
+}
 
 export const initCommand = define({
   name: "init",
@@ -98,6 +160,13 @@ Please specify an editor: dpp init --editor nvim
     await ensureDir(paths.configDir);
     await ensureDir(paths.cacheDir);
 
+    // Create editor-specific subdirectories
+    if (editor === "nvim" && paths.luaDir) {
+      await ensureDir(paths.luaDir);
+    } else if (editor === "vim" && paths.autoloadDir) {
+      await ensureDir(paths.autoloadDir);
+    }
+
     // Generate configuration file
     const content = await generateTemplate({
       editor,
@@ -152,6 +221,64 @@ Please specify an editor: dpp init --editor nvim
     await safeWriteTextFile(tsPath, tsTemplate);
     logger.success(`Created TypeScript config file: ${tsPath}`);
 
+    // Update init.lua or init.vim to load dpp configuration
+    const initFile = editor === "nvim"
+      ? join(paths.configDir, "init.lua")
+      : join(paths.configDir, "init.vim");
+
+    let initFileMessage = "";
+
+    if (await fileExists(initFile)) {
+      // Check if dpp configuration already exists
+      if (await checkInitFileForDpp(initFile, editor)) {
+        logger.warn(
+          `${
+            editor === "nvim" ? "init.lua" : "init.vim"
+          } already contains dpp configuration. Skipping modification.`,
+        );
+        initFileMessage = `⚠️  ${
+          editor === "nvim" ? "init.lua" : "init.vim"
+        } already contains dpp configuration`;
+      } else {
+        // Backup and update init file
+        try {
+          const backupPath = await updateInitFile(initFile, editor);
+          logger.success(
+            `Updated ${editor === "nvim" ? "init.lua" : "init.vim"}`,
+          );
+          logger.info(`Backup created at: ${backupPath}`);
+          initFileMessage = `✅ Updated ${
+            editor === "nvim" ? "init.lua" : "init.vim"
+          }\n  Backup: ${backupPath}`;
+        } catch (error) {
+          logger.error(
+            `Failed to update ${
+              editor === "nvim" ? "init.lua" : "init.vim"
+            }: ${error}`,
+          );
+          initFileMessage = `❌ Failed to update ${
+            editor === "nvim" ? "init.lua" : "init.vim"
+          }\n  Please add manually: ${
+            editor === "nvim" ? "require('dpp')" : "call dpp#load()"
+          }`;
+        }
+      }
+    } else {
+      logger.info(
+        `${
+          editor === "nvim" ? "init.lua" : "init.vim"
+        } not found. Please add the following line manually:`,
+      );
+      logger.info(
+        editor === "nvim" ? "  require('dpp')" : "  call dpp#load()",
+      );
+      initFileMessage = `ℹ️  ${
+        editor === "nvim" ? "init.lua" : "init.vim"
+      } not found\n  Please add manually: ${
+        editor === "nvim" ? "require('dpp')" : "call dpp#load()"
+      }`;
+    }
+
     // Create and save profile
     const profile = createDefaultProfile(editor);
     profile.name = profileName;
@@ -179,6 +306,9 @@ Please specify an editor: dpp init --editor nvim
 Config directory: ${profile.configDir}
 Main config: ${profile.mainConfig}
 Plugin management file: dpp.toml
+
+Init file integration:
+  ${initFileMessage}
 
 Next steps:
   1. Edit your configuration file:

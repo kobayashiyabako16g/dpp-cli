@@ -14,14 +14,14 @@ Commands:
   clean     Remove all dpp configuration files, cache, and profile
 
 Run "dpp --help" for more information
-`
+`;
 
 export const mainCommand = define({
   name: "dpp",
   description: "Dark powered plugin manager CLI",
   run: () => {
     // Show help-style output when no subcommand is provided
-    console.log(runConsoleText); 
+    console.log(runConsoleText);
   },
   examples: `
   # Initialize dpp.vim with minimal template for Neovim
