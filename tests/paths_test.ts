@@ -23,7 +23,7 @@ Deno.test("resolveDppPaths - custom format", () => {
 Deno.test("resolveDppPaths - nvim lua format", () => {
   const paths = resolveDppPaths({ editor: "nvim", format: "lua" });
 
-  assertEquals(paths.configFile.endsWith("/nvim/lua/dpp.lua"), true);
+  assertEquals(paths.configFile.endsWith("/nvim/lua/dpp_config.lua"), true);
   assertExists(paths.luaDir);
   assertEquals(paths.luaDir?.endsWith("/nvim/lua"), true);
 });
