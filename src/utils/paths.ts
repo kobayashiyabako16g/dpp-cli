@@ -1,6 +1,6 @@
 export interface DppPaths {
   configDir: string; // XDG_CONFIG_HOME/nvim (or vim)
-  configFile: string; // XDG_CONFIG_HOME/nvim/lua/dpp.lua (or autoload/dpp.vim)
+  configFile: string; // XDG_CONFIG_HOME/nvim/lua/dpp_config.lua (or autoload/dpp.vim)
   cacheDir: string; // XDG_CACHE_HOME/dpp
   pluginsDir: string; // XDG_CACHE_HOME/dpp/repos/github.com
   luaDir?: string; // XDG_CONFIG_HOME/nvim/lua (Neovim only)
@@ -41,7 +41,7 @@ export function resolveDppPaths(options?: {
     paths.luaDir = `${configDir}/lua`;
     // For lua format, place file in lua directory
     if (format === "lua") {
-      paths.configFile = `${paths.luaDir}/dpp.lua`;
+      paths.configFile = `${paths.luaDir}/dpp_config.lua`;
     }
   } else if (editor === "vim") {
     paths.autoloadDir = `${configDir}/autoload`;

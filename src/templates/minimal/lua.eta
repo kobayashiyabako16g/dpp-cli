@@ -1,4 +1,4 @@
--- lua/dpp.lua
+-- lua/dpp_config.lua
 -- Minimal dpp.vim configuration module for Neovim
 -- Plugins are managed in dpp.toml
 

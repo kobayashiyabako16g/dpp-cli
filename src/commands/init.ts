@@ -32,9 +32,9 @@ async function checkInitFileForDpp(
   const content = await safeReadTextFile(initFilePath);
   if (!content) return false;
 
-  // Check for various forms of require('dpp') or call dpp#load()
+  // Check for various forms of require('dpp_config') or call dpp#load()
   const pattern = editor === "nvim"
-    ? /require\s*[\(\['"]\s*dpp\s*[\)\]'"]/
+    ? /require\s*[\(\['"\]\s*dpp_config\s*[\)\]'"]/
     : /call\s+dpp#load\s*\(/;
 
   return pattern.test(content);
@@ -69,7 +69,7 @@ async function updateInitFile(
 
   // Prepare content to append
   const appendContent = editor === "nvim"
-    ? "\n-- Load dpp.vim configuration\nrequire('dpp')\n"
+    ? "\n-- Load dpp.vim configuration\nrequire('dpp_config')\n"
     : '\n" Load dpp.vim configuration\ncall dpp#load()\n';
 
   // Append to init file
@@ -90,7 +90,7 @@ async function createInitFile(
 -- Neovim configuration
 
 -- Load dpp.vim configuration
-require('dpp')
+require('dpp_config')
 `
     : `" init.vim
 " Vim configuration
