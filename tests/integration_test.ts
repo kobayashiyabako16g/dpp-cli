@@ -68,9 +68,9 @@ Deno.test({
         "Missing: /dpp.ts reference",
       );
       assertEquals(
-        content.includes("dpp#make_state"),
+        content.includes("dpp.make_state"),
         true,
-        "Missing: dpp#make_state",
+        "Missing: dpp.make_state",
       );
 
       // Verify dpp.toml was created

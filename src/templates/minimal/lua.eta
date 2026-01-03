@@ -1,49 +1,50 @@
 -- lua/dpp_config.lua
 -- Minimal dpp.vim configuration module for Neovim
 -- Plugins are managed in dpp.toml
+-- See: https://github.com/Shougo/dpp.vim
 
-local M = {}
+local dpp_base = vim.fn.expand("<%= it.paths.cacheDir %>")
+local plugins_dir = vim.fn.expand("<%= it.paths.pluginsDir %>")
+local dpp_src = plugins_dir .. "/Shougo/dpp.vim"
+local denops_src = plugins_dir .. "/vim-denops/denops.vim"
+local config_dir = vim.fn.expand("<%= it.paths.configDir %>")
+local dpp_config = config_dir .. "/dpp.ts"
 
-function M.setup()
-  local dpp_base = vim.fn.expand("<%= it.paths.cacheDir %>")
-  local plugins_dir = vim.fn.expand("<%= it.paths.pluginsDir %>")
-  local dpp_src = plugins_dir .. "/Shougo/dpp.vim"
-  local denops_src = plugins_dir .. "/vim-denops/denops.vim"
-  local config_dir = vim.fn.expand("<%= it.paths.configDir %>")
-  local dpp_config = config_dir .. "/dpp.ts"
-
-  -- Check if dpp.vim exists
-  if vim.fn.isdirectory(dpp_src) == 0 then
-    vim.notify("dpp.vim not found. Please run 'dpp init' first.", vim.log.levels.ERROR)
-    return
-  end
-
-  -- Add dpp.vim to runtimepath
-  vim.opt.runtimepath:prepend(dpp_src)
-
-  if vim.fn["dpp#min#load_state"](dpp_base) == 1 then
-    -- dpp_base state is not loaded, initialize from scratch
-    vim.opt.runtimepath:prepend(denops_src)
-
-    vim.api.nvim_create_autocmd("User", {
-      pattern = "DenopsReady",
-      callback = function()
-        vim.fn["dpp#make_state"](dpp_base, dpp_config)
-      end,
-    })
-  end
-
-  -- Enable filetype detection, plugins and indentation
-  vim.cmd("filetype indent plugin on")
-
-  -- Enable syntax highlighting
-  if vim.fn.has("syntax") == 1 then
-    vim.cmd("syntax on")
-  end
+-- Check if dpp.vim exists
+if vim.fn.isdirectory(dpp_src) == 0 then
+  vim.notify("dpp.vim not found. Please run 'dpp init' first.", vim.log.levels.ERROR)
+  return
 end
 
--- Auto-setup on module load
-M.setup()
+-- Add dpp.vim to runtimepath
+vim.opt.runtimepath:prepend(dpp_src)
+local dpp = require("dpp")
 
-return M
+if dpp.load_state(dpp_base) then
+  -- dpp_base state is not loaded, initialize from scratch
+  vim.opt.runtimepath:prepend(denops_src)
+
+  vim.api.nvim_create_autocmd("User", {
+    pattern = "DenopsReady",
+    callback = function()
+      vim.notify("dpp: load_state() failed, rebuilding state...")
+      dpp.make_state(dpp_base, dpp_config)
+    end,
+  })
+end
+
+vim.api.nvim_create_autocmd("User", {
+  pattern = "Dpp:makeStatePost",
+  callback = function()
+    vim.notify("dpp make_state() is done")
+  end,
+})
+
+-- Enable filetype detection, plugins and indentation
+vim.cmd("filetype indent plugin on")
+
+-- Enable syntax highlighting
+if vim.fn.has("syntax") == 1 then
+  vim.cmd("syntax on")
+end
 
