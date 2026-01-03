@@ -206,6 +206,24 @@ end
 
 ### Vim (Vim script + TOML + TypeScript)
 
+```vim
+" ~/.config/vim/dpp.vim
+let s:dpp_base = expand('~/.cache/dpp')
+let s:dpp_src = s:dpp_base .. '/repos/github.com/Shougo/dpp.vim'
+let s:config_dir = expand('~/.config/vim')
+let s:dpp_config = s:config_dir .. '/dpp.ts'
+
+execute 'set runtimepath^=' .. s:dpp_src
+
+if dpp#min#load_state(s:dpp_base)
+  " Initialize from scratch
+  autocmd User DenopsReady
+    \ call dpp#make_state(s:dpp_base, s:dpp_config)
+endif
+```
+
+### TypeScript (Config Loader)
+
 ```typescript
 // ~/.config/nvim/dpp.ts
 import type { Denops } from "jsr:@denops/std@~7.6.0";
@@ -269,50 +287,6 @@ repo = "Shougo/dpp-ext-toml"
 repo = "Shougo/ddu.vim"
 on_cmd = ["Ddu"]
 depends = ["denops.vim"]
-```
-
-### Lua (Neovim)
-
-```lua
--- ~/.config/nvim/dpp.lua
-local dpp_base = vim.fn.expand("~/.cache/dpp")
-local dpp_config = vim.fn.expand("~/.config/nvim")
-
-if vim.fn["dpp#min#load_state"](dpp_base) then
-  vim.opt.runtimepath:prepend(dpp_base .. "/repos/github.com/Shougo/dpp.vim")
-  vim.opt.runtimepath:prepend(dpp_base .. "/repos/github.com/vim-denops/denops.vim")
-  vim.opt.runtimepath:prepend(dpp_base .. "/repos/github.com/Shougo/dpp-ext-toml")
-
-  vim.api.nvim_create_autocmd("User", {
-    pattern = "DenopsReady",
-    callback = function()
-      vim.fn["dpp#make_state"](dpp_base, dpp_config .. "/dpp.toml")
-    end,
-  })
-end
-
-vim.cmd("filetype indent plugin on")
-vim.cmd("syntax on")
-```
-
-### Vim Script (Vim)
-
-```vim
-" ~/.config/vim/dpp.vim
-let s:dpp_base = expand('~/.cache/dpp')
-let s:dpp_config = expand('~/.config/vim')
-
-if dpp#min#load_state(s:dpp_base)
-  set runtimepath+=$HOME/.cache/dpp/repos/github.com/Shougo/dpp.vim
-  set runtimepath+=$HOME/.cache/dpp/repos/github.com/vim-denops/denops.vim
-  set runtimepath+=$HOME/.cache/dpp/repos/github.com/Shougo/dpp-ext-toml
-
-  autocmd User DenopsReady
-    \ call dpp#make_state(s:dpp_base, s:dpp_config .. '/dpp.toml')
-endif
-
-filetype indent plugin on
-syntax on
 ```
 
 ## Templates
