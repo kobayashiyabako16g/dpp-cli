@@ -240,7 +240,7 @@ Please specify an editor: dpp init --editor nvim
       for (const plugin of tomlConfig.plugins) {
         const repo = plugin.repo;
         const gitUrl = `https://github.com/${repo}.git`;
-        const targetDir = `${paths.cacheDir}/repos/github.com/${repo}`;
+        const targetDir = `${paths.pluginsDir}/${repo}`;
 
         logger.info(`Cloning ${repo}...`);
         await cloneRepository(gitUrl, targetDir, 60000);

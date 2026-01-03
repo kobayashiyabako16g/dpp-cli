@@ -3,9 +3,10 @@
 " Plugins are managed in dpp.toml
 
 function! dpp#load() abort
-  let s:dpp_base = expand('~/.cache/dpp')
-  let s:dpp_src = s:dpp_base .. '/repos/github.com/Shougo/dpp.vim'
-  let s:denops_src = s:dpp_base .. '/repos/github.com/vim-denops/denops.vim'
+  let s:dpp_base = expand('<%- it.paths.cacheDir %>')
+  let s:plugins_dir = expand('<%- it.paths.pluginsDir %>')
+  let s:dpp_src = s:plugins_dir .. '/Shougo/dpp.vim'
+  let s:denops_src = s:plugins_dir .. '/vim-denops/denops.vim'
   let s:config_dir = expand('<%- it.paths.configDir %>')
 
   " Add dpp.vim to runtimepath
