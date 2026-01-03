@@ -69,7 +69,6 @@ export const cleanCommand = define({
       cacheItems.push(profile.cacheDir);
     }
 
-    
     // Display deletion list
     const configs = configFiles.map((file) => `- ${file}`).join("\n");
     const caches = cacheItems.map((item) => `- ${item}`).join("\n");
