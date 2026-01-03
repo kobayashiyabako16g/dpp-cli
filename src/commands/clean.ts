@@ -69,24 +69,21 @@ export const cleanCommand = define({
       cacheItems.push(profile.cacheDir);
     }
 
+    
     // Display deletion list
-    logger.info("\n=== Items to be deleted ===\n");
+    const configs = configFiles.map((file) => `- ${file}`).join("\n");
+    const caches = cacheItems.map((item) => `- ${item}`).join("\n");
+    logger.info(`
+=== Items to be deleted ===
 
-    logger.info("Configuration files:");
-    for (const file of configFiles) {
-      console.log(`  - ${file}`);
-    }
-
-    if (cacheItems.length > 0) {
-      logger.info("\nCache:");
-      for (const item of cacheItems) {
-        console.log(`  - ${item}`);
-      }
-    }
-
-    logger.info("\nProfile:");
-    console.log(`  - ${profile.name} (from global config)`);
-    console.log("");
+Configuration files:
+${configs}
+Cache:
+${caches.length > 0 ? caches : "  - (no cache items)"}
+Profile:
+  - ${profile.name} (from global config)
+==========================
+`);
 
     // Confirmation prompt
     if (!force) {
