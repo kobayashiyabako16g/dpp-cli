@@ -20,13 +20,13 @@ repo = "Shougo/dpp-ext-lazy"
 repo = "Shougo/dpp-protocol-git"
 
 # Example: UI framework
-[[plugins]]
-repo = "Shougo/ddu.vim"
-on_cmd = ["Ddu"]
-depends = ["denops.vim"]
+# [[plugins]]
+# repo = "Shougo/ddu.vim"
+# on_cmd = ["Ddu"]
+# depends = ["denops.vim"]
 
 # Example: Completion
-[[plugins]]
-repo = "Shougo/ddc.vim"
-on_event = ["InsertEnter"]
-depends = ["denops.vim"]
+# [[plugins]]
+# repo = "Shougo/ddc.vim"
+# on_event = ["InsertEnter"]
+# depends = ["denops.vim"]
