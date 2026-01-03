@@ -15,7 +15,7 @@ import type {
 
 import type { Denops } from "jsr:@denops/std@~7.6.0";
 
-const BASE_PATH = Deno.env.get("HOME") + "/.config/<%- it.editor %>";
+const BASE_PATH = Deno.env.get("HOME") + "/.config/<%= it.editor %>";
 
 export class Config extends BaseConfig {
   override async config(args: {

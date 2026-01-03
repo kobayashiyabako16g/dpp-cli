@@ -2,7 +2,7 @@ import type { TemplateContext } from "../types/template.ts";
 import { Eta } from "eta";
 import { dirname, fromFileUrl, join } from "@std/path";
 
-const eta = new Eta();
+const eta = new Eta({ varName: "it" });
 
 // Get the directory of this module
 const moduleDir = dirname(fromFileUrl(import.meta.url));

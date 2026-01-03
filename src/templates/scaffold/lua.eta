@@ -6,12 +6,18 @@
 local M = {}
 
 function M.setup()
-  local dpp_base = vim.fn.expand("<%- it.paths.cacheDir %>")
-  local plugins_dir = vim.fn.expand("<%- it.paths.pluginsDir %>")
+  local dpp_base = vim.fn.expand("<%= it.paths.cacheDir %>")
+  local plugins_dir = vim.fn.expand("<%= it.paths.pluginsDir %>")
   local dpp_src = plugins_dir .. "/Shougo/dpp.vim"
   local denops_src = plugins_dir .. "/vim-denops/denops.vim"
-  local config_dir = vim.fn.expand("<%- it.paths.configDir %>")
+  local config_dir = vim.fn.expand("<%= it.paths.configDir %>")
   local dpp_config = config_dir .. "/dpp.ts"
+
+  -- Check if dpp.vim exists
+  if vim.fn.isdirectory(dpp_src) == 0 then
+    vim.notify("dpp.vim not found. Please run 'dpp init' first.", vim.log.levels.ERROR)
+    return
+  end
 
   -- Add dpp.vim to runtimepath
   vim.opt.runtimepath:prepend(dpp_src)
