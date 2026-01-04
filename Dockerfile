@@ -9,11 +9,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Nix package manager (single-user mode for Docker)
-RUN curl -L https://nixos.org/nix/install | sh -s -- --no-daemon
+RUN mkdir -m 0755 /nix && chown root /nix && \
+    mkdir -p /etc/nix && \
+    echo "build-users-group =" > /etc/nix/nix.conf && \
+    curl -L https://nixos.org/nix/install | sh -s -- --no-daemon
 
 # Enable nix and set up environment
 ENV PATH="/root/.nix-profile/bin:${PATH}"
 RUN mkdir -p /root/.config/nix && \
+    echo "build-users-group =" >> /root/.config/nix/nix.conf && \
     echo "experimental-features = nix-command flakes" >> /root/.config/nix/nix.conf && \
     echo ". /root/.nix-profile/etc/profile.d/nix.sh" >> /root/.bashrc
 
