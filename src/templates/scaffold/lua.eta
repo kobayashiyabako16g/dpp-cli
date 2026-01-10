@@ -11,9 +11,10 @@ local config_dir = vim.fn.expand("<%= it.paths.configDir %>")
 local dpp_config = config_dir .. "/dpp.ts"
 
 -- other dpp plugins
-local git_protocol = plugins_dir .. "/dpp-protocol-git"
-local ext_lazy_load = plugins_dir .. "/dpp-ext-lazy"
-local ext_install = plugins_dir .. "/dpp-ext-install"
+local git_protocol = plugins_dir .. "/Shougo/dpp-protocol-git"
+local ext_lazy_load = plugins_dir .. "/Shougo/dpp-ext-lazy"
+local ext_install = plugins_dir .. "/Shougo/dpp-ext-installer"
+local ext_toml = plugins_dir .. "/Shougo/dpp-ext-toml"
 
 
 -- Check if dpp.vim exists
@@ -24,6 +25,7 @@ end
 
 -- Add dpp.vim to runtimepath
 vim.opt.runtimepath:prepend(dpp_src)
+vim.opt.runtimepath:prepend(denops_src)
 local dpp = require("dpp")
 
 -- Create autocmd group
@@ -31,10 +33,10 @@ local augroup = vim.api.nvim_create_augroup('DppAutoCmd', { clear = true })
 
 if dpp.load_state(dpp_base) then
   -- dpp_base state is not loaded, initialize from scratch
-  vim.opt.runtimepath:prepend(denops_src)
   vim.opt.runtimepath:prepend(git_protocol)
   vim.opt.runtimepath:prepend(ext_lazy_load)
   vim.opt.runtimepath:prepend(ext_install)
+  vim.opt.runtimepath:prepend(ext_toml)
 
   vim.api.nvim_create_autocmd("User", {
     pattern = "DenopsReady",
@@ -46,6 +48,7 @@ if dpp.load_state(dpp_base) then
   })
 else
   -- dpp_base state is loaded successfully
+  vim.notify("dpp: load_state() succeeded.")
   vim.api.nvim_create_autocmd("BufWritePost", {
     pattern = { '*.lua', '*.vim', '*.toml', '*.ts', 'vimrc', '.vimrc' },
     group = augroup,
@@ -82,9 +85,11 @@ vim.api.nvim_create_user_command('DppMakeState', function()
 end, {
   desc = "Rebuild dpp.vim state",
 })
+
 vim.api.nvim_create_user_command("DppClearstate", function(val)
   dpp.clear_state()
 end, { desc = "Clear dpp.vim state" })
+
 vim.api.nvim_create_user_command('DppCheckFiles', function()
   local changed_files = dpp.check_files(dpp_base)
   if vim.tbl_isempty(changed_files) then
@@ -95,15 +100,18 @@ vim.api.nvim_create_user_command('DppCheckFiles', function()
 end, {
   desc = "Check for changed plugin files",
 })
+
 vim.api.nvim_create_user_command('DppInstall', function()
-  if vim.tbl_isempty(dpp.sync_ext_action('installer', 'getNotInstalled')) then
-    vim.notify("All plugins are already installed.")
+  local not_installed = vim.fn["dpp#sync_ext_action"]("installer","getNotInstalled")
+  if not_installed and type(not_installed) == 'table' and not vim.tbl_isempty(not_installed) then
+    vim.fn["dpp#async_ext_action"]('installer', 'install') 
   else
-    dpp.async_ext_action('installer', 'install')
+    vim.notify("All plugins are already installed.")
   end
 end, {
   desc = "Install not installed plugins",
 })
+
 vim.api.nvim_create_user_command('DppUpdate', function()
   dpp.async_ext_action('updater', 'updateAll')
 end, {

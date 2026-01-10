@@ -19,6 +19,9 @@ repo = "Shougo/dpp-ext-lazy"
 [[plugins]]
 repo = "Shougo/dpp-protocol-git"
 
+[[plugins]]
+repo = "Shougo/dpp-ext-toml"
+
 # Example: UI framework
 # [[plugins]]
 # repo = "Shougo/ddu.vim"

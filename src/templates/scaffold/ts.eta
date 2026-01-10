@@ -56,6 +56,8 @@ export class Config extends BaseConfig {
       "toml",
     ) as [TomlExt | undefined, ExtOptions, TomlParams];
 
+    console.log("[dpp-debug] tomlExt loaded:", !!tomlExt);
+
     if (tomlExt) {
       const action = tomlExt.actions.load;
       const toml = await action.callback({
@@ -67,11 +69,15 @@ export class Config extends BaseConfig {
         extParams: tomlParams,
         actionParams: {
           path: `${BASE_PATH}/dpp.toml`,
-          options: {
-            lazy: false,
-          },
+          options: {},
         },
       });
+
+      console.log("[dpp-debug] Loaded plugins count:", toml.plugins?.length ?? 0);
+      console.log("[dpp-debug] Plugin details:", toml.plugins?.map(p => ({
+        name: p.name,
+        lazy: p.lazy,
+      })));
 
       // Merge toml results
       for (const plugin of toml.plugins ?? []) {
@@ -100,6 +106,9 @@ export class Config extends BaseConfig {
       "lazy",
     ) as [LazyExt | undefined, ExtOptions, LazyParams];
 
+    console.log("[dpp-debug] lazyExt loaded:", !!lazyExt);
+    console.log("[dpp-debug] Plugins to process:", Object.keys(recordPlugins));
+
     let lazyResult: LazyMakeStateResult | undefined = undefined;
     if (lazyExt) {
       const action = lazyExt.actions.makeState;
@@ -114,6 +123,9 @@ export class Config extends BaseConfig {
           plugins: Object.values(recordPlugins),
         },
       });
+
+      console.log("[dpp-debug] lazyResult plugins:", lazyResult?.plugins?.length ?? 0);
+      console.log("[dpp-debug] lazyResult stateLines:", lazyResult?.stateLines?.length ?? 0);
     }
 
     return {
