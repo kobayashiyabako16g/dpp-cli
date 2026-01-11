@@ -1,37 +1,35 @@
-" autoload/dpp.vim
+" dpp_config.vim
 " Minimal dpp.vim configuration for Vim
 " Plugins are managed in dpp.toml
 
-function! dpp#load() abort
-  let s:dpp_base = expand('<%= it.paths.cacheDir %>')
-  let s:plugins_dir = expand('<%= it.paths.pluginsDir %>')
-  let s:dpp_src = s:plugins_dir .. '/Shougo/dpp.vim'
-  let s:denops_src = s:plugins_dir .. '/vim-denops/denops.vim'
-  let s:config_dir = expand('<%= it.paths.configDir %>')
+let s:dpp_base = expand('<%= it.paths.cacheDir %>')
+let s:plugins_dir = expand('<%= it.paths.pluginsDir %>')
+let s:dpp_src = s:plugins_dir .. '/Shougo/dpp.vim'
+let s:denops_src = s:plugins_dir .. '/vim-denops/denops.vim'
+let s:config_dir = expand('<%= it.paths.configDir %>')
 
-  " Check if dpp.vim exists
-  if !isdirectory(s:dpp_src)
-    echoerr 'dpp.vim not found. Please run "dpp init" first.'
-    return
-  endif
+" Check if dpp.vim exists
+if !isdirectory(s:dpp_src)
+  echoerr 'dpp.vim not found. Please run "dpp init" first.'
+  finish
+endif
 
-  " Add dpp.vim to runtimepath
-  execute 'set runtimepath^=' .. s:dpp_src
+" Add dpp.vim to runtimepath
+execute 'set runtimepath^=' .. s:dpp_src
 
-  if dpp#min#load_state(s:dpp_base)
-    " dpp_base state is not loaded, initialize from scratch
-    execute 'set runtimepath^=' .. s:denops_src
+if dpp#min#load_state(s:dpp_base)
+  " dpp_base state is not loaded, initialize from scratch
+  execute 'set runtimepath^=' .. s:denops_src
 
-    autocmd User DenopsReady
-    \ : call dpp#make_state(s:dpp_base, s:config_dir .. '/dpp.ts')
-  endif
+  autocmd User DenopsReady
+  \ : call dpp#make_state(s:dpp_base, s:config_dir .. '/dpp.ts')
+endif
 
-  " Enable filetype detection, plugins and indentation
-  filetype indent plugin on
+" Enable filetype detection, plugins and indentation
+filetype indent plugin on
 
-  " Enable syntax highlighting
-  if has('syntax')
-    syntax on
-  endif
-endfunction
+" Enable syntax highlighting
+if has('syntax')
+  syntax on
+endif
 

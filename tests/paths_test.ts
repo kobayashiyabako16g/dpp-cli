@@ -37,7 +37,7 @@ Deno.test("resolveDppPaths - vim editor", () => {
 Deno.test("resolveDppPaths - vim format", () => {
   const paths = resolveDppPaths({ editor: "vim", format: "vim" });
 
-  assertEquals(paths.configFile.endsWith("/vim/autoload/dpp.vim"), true);
+  assertEquals(paths.configFile.endsWith("/vim/dpp_config.vim"), true);
   assertExists(paths.autoloadDir);
   assertEquals(paths.autoloadDir?.endsWith("/vim/autoload"), true);
 });

@@ -207,7 +207,7 @@ Deno.test({
       const { code } = await command.output();
       assertEquals(code, 0);
 
-      const configPath = join(tempDir, "vim", "autoload", "dpp.vim");
+      const configPath = join(tempDir, "vim", "dpp_config.vim");
       const fileExists = await exists(configPath);
       assertEquals(fileExists, true);
 
