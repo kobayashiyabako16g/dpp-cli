@@ -45,7 +45,6 @@ if dpp#min#load_state(s:dpp_base)
   \ | call dpp#make_state(s:dpp_base, s:dpp_config)
 else
   " dpp_base state is loaded successfully
-  echomsg 'dpp: load_state() succeeded.'
 
   " Autocmd to rebuild state when configuration files are modified
   autocmd DppAutoCmd BufWritePost *.lua,*.vim,*.toml,*.ts,vimrc,.vimrc
@@ -54,40 +53,50 @@ else
   \ | endif
 
   " Auto install not installed plugins on saving dpp.toml
-  autocmd DppAutoCmd BufWritePost *.toml
-  \ : if expand('%:p'):match(s:config_dir) == 0
-  \ |   let l:not_installed = dpp#sync_ext_action('installer', 'getNotInstalled')
-  \ |   if type(l:not_installed) == v:t_list && !empty(l:not_installed)
-  \ |     call dpp#async_ext_action('installer', 'install')
-  \ |   endif
-  \ | endif
+  autocmd DppAutoCmd BufWritePost *.toml call s:auto_install_on_toml_save()
 endif
 
 " Notify when make_state is done
 autocmd DppAutoCmd User Dpp:makeStatePost
 \ : echomsg 'dpp make_state() is done'
 
+" Helper function for auto install on TOML save
+function! s:auto_install_on_toml_save() abort
+  if expand('%:p'):match(s:config_dir) == 0
+    let l:not_installed = dpp#sync_ext_action('installer', 'getNotInstalled')
+    if type(l:not_installed) == v:t_list && !empty(l:not_installed)
+      call dpp#async_ext_action('installer', 'install')
+    endif
+  endif
+endfunction
+
+" Helper function for DppCheckFiles command
+function! s:dpp_check_files() abort
+  let l:changed = dpp#check_files()
+  if empty(l:changed)
+    echomsg 'No changes detected in managed plugins.'
+  else
+    echomsg 'Changed files: ' .. join(l:changed, ', ')
+  endif
+endfunction
+
+" Helper function for DppInstall command
+function! s:dpp_install() abort
+  let l:not_installed = dpp#sync_ext_action('installer', 'getNotInstalled')
+  if type(l:not_installed) == v:t_list && !empty(l:not_installed)
+    call dpp#async_ext_action('installer', 'install')
+  else
+    echomsg 'All plugins are already installed.'
+  endif
+endfunction
+
 " dpp commands
 command! DppMakeState call dpp#make_state(s:dpp_base, s:dpp_config)
 command! DppClearState call dpp#clear_state()
-
-command! DppCheckFiles
-\ : let l:changed = dpp#check_files()
-\ | if empty(l:changed)
-\ |   echomsg 'No changes detected in managed plugins.'
-\ | else
-\ |   echomsg 'Changed files: ' .. join(l:changed, ', ')
-\ | endif
-
-command! DppInstall
-\ : let l:not_installed = dpp#sync_ext_action('installer', 'getNotInstalled')
-\ | if type(l:not_installed) == v:t_list && !empty(l:not_installed)
-\ |   call dpp#async_ext_action('installer', 'install')
-\ | else
-\ |   echomsg 'All plugins are already installed.'
-\ | endif
-
+command! DppCheckFiles call s:dpp_check_files()
+command! DppInstall call s:dpp_install()
 command! DppUpdate call dpp#async_ext_action('installer', 'update')
+
 " Enable filetype detection, plugins and indentation
 filetype indent plugin on
 
@@ -95,4 +104,3 @@ filetype indent plugin on
 if has('syntax')
   syntax on
 endif
-
