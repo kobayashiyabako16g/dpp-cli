@@ -9,6 +9,13 @@ function! dpp#load() abort
   let s:dpp_src = s:plugins_dir .. '/Shougo/dpp.vim'
   let s:denops_src = s:plugins_dir .. '/vim-denops/denops.vim'
   let s:config_dir = expand('<%= it.paths.configDir %>')
+  let s:dpp_config = s:config_dir .. '/dpp.ts'
+
+  " other dpp plugins
+  let s:git_protocol = s:plugins_dir .. '/Shougo/dpp-protocol-git'
+  let s:ext_lazy_load = s:plugins_dir .. '/Shougo/dpp-ext-lazy'
+  let s:ext_install = s:plugins_dir .. '/Shougo/dpp-ext-installer'
+  let s:ext_toml = s:plugins_dir .. '/Shougo/dpp-ext-toml'
 
   " Check if dpp.vim exists
   if !isdirectory(s:dpp_src)
@@ -18,23 +25,68 @@ function! dpp#load() abort
 
   " Add dpp.vim to runtimepath
   execute 'set runtimepath^=' .. s:dpp_src
+  execute 'set runtimepath^=' .. s:denops_src
+
+  " Create autocmd group
+  augroup DppAutoCmd
+    autocmd!
+  augroup END
 
   if dpp#min#load_state(s:dpp_base)
     " dpp_base state is not loaded, initialize from scratch
-    execute 'set runtimepath^=' .. s:denops_src
+    execute 'set runtimepath^=' .. s:git_protocol
+    execute 'set runtimepath^=' .. s:ext_lazy_load
+    execute 'set runtimepath^=' .. s:ext_install
+    execute 'set runtimepath^=' .. s:ext_toml
 
-    autocmd User DenopsReady
+    autocmd DppAutoCmd User DenopsReady
     \ : echohl WarningMsg
     \ | echomsg 'dpp: load_state() failed, rebuilding state...'
     \ | echohl NONE
-    \ | call dpp#make_state(s:dpp_base, s:config_dir .. '/dpp.ts')
+    \ | call dpp#make_state(s:dpp_base, s:dpp_config)
+  else
+    " dpp_base state is loaded successfully
+    echomsg 'dpp: load_state() succeeded.'
+
+    " Autocmd to rebuild state when configuration files are modified
+    autocmd DppAutoCmd BufWritePost *.lua,*.vim,*.toml,*.ts,vimrc,.vimrc
+    \ : if !dpp#check_files()->empty()
+    \ |   call dpp#make_state(s:dpp_base, s:dpp_config)
+    \ | endif
+
+    " Auto install not installed plugins on saving dpp.toml
+    execute 'autocmd DppAutoCmd BufWritePost ' .. s:config_dir .. '/*.toml'
+    \ .. ' : let l:not_installed = dpp#sync_ext_action("installer", "getNotInstalled")'
+    \ .. ' | if type(l:not_installed) == v:t_list && !empty(l:not_installed)'
+    \ .. ' |   call dpp#async_ext_action("installer", "install")'
+    \ .. ' | endif'
   endif
 
-  " Autocmd to rebuild state when configuration files are modified
-  autocmd BufWritePost *.lua,*.vim,*.toml,*.ts,vimrc,.vimrc
-  \ : if !dpp#check_files()->empty()
-  \ |   call dpp#make_state(s:dpp_base, s:config_dir .. '/dpp.ts')
+  " Notify when make_state is done
+  autocmd DppAutoCmd User Dpp:makeStatePost
+  \ : echomsg 'dpp make_state() is done'
+
+  " dpp commands
+  command! DppMakeState call dpp#make_state(s:dpp_base, s:dpp_config)
+  command! DppClearState call dpp#clear_state()
+  
+  command! DppCheckFiles
+  \ : let l:changed = dpp#check_files()
+  \ | if empty(l:changed)
+  \ |   echomsg 'No changes detected in managed plugins.'
+  \ | else
+  \ |   echomsg 'Changed files: ' .. join(l:changed, ', ')
   \ | endif
+
+  command! DppInstall
+  \ : let l:not_installed = dpp#sync_ext_action('installer', 'getNotInstalled')
+  \ | if type(l:not_installed) == v:t_list && !empty(l:not_installed)
+  \ |   call dpp#async_ext_action('installer', 'install')
+  \ | else
+  \ |   echomsg 'All plugins are already installed.'
+  \ | endif
+
+  command! DppUpdate call dpp#async_ext_action('installer', 'update')
 
   " Enable filetype detection, plugins and indentation
   filetype indent plugin on
