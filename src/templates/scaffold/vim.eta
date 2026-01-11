@@ -54,11 +54,13 @@ else
   \ | endif
 
   " Auto install not installed plugins on saving dpp.toml
-  execute 'autocmd DppAutoCmd BufWritePost ' .. s:config_dir .. '/*.toml'
-  \ .. ' : let l:not_installed = dpp#sync_ext_action("installer", "getNotInstalled")'
-  \ .. ' | if type(l:not_installed) == v:t_list && !empty(l:not_installed)'
-  \ .. ' |   call dpp#async_ext_action("installer", "install")'
-  \ .. ' | endif'
+  autocmd DppAutoCmd BufWritePost *.toml
+  \ : if expand('%:p'):match(s:config_dir) == 0
+  \ |   let l:not_installed = dpp#sync_ext_action('installer', 'getNotInstalled')
+  \ |   if type(l:not_installed) == v:t_list && !empty(l:not_installed)
+  \ |     call dpp#async_ext_action('installer', 'install')
+  \ |   endif
+  \ | endif
 endif
 
 " Notify when make_state is done
