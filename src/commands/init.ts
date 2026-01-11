@@ -1,7 +1,6 @@
 import { define } from "gunshi";
 import { join } from "@std/path";
 import { resolveDppPaths } from "../utils/paths.ts";
-import { generateTemplate } from "../templates/generator.ts";
 import { createDefaultProfile, saveProfile } from "../utils/global-config.ts";
 import { logger } from "../utils/logger.ts";
 import { validateEditor, validateTemplate } from "../utils/validators.ts";
@@ -9,7 +8,6 @@ import {
   ensureDir,
   fileExists,
   safeReadTextFile,
-  safeWriteTextFile,
 } from "../utils/filesystem.ts";
 import { DEFAULT_PROFILE_NAME } from "../constants.ts";
 import { detectInstalledEditors } from "../utils/editor-detection.ts";
@@ -19,8 +17,7 @@ import {
   promptForTemplate,
 } from "../utils/prompts.ts";
 import { Confirm } from "@cliffy/prompt";
-import { readTomlConfig } from "../utils/toml-config.ts";
-import { checkGitInstalled, cloneRepository } from "../utils/git-clone.ts";
+import { getTemplateHandler } from "../templates/registry.ts";
 
 /**
  * Check if init.lua or init.vim already contains dpp configuration
@@ -194,86 +191,27 @@ Please specify an editor: dpp init --editor nvim
       await ensureDir(paths.autoloadDir);
     }
 
-    // Generate configuration file
-    const content = await generateTemplate({
-      editor,
-      type: template,
-      format,
-      paths,
-      generatedAt: new Date().toISOString(),
-      tomlFileName: "dpp.toml",
-    });
-    await safeWriteTextFile(paths.configFile, content);
-    logger.success(`Created configuration file: ${paths.configFile}`);
-
-    // Create dpp.toml for plugin management (always created)
-    const tomlPath = `${paths.configDir}/dpp.toml`;
-    const tomlTemplate = template === "minimal"
-      ? await generateTemplate({
-        editor,
-        type: "minimal",
-        format: "toml",
-        paths,
-        generatedAt: new Date().toISOString(),
-      })
-      : await generateTemplate({
-        editor,
-        type: "scaffold",
-        format: "toml",
-        paths,
-        generatedAt: new Date().toISOString(),
-      });
-
-    await safeWriteTextFile(tomlPath, tomlTemplate);
-    logger.success(`Created TOML plugin file: ${tomlPath}`);
-
-    // Clone plugins from TOML
-    logger.info("Installing plugins...");
+    // Initialize template using handler
     try {
-      // Check if git is installed
-      await checkGitInstalled();
-
-      // Read generated TOML to get plugin list
-      const tomlConfig = await readTomlConfig(tomlPath);
-
-      // Clone each plugin
-      for (const plugin of tomlConfig.plugins) {
-        const repo = plugin.repo;
-        const gitUrl = `https://github.com/${repo}.git`;
-        const targetDir = `${paths.pluginsDir}/${repo}`;
-
-        logger.info(`Cloning ${repo}...`);
-        await cloneRepository(gitUrl, targetDir, 60000);
-      }
+      const handler = getTemplateHandler(template);
+      await handler.initialize({
+        editor,
+        paths,
+        generatedAt: new Date().toISOString(),
+        profileName,
+      });
     } catch (error) {
       logger.error(
-        `Failed to install plugins: ${
+        `Failed to initialize template: ${
           error instanceof Error ? error.message : String(error)
         }`,
       );
       throw error;
     }
 
-    // Create dpp.ts for dpp#make_state (TypeScript config that loads TOML)
+    // Template-specific paths for profile
+    const tomlPath = `${paths.configDir}/dpp.toml`;
     const tsPath = `${paths.configDir}/dpp.ts`;
-    const tsTemplate = template === "minimal"
-      ? await generateTemplate({
-        editor,
-        type: "minimal",
-        format: "ts",
-        paths,
-        generatedAt: new Date().toISOString(),
-      })
-      : await generateTemplate({
-        editor,
-        type: "scaffold",
-        format: "ts",
-        paths,
-        generatedAt: new Date().toISOString(),
-      });
-
-    await safeWriteTextFile(tsPath, tsTemplate);
-    logger.success(`Created TypeScript config file: ${tsPath}`);
 
     // Update init.lua or init.vim to load dpp configuration
     const initFile = editor === "nvim"

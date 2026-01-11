@@ -30,3 +30,14 @@ export interface TemplateGenerators {
     scaffold: TemplateGenerator;
   };
 }
+
+export interface TemplateHandlerContext {
+  editor: "vim" | "nvim";
+  paths: DppPaths;
+  generatedAt: string;
+  profileName: string;
+}
+
+export interface TemplateHandler {
+  initialize(ctx: TemplateHandlerContext): Promise<void>;
+}

@@ -21,6 +21,12 @@ RUN mkdir -p /root/.config/nix && \
     echo "experimental-features = nix-command flakes" >> /root/.config/nix/nix.conf && \
     echo ". /root/.nix-profile/etc/profile.d/nix.sh" >> /root/.bashrc
 
+
+RUN echo 'export PS1="\[\e[36m\]\u@\h:\[\e[m\]\[\e[33m\]\w\[\e[m\]\$ "' >> /root/.bashrc \
+    && echo 'alias ll="ls -alF"' >> /root/.bashrc \
+    && echo 'alias la="ls -A"' >> /root/.bashrc \
+    && echo 'alias l="ls -CF"' >> /root/.bashrc
+
 # 作業ディレクトリ
 WORKDIR /app
 
