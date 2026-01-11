@@ -72,7 +72,7 @@ export const cleanCommand = define({
     // Display deletion list
     const configs = configFiles.map((file) => `- ${file}`).join("\n");
     const caches = cacheItems.map((item) => `- ${item}`).join("\n");
-    logger.info(`
+    logger.warn(`
 === Items to be deleted ===
 
 Configuration files:
