@@ -61,7 +61,19 @@ dpp add Shougo/ddu-ui-ff --depends denops.vim
 dpp remove Shougo/ddu-ui-ff
 ```
 
-### 4. Clean up configuration
+### 4. Edit plugin configuration
+
+```bash
+# Edit configuration in your preferred editor
+dpp edit
+
+# Edit specific profile
+dpp edit -p myprofile
+```
+
+The editor is determined by the `$EDITOR` or `$VISUAL` environment variable, falling back to `vi` (Unix) or `notepad` (Windows).
+
+### 5. Clean up configuration
 
 ```bash
 # Remove all configuration files, cache, and profile
@@ -139,6 +151,34 @@ Remove a plugin from your configuration.
 ```bash
 dpp remove Shougo/ddu-ui-ff
 ```
+
+### `dpp edit`
+
+Edit the TOML configuration file in your preferred editor.
+
+**Options:**
+
+- `-p, --profile <name>` - Profile to edit (default: active profile)
+
+**Examples:**
+
+```bash
+# Edit active profile's configuration
+dpp edit
+
+# Edit specific profile
+dpp edit -p myprofile
+
+# Use custom editor
+EDITOR="code --wait" dpp edit
+```
+
+**Notes:**
+
+- The editor is determined by the `$EDITOR` or `$VISUAL` environment variable
+- Falls back to `vi` (Unix/Linux/macOS) or `notepad` (Windows) if not set
+- Opens the profile's default TOML file (`dpp.toml`)
+- No validation or backup is performed (manual editing is trusted)
 
 ### `dpp clean`
 

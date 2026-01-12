@@ -61,7 +61,19 @@ dpp add Shougo/ddu-ui-ff --depends denops.vim
 dpp remove Shougo/ddu-ui-ff
 ```
 
-### 4. 設定のクリーンアップ
+### 4. プラグイン設定の編集
+
+```bash
+# お好みのエディタで設定を編集
+dpp edit
+
+# 特定のプロファイルを編集
+dpp edit -p myprofile
+```
+
+エディタは`$EDITOR`または`$VISUAL`環境変数で決定され、設定されていない場合は`vi`（Unix）または`notepad`（Windows）にフォールバックします。
+
+### 5. 設定のクリーンアップ
 
 ```bash
 # すべての設定ファイル、キャッシュ、プロファイルを削除
@@ -139,6 +151,34 @@ dpp add Shougo/ddu-ui-ff --depends denops.vim
 ```bash
 dpp remove Shougo/ddu-ui-ff
 ```
+
+### `dpp edit`
+
+お好みのエディタでTOML設定ファイルを編集します。
+
+**オプション:**
+
+- `-p, --profile <name>` - 編集するプロファイル（デフォルト: アクティブプロファイル）
+
+**例:**
+
+```bash
+# アクティブプロファイルの設定を編集
+dpp edit
+
+# 特定のプロファイルを編集
+dpp edit -p myprofile
+
+# カスタムエディタを使用
+EDITOR="code --wait" dpp edit
+```
+
+**注意:**
+
+- エディタは`$EDITOR`または`$VISUAL`環境変数で決定されます
+- 設定されていない場合、`vi`（Unix/Linux/macOS）または`notepad`（Windows）にフォールバックします
+- プロファイルのデフォルトTOMLファイル（`dpp.toml`）を開きます
+- バリデーションやバックアップは行われません（手動編集を信頼します）
 
 ### `dpp clean`
 
