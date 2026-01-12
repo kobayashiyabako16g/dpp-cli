@@ -24,21 +24,21 @@ import { Confirm } from "@cliffy/prompt";
 import { getTemplateHandler } from "../templates/registry.ts";
 
 /**
- * エディタ別の初期化ファイル名を取得
+ * Get editor-specific initialization file name
  */
 function getInitFileName(editor: "vim" | "nvim"): string {
   return INIT_FILE_NAME[editor];
 }
 
 /**
- * エディタ別のdpp読み込み命令を取得
+ * Get editor-specific dpp load command
  */
 function getDppLoadCommand(editor: "vim" | "nvim"): string {
   return DPP_LOAD_COMMAND[editor];
 }
 
 /**
- * 初期化ファイル関連のメッセージを生成
+ * Generate initialization file related messages
  */
 function createInitFileMessage(
   status:
