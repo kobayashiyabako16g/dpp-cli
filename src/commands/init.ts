@@ -19,6 +19,65 @@ import {
 import { Confirm } from "@cliffy/prompt";
 import { getTemplateHandler } from "../templates/registry.ts";
 
+/** エディタ別の設定ファイル名 */
+const INIT_FILE_NAME = {
+  nvim: "init.lua",
+  vim: "vimrc",
+} as const;
+
+/** エディタ別の設定読み込み命令 */
+const DPP_LOAD_COMMAND = {
+  nvim: "require('dpp_config')",
+  vim: "source dpp_config.vim",
+} as const;
+
+/**
+ * エディタ別の初期化ファイル名を取得
+ */
+function getInitFileName(editor: "vim" | "nvim"): string {
+  return INIT_FILE_NAME[editor];
+}
+
+/**
+ * エディタ別のdpp読み込み命令を取得
+ */
+function getDppLoadCommand(editor: "vim" | "nvim"): string {
+  return DPP_LOAD_COMMAND[editor];
+}
+
+/**
+ * 初期化ファイル関連のメッセージを生成
+ */
+function createInitFileMessage(
+  status:
+    | "already-exists"
+    | "updated"
+    | "update-failed"
+    | "created"
+    | "create-failed"
+    | "not-found",
+  editor: "vim" | "nvim",
+  details?: string,
+): string {
+  const fileName = getInitFileName(editor);
+  const loadCmd = getDppLoadCommand(editor);
+
+  switch (status) {
+    case "already-exists":
+      return `${fileName} already contains dpp configuration`;
+    case "updated":
+      return `Updated ${fileName}\n  Backup: ${details}`;
+    case "update-failed":
+      return `Failed to update ${fileName}\n  Please add manually: ${loadCmd}`;
+    case "created":
+      return `Created ${fileName} with dpp configuration`;
+    case "create-failed":
+      return `Failed to create ${fileName}\n  Please create manually and add: ${loadCmd}`;
+    case "not-found":
+      return `${fileName} not found\n  Please add manually: ${loadCmd}`;
+  }
+}
+
 /**
  * Check if init.lua or vimrc already contains dpp configuration
  */
@@ -58,7 +117,7 @@ async function updateInitFile(
   );
   const backupPath = join(
     backupDir,
-    `${editor === "nvim" ? "init.lua" : "vimrc"}.${timestamp}`,
+    `${getInitFileName(editor)}.${timestamp}`,
   );
 
   // Read current content and create backup
@@ -84,14 +143,17 @@ async function createInitFile(
   editor: "vim" | "nvim",
   configDir: string,
 ): Promise<void> {
+  const fileName = getInitFileName(editor);
+  const loadCmd = getDppLoadCommand(editor);
+
   const content = editor === "nvim"
-    ? `-- init.lua
+    ? `-- ${fileName}
 -- Neovim configuration
 
 -- Load dpp.vim configuration
-require('dpp_config')
+${loadCmd}
 `
-    : `" vimrc
+    : `" ${fileName}
 " Vim configuration
 
 " Load dpp.vim configuration
@@ -226,12 +288,10 @@ Please specify an editor: dpp init --editor nvim
       if (await checkInitFileForDpp(initFile, editor)) {
         logger.warn(
           `${
-            editor === "nvim" ? "init.lua" : "vimrc"
+            getInitFileName(editor)
           } already contains dpp configuration. Skipping modification.`,
         );
-        initFileMessage = `⚠️  ${
-          editor === "nvim" ? "init.lua" : "vimrc"
-        } already contains dpp configuration`;
+        initFileMessage = createInitFileMessage("already-exists", editor);
       } else {
         // Backup and update init file
         try {
@@ -241,25 +301,19 @@ Please specify an editor: dpp init --editor nvim
             paths.configDir,
           );
           logger.success(
-            `Updated ${editor === "nvim" ? "init.lua" : "vimrc"}`,
+            `Updated ${getInitFileName(editor)}`,
           );
           logger.info(`Backup created at: ${backupPath}`);
-          initFileMessage = `✅ Updated ${
-            editor === "nvim" ? "init.lua" : "vimrc"
-          }\n  Backup: ${backupPath}`;
+          initFileMessage = createInitFileMessage(
+            "updated",
+            editor,
+            backupPath,
+          );
         } catch (error) {
           logger.error(
-            `Failed to update ${
-              editor === "nvim" ? "init.lua" : "vimrc"
-            }: ${error}`,
+            `Failed to update ${getInitFileName(editor)}: ${error}`,
           );
-          initFileMessage = `❌ Failed to update ${
-            editor === "nvim" ? "init.lua" : "vimrc"
-          }\n  Please add manually: ${
-            editor === "nvim"
-              ? "require('dpp_config')"
-              : "source dpp_config.vim"
-          }`;
+          initFileMessage = createInitFileMessage("update-failed", editor);
         }
       }
     } else {
@@ -267,7 +321,7 @@ Please specify an editor: dpp init --editor nvim
       if (isInteractive()) {
         const shouldCreate = await Confirm.prompt({
           message: `${
-            editor === "nvim" ? "init.lua" : "vimrc"
+            getInitFileName(editor)
           } not found. Do you want to create it?`,
           default: true,
         });
@@ -276,61 +330,37 @@ Please specify an editor: dpp init --editor nvim
           try {
             await createInitFile(initFile, editor, paths.configDir);
             logger.success(
-              `Created ${editor === "nvim" ? "init.lua" : "vimrc"}`,
+              `Created ${getInitFileName(editor)}`,
             );
-            initFileMessage = `✅ Created ${
-              editor === "nvim" ? "init.lua" : "vimrc"
-            } with dpp configuration`;
+            initFileMessage = createInitFileMessage("created", editor);
           } catch (error) {
             logger.error(
-              `Failed to create ${
-                editor === "nvim" ? "init.lua" : "vimrc"
-              }: ${error}`,
+              `Failed to create ${getInitFileName(editor)}: ${error}`,
             );
-            initFileMessage = `❌ Failed to create ${
-              editor === "nvim" ? "init.lua" : "vimrc"
-            }\n  Please create manually and add: ${
-              editor === "nvim"
-                ? "require('dpp_config')"
-                : "source dpp_config.vim"
-            }`;
+            initFileMessage = createInitFileMessage("create-failed", editor);
           }
         } else {
           logger.info(
             `Skipped creating ${
-              editor === "nvim" ? "init.lua" : "vimrc"
+              getInitFileName(editor)
             }. Please add the following line manually:`,
           );
           logger.info(
-            editor === "nvim"
-              ? "  require('dpp_config')"
-              : "  source ~/.vim/dpp_config.vim",
+            `  ${getDppLoadCommand(editor)}`,
           );
-          initFileMessage = `ℹ️  ${
-            editor === "nvim" ? "init.lua" : "vimrc"
-          } not created\n  Please add manually: ${
-            editor === "nvim"
-              ? "require('dpp_config')"
-              : "source dpp_config.vim"
-          }`;
+          initFileMessage = createInitFileMessage("not-found", editor);
         }
       } else {
         // Non-interactive mode - just show instructions
         logger.info(
           `${
-            editor === "nvim" ? "init.lua" : "vimrc"
+            getInitFileName(editor)
           } not found. Please add the following line manually:`,
         );
         logger.info(
-          editor === "nvim"
-            ? "  require('dpp_config')"
-            : "  source ~/.vim/dpp_config.vim",
+          `  ${getDppLoadCommand(editor)}`,
         );
-        initFileMessage = `ℹ️  ${
-          editor === "nvim" ? "init.lua" : "vimrc"
-        } not found\n  Please add manually: ${
-          editor === "nvim" ? "require('dpp_config')" : "source dpp_config.vim"
-        }`;
+        initFileMessage = createInitFileMessage("not-found", editor);
       }
     }
 
