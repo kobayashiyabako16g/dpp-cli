@@ -66,11 +66,12 @@ export function validateCommandForTemplate(
   commandName: "add" | "remove",
 ): void {
   if (profile.template === "minimal") {
-    logger.error(
-      `The '${commandName}' command is not available for minimal template.\n` +
-        `The minimal template uses a static plugin configuration.\n` +
-        `To manage plugins dynamically, please re-initialize with:\n` +
-        `  dpp init --template scaffold`,
+    logger.error(`
+The '${commandName}' command is not available for minimal template.
+  
+The minimal template uses a static plugin configuration.
+To manage plugins dynamically, please re-initialize with:
+    dpp init --template scaffold`,
     );
     Deno.exit(1);
   }
