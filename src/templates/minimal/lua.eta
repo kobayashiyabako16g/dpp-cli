@@ -55,4 +55,13 @@ vim.api.nvim_create_autocmd("User", {
   end,
 })
 
+-- dpp commands
+vim.api.nvim_create_user_command('DppMakeState', function()
+  dpp.make_state(dpp_base, dpp_config)
+end, {
+  desc = "Rebuild dpp.vim state",
+})
 
+vim.api.nvim_create_user_command("DppClearstate", function(val)
+  dpp.clear_state()
+end, { desc = "Clear dpp.vim state" })

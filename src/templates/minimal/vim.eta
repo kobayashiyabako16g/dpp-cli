@@ -1,12 +1,15 @@
 " dpp_config.vim
-" Minimal dpp.vim configuration for Vim
+" dpp.vim configuration for Vim
 " Plugins are managed in dpp.toml
+" See: https://github.com/Shougo/dpp.vim
 
 let s:dpp_base = expand('<%= it.paths.cacheDir %>')
 let s:plugins_dir = expand('<%= it.paths.pluginsDir %>')
 let s:dpp_src = s:plugins_dir .. '/Shougo/dpp.vim'
 let s:denops_src = s:plugins_dir .. '/vim-denops/denops.vim'
 let s:config_dir = expand('<%= it.paths.configDir %>')
+let s:dpp_config = s:config_dir .. '/dpp.ts'
+
 
 " Check if dpp.vim exists
 if !isdirectory(s:dpp_src)
@@ -16,14 +19,40 @@ endif
 
 " Add dpp.vim to runtimepath
 execute 'set runtimepath^=' .. s:dpp_src
+execute 'set runtimepath^=' .. s:denops_src
+
+" Create autocmd group
+augroup DppAutoCmd
+  autocmd!
+augroup END
 
 if dpp#min#load_state(s:dpp_base)
-  " dpp_base state is not loaded, initialize from scratch
-  execute 'set runtimepath^=' .. s:denops_src
+ 
+  autocmd DppAutoCmd User DenopsReady
+  \ : echohl WarningMsg
+  \ | echomsg 'dpp: load_state() failed, rebuilding state...'
+  \ | echohl NONE
+  \ | call dpp#make_state(s:dpp_base, s:dpp_config)
+else
+  " dpp_base state is loaded successfully
 
-  autocmd User DenopsReady
-  \ : call dpp#make_state(s:dpp_base, s:config_dir .. '/dpp.ts')
+  " Autocmd to rebuild state when configuration files are modified
+  autocmd DppAutoCmd BufWritePost *.lua,*.vim,*.toml,*.ts,vimrc,.vimrc
+  \ : if !dpp#check_files()->empty()
+  \ |   call dpp#make_state(s:dpp_base, s:dpp_config)
+  \ | endif
+
+  " Auto install not installed plugins on saving dpp.toml
+  autocmd DppAutoCmd BufWritePost *.toml call s:auto_install_on_toml_save()
 endif
+
+" Notify when make_state is done
+autocmd DppAutoCmd User Dpp:makeStatePost
+\ : echomsg 'dpp make_state() is done'
+
+" dpp commands
+command! DppMakeState call dpp#make_state(s:dpp_base, s:dpp_config)
+command! DppClearState call dpp#clear_state()
 
 " Enable filetype detection, plugins and indentation
 filetype indent plugin on
@@ -32,4 +61,3 @@ filetype indent plugin on
 if has('syntax')
   syntax on
 endif
-
