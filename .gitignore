@@ -1,6 +1,9 @@
 # Created by https://www.toptal.com/developers/gitignore/api/deno,macos,windows
 # Edit at https://www.toptal.com/developers/gitignore?templates=deno,macos,windows
 
+## Sandbox ###
+.sandbox
+
 ### Deno ###
 /.idea/
 /.vscode/
