@@ -24,6 +24,7 @@ This is a modern CLI tool for managing [dpp.vim](https://github.com/Shougo/dpp.v
 - `deno run --allow-read --allow-write --allow-env --allow-run main.ts init` - Initialize configuration
 - `deno run --allow-read --allow-write --allow-env --allow-run main.ts add <repo>` - Add plugin
 - `deno run --allow-read --allow-write --allow-env --allow-run main.ts remove <repo>` - Remove plugin
+- `deno run --allow-read --allow-write --allow-env --allow-run main.ts edit` - Edit configuration
 - `deno run --allow-read --allow-write --allow-env --allow-run main.ts clean` - Clean configuration
 
 **CLI Commands:**
@@ -42,6 +43,8 @@ This is a modern CLI tool for managing [dpp.vim](https://github.com/Shougo/dpp.v
   - `-t, --toml <file>` - Target TOML file
   - `-p, --profile <name>` - Profile to use
 - `dpp remove <repo>` - Remove a plugin from configuration
+- `dpp edit` - Edit configuration file in your preferred editor
+  - `-p, --profile <name>` - Profile to edit (default: active profile)
 - `dpp clean` - Remove all dpp configuration files, cache, and profile
   - `-p, --profile <name>` - Profile to clean (default: active profile)
   - `-f, --force` - Skip confirmation prompt
@@ -58,6 +61,7 @@ This CLI tool follows a clear separation of concerns:
    - [add.ts](src/commands/add.ts) - Plugin addition logic
    - [init.ts](src/commands/init.ts) - Configuration initialization
    - [remove.ts](src/commands/remove.ts) - Plugin removal logic
+   - [edit.ts](src/commands/edit.ts) - Configuration editing
    - [clean.ts](src/commands/clean.ts) - Configuration cleanup logic
 4. **Template System** ([src/templates/](src/templates/)) - Eta-based template generation
    - [minimal/](src/templates/minimal/) - Minimal templates (lua, toml, ts, vim)
@@ -65,6 +69,7 @@ This CLI tool follows a clear separation of concerns:
 5. **Utilities** ([src/utils/](src/utils/)) - Shared functionality
    - Configuration handling
    - Editor detection
+   - Editor launching
    - File system operations
    - TOML parsing
 
