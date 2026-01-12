@@ -338,6 +338,7 @@ Please specify an editor: dpp init --editor nvim
     const profile = createDefaultProfile(editor);
     profile.name = profileName;
     profile.mainConfig = `dpp.${format}`;
+    profile.template = template;
 
     if (path) {
       profile.configDir = path;

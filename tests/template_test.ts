@@ -17,9 +17,13 @@ Deno.test("generateTemplate - TypeScript minimal", async () => {
   assertEquals(result.includes("export class Config extends BaseConfig"), true);
   assertEquals(result.includes("override async config("), true);
   assertEquals(result.includes("ConfigReturn"), true);
-  // Check for TOML extension usage
-  assertEquals(result.includes("dpp-ext-toml"), true);
-  assertEquals(result.includes("args.contextBuilder.setGlobal"), true);
+  // Minimal template does NOT use dpp-ext-toml (static plugin list)
+  assertEquals(result.includes("dpp-ext-toml"), false);
+  // Check for inline plugin definitions instead
+  assertEquals(result.includes("const plugins: Plugin[]"), true);
+  // Should have hardcoded plugins
+  assertEquals(result.includes("denops.vim"), true);
+  assertEquals(result.includes("dpp.vim"), true);
 });
 
 Deno.test("generateTemplate - TypeScript scaffold", async () => {

@@ -47,7 +47,11 @@ export async function getActiveProfile(): Promise<Profile | null> {
   return config.profiles[config.activeProfile] || null;
 }
 
-// Get profile (by name or active)
+/**
+ * Get profile (by name or active)
+ * @param name - Profile name (optional)
+ * @returns Profile or null if not found
+ */
 export async function getProfile(name?: string): Promise<Profile | null> {
   if (!name) {
     return await getActiveProfile();

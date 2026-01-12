@@ -1,6 +1,9 @@
 import { define } from "gunshi";
 import { logger } from "../utils/logger.ts";
-import { requireProfile } from "../utils/validators.ts";
+import {
+  requireProfile,
+  validateCommandForTemplate,
+} from "../utils/validators.ts";
 import {
   getConfigHandler,
   getTomlPath,
@@ -28,6 +31,7 @@ export const removeCommand = define({
 
     // Get profile (validates it exists)
     const profile = await requireProfile(profileName);
+    validateCommandForTemplate(profile, "remove");
 
     // Get TOML path from profile
     const tomlPath = getTomlPath(profile);

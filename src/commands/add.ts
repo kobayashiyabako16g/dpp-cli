@@ -1,7 +1,10 @@
 import { define } from "gunshi";
 import { logger } from "../utils/logger.ts";
 import type { Plugin } from "@shougo/dpp-vim/types";
-import { requireProfile } from "../utils/validators.ts";
+import {
+  requireProfile,
+  validateCommandForTemplate,
+} from "../utils/validators.ts";
 import {
   getConfigHandler,
   getTomlPath,
@@ -61,6 +64,7 @@ export const addCommand = define({
 
     // Get profile (validates it exists)
     const profile = await requireProfile(profileName);
+    validateCommandForTemplate(profile, "add");
 
     // Build plugin configuration
     const plugin: Partial<Plugin> & { repo: string } = { repo };

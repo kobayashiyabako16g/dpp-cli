@@ -29,6 +29,7 @@ export interface Profile {
   configDir: string; // ~/.config/nvim
   editor: "vim" | "nvim";
   mainConfig: string; // dpp.ts or dpp.vim
+  template?: "minimal" | "scaffold"; // Template type used during initialization
   tomlFiles: TomlFileEntry[]; // List of TOML files in use
   defaultToml?: string; // Default TOML for add command
   lastModified: string;

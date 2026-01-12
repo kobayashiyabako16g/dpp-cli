@@ -56,3 +56,22 @@ export async function requireProfile(
   }
   return profile;
 }
+
+/**
+ * Validate that command is allowed for the profile's template.
+ * Exits with error if minimal template is used.
+ */
+export function validateCommandForTemplate(
+  profile: Profile,
+  commandName: "add" | "remove",
+): void {
+  if (profile.template === "minimal") {
+    logger.error(
+      `The '${commandName}' command is not available for minimal template.\n` +
+        `The minimal template uses a static plugin configuration.\n` +
+        `To manage plugins dynamically, please re-initialize with:\n` +
+        `  dpp init --template scaffold`,
+    );
+    Deno.exit(1);
+  }
+}
