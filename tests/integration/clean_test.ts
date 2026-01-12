@@ -37,12 +37,10 @@ Deno.test({
       // Verify files were created
       const nvimConfigDir = join(tempDir, "nvim");
       const mainConfig = join(nvimConfigDir, "lua", "dpp_config.lua");
-      const tomlConfig = join(nvimConfigDir, "dpp.toml");
       const tsConfig = join(nvimConfigDir, "dpp.ts");
       const cacheDir = join(tempDir, "dpp");
 
       assertEquals(await exists(mainConfig), true);
-      assertEquals(await exists(tomlConfig), true);
       assertEquals(await exists(tsConfig), true);
       assertEquals(await exists(cacheDir), true);
 
@@ -65,7 +63,6 @@ Deno.test({
 
       // 3. Verify files were deleted
       assertEquals(await exists(mainConfig), false);
-      assertEquals(await exists(tomlConfig), false);
       assertEquals(await exists(tsConfig), false);
       assertEquals(await exists(cacheDir), false);
 

@@ -73,18 +73,6 @@ Deno.test({
         "Missing: dpp.make_state",
       );
 
-      // Verify dpp.toml was created
-      const tomlPath = join(tempDir, "nvim", "dpp.toml");
-      const tomlExists = await exists(tomlPath);
-      assertEquals(tomlExists, true);
-
-      const tomlContent = await Deno.readTextFile(tomlPath);
-      assertEquals(tomlContent.includes('repo = "Shougo/dpp.vim"'), true);
-      assertEquals(
-        tomlContent.includes('repo = "vim-denops/denops.vim"'),
-        true,
-      );
-
       // Verify profile was saved
       const profilePath = join(tempDir, "dpp-cli", "config.json");
       const profileExists = await exists(profilePath);
@@ -214,14 +202,6 @@ Deno.test({
       const content = await Deno.readTextFile(configPath);
       assertEquals(content.includes("dpp#min#load_state("), true);
       assertEquals(content.includes("call dpp#make_state("), true);
-
-      // Verify dpp.toml was created
-      const tomlPath = join(tempDir, "vim", "dpp.toml");
-      const tomlExists = await exists(tomlPath);
-      assertEquals(tomlExists, true);
-
-      const tomlContent = await Deno.readTextFile(tomlPath);
-      assertEquals(tomlContent.includes('repo = "Shougo/dpp.vim"'), true);
     } finally {
       if (originalXdgConfig) {
         Deno.env.set("XDG_CONFIG_HOME", originalXdgConfig);

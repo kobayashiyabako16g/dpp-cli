@@ -71,8 +71,7 @@ The '${commandName}' command is not available for minimal template.
   
 The minimal template uses a static plugin configuration.
 To manage plugins dynamically, please re-initialize with:
-    dpp init --template scaffold`,
-    );
+    dpp init --template scaffold`);
     Deno.exit(1);
   }
 }

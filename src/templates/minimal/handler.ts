@@ -6,7 +6,12 @@ import { generateTemplate } from "../generator.ts";
 import { safeWriteTextFile } from "../../utils/filesystem.ts";
 import { logger } from "../../utils/logger.ts";
 import { checkGitInstalled, cloneRepository } from "../../utils/git-clone.ts";
-import { readTomlConfig } from "../../utils/toml-config.ts";
+
+// Hardcoded minimal required plugins
+const plugins = [
+  { repo: "Shougo/dpp.vim" },
+  { repo: "vim-denops/denops.vim" },
+];
 
 export class MinimalHandler implements TemplateHandler {
   async initialize(ctx: TemplateHandlerContext): Promise<void> {
@@ -25,25 +30,12 @@ export class MinimalHandler implements TemplateHandler {
     await safeWriteTextFile(paths.configFile, mainContent);
     logger.success(`Created configuration file: ${paths.configFile}`);
 
-    // 2. Generate TOML file
-    const tomlPath = `${paths.configDir}/dpp.toml`;
-    const tomlContent = await generateTemplate({
-      editor,
-      type: "minimal",
-      format: "toml",
-      paths,
-      generatedAt,
-    });
-    await safeWriteTextFile(tomlPath, tomlContent);
-    logger.success(`Created TOML plugin file: ${tomlPath}`);
-
-    // 3. Clone plugins from TOML
+    // 2. Clone plugins
     logger.info("Installing plugins...");
     try {
       await checkGitInstalled();
-      const tomlConfig = await readTomlConfig(tomlPath);
 
-      for (const plugin of tomlConfig.plugins) {
+      for (const plugin of plugins) {
         const repo = plugin.repo;
         const gitUrl = `https://github.com/${repo}.git`;
         const targetDir = `${paths.pluginsDir}/${repo}`;
@@ -60,7 +52,7 @@ export class MinimalHandler implements TemplateHandler {
       throw error;
     }
 
-    // 4. Generate TypeScript config file
+    // 3. Generate TypeScript config file
     const tsPath = `${paths.configDir}/dpp.ts`;
     const tsContent = await generateTemplate({
       editor,

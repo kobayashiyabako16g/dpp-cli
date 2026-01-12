@@ -127,7 +127,10 @@ Deno.test({
       // Should exit with error code 1
       assertEquals(code, 1);
       // Error message should mention minimal template restriction
-      assertEquals(errorOutput.includes("not available for minimal template"), true);
+      assertEquals(
+        errorOutput.includes("not available for minimal template"),
+        true,
+      );
       assertEquals(errorOutput.includes("dpp init --template scaffold"), true);
     } finally {
       if (originalXdgConfig) {
