@@ -3,6 +3,7 @@ import { initCommand } from "./commands/init.ts";
 import { addCommand } from "./commands/add.ts";
 import { removeCommand } from "./commands/remove.ts";
 import { cleanCommand } from "./commands/clean.ts";
+import { editCommand } from "./commands/edit.ts";
 
 const runConsoleText = `
 Dark powered plugin manager CLI
@@ -12,6 +13,7 @@ Commands:
   add       Add a plugin to dpp.vim configuration
   remove    Remove a plugin from dpp.vim configuration
   clean     Remove all dpp configuration files, cache, and profile
+  edit      Edit dpp configuration file in your preferred editor
 
 Run "dpp --help" for more information
 `;
@@ -40,4 +42,5 @@ export const subCommands = {
   add: addCommand,
   remove: removeCommand,
   clean: cleanCommand,
+  edit: editCommand,
 };

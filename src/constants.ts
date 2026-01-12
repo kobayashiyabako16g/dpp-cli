@@ -46,6 +46,10 @@ export const ERROR_MESSAGES = {
     `Plugin ${repo} not found in configuration`,
   UNSUPPORTED_FORMAT_OPERATION: (format: string, operation: string) =>
     `${operation} for ${format} format is not yet supported. Please manually edit the configuration file.`,
+  TOML_NOT_FOUND: (path: string) =>
+    `TOML file not found: ${path}\n` +
+    `Run 'dpp init' to create a configuration, or check the file path.`,
+  EDITOR_LAUNCH_FAILED: (error: unknown) => `Failed to launch editor: ${error}`,
 } as const;
 
 // Editor-specific file names
