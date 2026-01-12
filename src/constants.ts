@@ -47,3 +47,15 @@ export const ERROR_MESSAGES = {
   UNSUPPORTED_FORMAT_OPERATION: (format: string, operation: string) =>
     `${operation} for ${format} format is not yet supported. Please manually edit the configuration file.`,
 } as const;
+
+// Editor-specific file names
+export const INIT_FILE_NAME = {
+  nvim: "init.lua",
+  vim: "vimrc",
+} as const;
+
+// Editor-specific dpp load commands
+export const DPP_LOAD_COMMAND = {
+  nvim: "require('dpp_config')",
+  vim: "source dpp_config.vim",
+} as const;

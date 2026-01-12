@@ -45,14 +45,16 @@ export async function promptForEditor(
 
   // Error if no editors detected
   if (options.length === 0) {
-    logger.error("No editor detected on your system.");
-    logger.error("");
-    logger.error("Please install Vim or Neovim:");
-    logger.error("  - Neovim: https://neovim.io/");
-    logger.error("  - Vim: https://www.vim.org/");
-    logger.error("");
-    logger.error("Or specify an editor explicitly:");
-    logger.error("  dpp init --editor nvim");
+    logger.error(`
+No editor detected on your system.
+
+Please install Vim or Neovim:
+  - Neovim: https://neovim.io/
+  - Vim: https://www.vim.org/
+
+Or specify an editor explicitly:
+  dpp init --editor nvim
+`);
     throw new Error("No editor detected");
   }
 

@@ -9,7 +9,11 @@ import {
   fileExists,
   safeReadTextFile,
 } from "../utils/filesystem.ts";
-import { DEFAULT_PROFILE_NAME } from "../constants.ts";
+import {
+  DEFAULT_PROFILE_NAME,
+  DPP_LOAD_COMMAND,
+  INIT_FILE_NAME,
+} from "../constants.ts";
 import { detectInstalledEditors } from "../utils/editor-detection.ts";
 import {
   isInteractive,
@@ -18,18 +22,6 @@ import {
 } from "../utils/prompts.ts";
 import { Confirm } from "@cliffy/prompt";
 import { getTemplateHandler } from "../templates/registry.ts";
-
-/** エディタ別の設定ファイル名 */
-const INIT_FILE_NAME = {
-  nvim: "init.lua",
-  vim: "vimrc",
-} as const;
-
-/** エディタ別の設定読み込み命令 */
-const DPP_LOAD_COMMAND = {
-  nvim: "require('dpp_config')",
-  vim: "source dpp_config.vim",
-} as const;
 
 /**
  * エディタ別の初期化ファイル名を取得
