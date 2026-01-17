@@ -24,7 +24,7 @@ deno install -g --allow-read --allow-write --allow-env --allow-run --allow-net j
 ### From Source
 
 ```bash
-git clone https://github.com/yourusername/dpp-cli.git
+git clone https://github.com/kobayashiyabako16g/dpp-cli.git
 cd dpp-cli
 deno install --allow-read --allow-write --allow-env --allow-run --allow-net -n dpp main.ts
 ```
