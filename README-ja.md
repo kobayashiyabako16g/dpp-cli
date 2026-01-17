@@ -1,13 +1,11 @@
 # dpp-cli
 
+> [!WARNING] 
+> dpp.vimの作者は「設定したくないならプラグインマネージャーを使う必要はない。ゼロコンフィグでは動作しない」と明言しています。このCLIを使うということは、その哲学に背いていることになります。今すぐこのタブを閉じて、手動でdpp.vimを設定すべきです。
+> 
+> ...まだここにいますか？良いでしょう。このツールはdpp.vimのミニマリズム精神に反していますが、dpp.vimの動作を理解するための補助輪として役立つことを願っています。慣れてきたら、正しいことをしてください：このCLIを削除して、すべてを自分で設定しましょう。
+
 [dpp.vim](https://github.com/Shougo/dpp.vim) プラグインを型安全かつ簡単に管理するためのモダンなCLIツール。
-
-## 特徴
-
-- 🎯 **型安全な設定** - TOMLプラグインを読み込むTypeScript設定
-- 📝 **エディタ固有のセットアップ** - NeovimはLua、VimはVim script
-- 🔌 **統一されたプラグイン管理** - すべてのプラグインはdpp.tomlで管理
-- 🚀 **簡単な初期化** - minimalまたはscaffoldテンプレートで素早くセットアップ
 
 ## インストール
 
@@ -222,199 +220,12 @@ dpp clean --force
 
 **注意:** 非対話モード（CI/CDなど）では、`--force`フラグが必須です。
 
-## 設定フォーマット
-
-### 仕組み
-
-**すべての設定は3つのファイルを使用します：**
-
-1. **メイン設定** (`dpp.lua` または `dpp.vim`) - ブートストラップとランタイム設定
-2. **プラグイン定義** (`dpp.toml`) - すべてのプラグインをここで管理
-3. **TypeScriptローダー** (`dpp.ts`) - TOMLファイルの読み込みと処理
-
-メイン設定は`dpp#make_state()`を呼び出し、`dpp.ts`を使用して`dpp.toml`を読み込み、プラグインの状態を生成します。
-
-### Neovim（Lua + TOML + TypeScript）
-
-```lua
--- ~/.config/nvim/dpp.lua
-local dpp_base = vim.fn.expand("~/.cache/dpp")
-local dpp_src = dpp_base .. "/repos/github.com/Shougo/dpp.vim"
-local config_dir = vim.fn.expand("~/.config/nvim")
-local dpp_config = config_dir .. "/dpp.ts"
-
-vim.opt.runtimepath:prepend(dpp_src)
-
-if vim.fn["dpp#min#load_state"](dpp_base) == 1 then
-  -- 最初から初期化
-  vim.api.nvim_create_autocmd("User", {
-    pattern = "DenopsReady",
-    callback = function()
-      vim.fn["dpp#make_state"](dpp_base, dpp_config)
-    end,
-  })
-end
-```
-
-### Vim（Vim script + TOML + TypeScript）
-
-```vim
-" ~/.config/vim/dpp.vim
-let s:dpp_base = expand('~/.cache/dpp')
-let s:dpp_src = s:dpp_base .. '/repos/github.com/Shougo/dpp.vim'
-let s:config_dir = expand('~/.config/vim')
-let s:dpp_config = s:config_dir .. '/dpp.ts'
-
-execute 'set runtimepath^=' .. s:dpp_src
-
-if dpp#min#load_state(s:dpp_base)
-  " 最初から初期化
-  autocmd User DenopsReady
-    \ call dpp#make_state(s:dpp_base, s:dpp_config)
-endif
-```
-
-### TypeScript（設定ローダー）
-
-```typescript
-// ~/.config/nvim/dpp.ts
-import type { Denops } from "jsr:@denops/std@~7.6.0";
-import type { ContextBuilder, Dpp } from "jsr:@shougo/dpp-vim@~4.5.0/types";
-import {
-  BaseConfig,
-  type ConfigReturn,
-} from "jsr:@shougo/dpp-vim@~4.5.0/config";
-
-export class Config extends BaseConfig {
-  override async config(args: {
-    denops: Denops;
-    contextBuilder: ContextBuilder;
-    basePath: string;
-    dpp: Dpp;
-  }): Promise<ConfigReturn> {
-    args.contextBuilder.setGlobal({
-      protocols: ["git"],
-    });
-
-    const tomlPromises = [
-      args.dpp.extAction(
-        args.denops,
-        args.contextBuilder,
-        "toml",
-        "load",
-        {
-          path: await args.denops.call(
-            "expand",
-            "~/.config/nvim/dpp.toml",
-          ) as string,
-        },
-      ),
-    ];
-
-    await Promise.all(tomlPromises);
-
-    return {
-      checkFiles: [],
-    };
-  }
-}
-```
-
-### TOML（プラグイン定義）
-
-このファイルは**すべての**設定フォーマットで使用されます：
-
-```toml
-# ~/.config/nvim/dpp.toml
-[[plugins]]
-repo = "Shougo/dpp.vim"
-
-[[plugins]]
-repo = "vim-denops/denops.vim"
-
-[[plugins]]
-repo = "Shougo/dpp-ext-toml"
-
-[[plugins]]
-repo = "Shougo/ddu.vim"
-on_cmd = ["Ddu"]
-depends = ["denops.vim"]
-```
-
-## テンプレート
-
-### Minimalテンプレート
-
-必須プラグインのみを含みます：
-
-- `Shougo/dpp.vim` - プラグインマネージャー本体
-- `vim-denops/denops.vim` - dpp.vimの動作に必要
-
-### Scaffoldテンプレート
-
-追加の推奨プラグインを含みます：
-
-- コアdpp.vimプラグイン
-- 拡張プラグイン（installer、lazy loader、git protocol）
-- サンプルプラグイン（ddu.vim、ddc.vim）と遅延読み込み設定
-
-## プロファイル
-
-dpp-cliは複数の設定プロファイルをサポートしています。
-
-```bash
-# workプロファイルを作成
-dpp init -f ts -t minimal -e nvim --profile work
-
-# workプロファイルにプラグインを追加
-dpp add Shougo/ddu.vim -p work
-```
-
-プロファイルは`~/.config/dpp-cli/config.json`に保存されます。
-
-## ディレクトリ構造
-
-```
-~/.config/
-├── dpp-cli/
-│   └── config.json         # プロファイル設定
-├── nvim/                   # Neovim設定
-│   ├── dpp.ts             # ブートストラップ（TypeScript）
-│   ├── dpp.lua            # またはブートストラップ（Lua）
-│   └── dpp.toml           # プラグイン定義（常に存在）
-└── vim/                    # Vim設定
-    ├── dpp.vim            # ブートストラップ（Vim script）
-    └── dpp.toml           # プラグイン定義（常に存在）
-
-~/.cache/dpp/              # プラグインキャッシュ（dpp.vimが管理）
-└── repos/
-    └── github.com/
-        └── Shougo/
-            └── dpp.vim/
-```
-
 ## 必要要件
 
 - **Deno** 2.0以降
 - **Vim** 9.0以上または**Neovim** 0.9以上
 - **Git** プラグインのクローン用
 - **denops.vim**（dpp.vimが自動的にインストール）
-
-## トラブルシューティング
-
-### よくある問題
-
-**Q: "No profile found"エラーが出る**
-
-A: まず`dpp init`を実行してプロファイルを作成してください。
-
-**Q: プラグインが読み込まれない**
-
-A: init.vim/init.luaでdpp.vimが適切に設定されているか確認してください。[dpp.vimドキュメント](https://github.com/Shougo/dpp.vim)を参照してください。
-
-**Q: TypeScript設定が動作しない**
-
-A: Denoがインストールされており、dpp.vimがTypeScript設定を使用するよう設定されているか確認してください。
 
 ## 開発
 
@@ -432,19 +243,14 @@ deno compile --allow-read --allow-write --allow-env --allow-run --allow-net -o d
 
 ## コントリビューション
 
-コントリビューションを歓迎します！詳細は[CONTRIBUTING.md](CONTRIBUTING.md)を参照してください。
+コントリビューションを歓迎します！
 
 ## ライセンス
 
 MITライセンス - 詳細は[LICENSE](LICENSE)を参照してください。
 
-## 関連プロジェクト
+## 謝辞
 
 - [dpp.vim](https://github.com/Shougo/dpp.vim) - Dark powered plugin manager
 - [sheldon](https://github.com/rossmacarthur/sheldon) - このCLIツールのインスピレーション元
 - [denops.vim](https://github.com/vim-denops/denops.vim) - Vim/Neovimプラグインのエコシステム
-
-## 謝辞
-
-- [Shougo](https://github.com/Shougo) - dpp.vimの作者
-- [Ross MacArthur](https://github.com/rossmacarthur) - sheldonのデザインインスピレーション

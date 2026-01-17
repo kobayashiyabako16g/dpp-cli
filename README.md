@@ -1,13 +1,12 @@
 # dpp-cli
 
+> [!WARNING]  
+> dpp.vim's author explicitly states it "does not work with zero configuration." By using this CLI, you are technically betraying that philosophy. You should close this tab immediately and configure dpp.vim manually.
+> 
+> ...Still here? Good. While this tool goes against dpp.vim's minimalist spirit, we hope it serves as training wheels for understanding how dpp.vim actually works. Once you get comfortable, please do the right thing: delete this CLI and configure everything yourself. 
+
 A modern CLI tool for managing [dpp.vim](https://github.com/Shougo/dpp.vim) plugins with type safety and ease of use.
 
-## Features
-
-- 🎯 **Type-safe configuration** - TypeScript config for loading TOML plugins
-- 📝 **Editor-specific setup** - Lua for Neovim, Vim script for Vim
-- 🔌 **Unified plugin management** - All plugins managed in dpp.toml
-- 🚀 **Easy initialization** - Quick setup with minimal or scaffold templates
 
 ## Installation
 
@@ -222,199 +221,12 @@ dpp clean --force
 
 **Note:** In non-interactive mode (e.g., CI/CD), the `--force` flag is required.
 
-## Configuration Formats
-
-### How It Works
-
-**All configurations use three files:**
-
-1. **Main config** (`dpp.lua` or `dpp.vim`) - Bootstrap and runtime configuration
-2. **Plugin definitions** (`dpp.toml`) - All plugins managed here
-3. **TypeScript loader** (`dpp.ts`) - Loads and processes TOML file
-
-The main config calls `dpp#make_state()` with `dpp.ts`, which reads `dpp.toml` and generates the plugin state.
-
-### Neovim (Lua + TOML + TypeScript)
-
-```lua
--- ~/.config/nvim/dpp.lua
-local dpp_base = vim.fn.expand("~/.cache/dpp")
-local dpp_src = dpp_base .. "/repos/github.com/Shougo/dpp.vim"
-local config_dir = vim.fn.expand("~/.config/nvim")
-local dpp_config = config_dir .. "/dpp.ts"
-
-vim.opt.runtimepath:prepend(dpp_src)
-
-if vim.fn["dpp#min#load_state"](dpp_base) == 1 then
-  -- Initialize from scratch
-  vim.api.nvim_create_autocmd("User", {
-    pattern = "DenopsReady",
-    callback = function()
-      vim.fn["dpp#make_state"](dpp_base, dpp_config)
-    end,
-  })
-end
-```
-
-### Vim (Vim script + TOML + TypeScript)
-
-```vim
-" ~/.config/vim/dpp.vim
-let s:dpp_base = expand('~/.cache/dpp')
-let s:dpp_src = s:dpp_base .. '/repos/github.com/Shougo/dpp.vim'
-let s:config_dir = expand('~/.config/vim')
-let s:dpp_config = s:config_dir .. '/dpp.ts'
-
-execute 'set runtimepath^=' .. s:dpp_src
-
-if dpp#min#load_state(s:dpp_base)
-  " Initialize from scratch
-  autocmd User DenopsReady
-    \ call dpp#make_state(s:dpp_base, s:dpp_config)
-endif
-```
-
-### TypeScript (Config Loader)
-
-```typescript
-// ~/.config/nvim/dpp.ts
-import type { Denops } from "jsr:@denops/std@~7.6.0";
-import type { ContextBuilder, Dpp } from "jsr:@shougo/dpp-vim@~4.5.0/types";
-import {
-  BaseConfig,
-  type ConfigReturn,
-} from "jsr:@shougo/dpp-vim@~4.5.0/config";
-
-export class Config extends BaseConfig {
-  override async config(args: {
-    denops: Denops;
-    contextBuilder: ContextBuilder;
-    basePath: string;
-    dpp: Dpp;
-  }): Promise<ConfigReturn> {
-    args.contextBuilder.setGlobal({
-      protocols: ["git"],
-    });
-
-    const tomlPromises = [
-      args.dpp.extAction(
-        args.denops,
-        args.contextBuilder,
-        "toml",
-        "load",
-        {
-          path: await args.denops.call(
-            "expand",
-            "~/.config/nvim/dpp.toml",
-          ) as string,
-        },
-      ),
-    ];
-
-    await Promise.all(tomlPromises);
-
-    return {
-      checkFiles: [],
-    };
-  }
-}
-```
-
-### TOML (Plugin Definitions)
-
-This file is used by **all** configuration formats:
-
-```toml
-# ~/.config/nvim/dpp.toml
-[[plugins]]
-repo = "Shougo/dpp.vim"
-
-[[plugins]]
-repo = "vim-denops/denops.vim"
-
-[[plugins]]
-repo = "Shougo/dpp-ext-toml"
-
-[[plugins]]
-repo = "Shougo/ddu.vim"
-on_cmd = ["Ddu"]
-depends = ["denops.vim"]
-```
-
-## Templates
-
-### Minimal Template
-
-Includes only essential plugins:
-
-- `Shougo/dpp.vim` - The plugin manager itself
-- `vim-denops/denops.vim` - Required for dpp.vim
-
-### Scaffold Template
-
-Includes additional recommended plugins:
-
-- Core dpp.vim plugins
-- Extension plugins (installer, lazy loader, git protocol)
-- Example plugins (ddu.vim, ddc.vim) with lazy loading
-
-## Profiles
-
-dpp-cli supports multiple profiles for different configurations.
-
-```bash
-# Create a work profile
-dpp init -f ts -t minimal -e nvim --profile work
-
-# Add plugins to work profile
-dpp add Shougo/ddu.vim -p work
-```
-
-Profiles are stored in `~/.config/dpp-cli/config.json`.
-
-## Directory Structure
-
-```
-~/.config/
-├── dpp-cli/
-│   └── config.json         # Profile configuration
-├── nvim/                   # Neovim configuration
-│   ├── dpp.ts             # Bootstrap (TypeScript)
-│   ├── dpp.lua            # Or bootstrap (Lua)
-│   └── dpp.toml           # Plugin definitions (always present)
-└── vim/                    # Vim configuration
-    ├── dpp.vim            # Bootstrap (Vim script)
-    └── dpp.toml           # Plugin definitions (always present)
-
-~/.cache/dpp/              # Plugin cache (managed by dpp.vim)
-└── repos/
-    └── github.com/
-        └── Shougo/
-            └── dpp.vim/
-```
-
 ## Requirements
 
 - **Deno** 2.0 or later
 - **Vim** 9.0+ or **Neovim** 0.9+
 - **Git** for cloning plugins
 - **denops.vim** (automatically installed by dpp.vim)
-
-## Troubleshooting
-
-### Common Issues
-
-**Q: "No profile found" error**
-
-A: Run `dpp init` first to create a profile.
-
-**Q: Plugins not loading**
-
-A: Make sure dpp.vim is properly configured in your init.vim/init.lua. See [dpp.vim documentation](https://github.com/Shougo/dpp.vim).
-
-**Q: TypeScript config not working**
-
-A: Ensure Deno is installed and dpp.vim is configured to use TypeScript configs.
 
 ## Development
 
@@ -432,19 +244,14 @@ deno compile --allow-read --allow-write --allow-env --allow-run --allow-net -o d
 
 ## Contributing
 
-Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+Contributions are welcome! 
 
 ## License
 
 MIT License - See [LICENSE](LICENSE) for details.
 
-## Related Projects
+## Acknowledgments
 
 - [dpp.vim](https://github.com/Shougo/dpp.vim) - Dark powered plugin manager
 - [sheldon](https://github.com/rossmacarthur/sheldon) - Inspiration for this CLI tool
 - [denops.vim](https://github.com/vim-denops/denops.vim) - Ecosystem for Vim/Neovim plugins
-
-## Acknowledgments
-
-- [Shougo](https://github.com/Shougo) for creating dpp.vim
-- [Ross MacArthur](https://github.com/rossmacarthur) for sheldon's design inspiration

@@ -16,31 +16,31 @@ class Logger {
 
   debug(...args: unknown[]) {
     if (this.level <= LogLevel.DEBUG) {
-      console.log(blue("[DEBUG]"), ...args);
+      console.log(blue("debug: "), ...args);
     }
   }
 
   info(...args: unknown[]) {
     if (this.level <= LogLevel.INFO) {
-      console.log(blue("[INFO]"), ...args);
+      console.log(blue("info: "), ...args);
     }
   }
 
   warn(...args: unknown[]) {
     if (this.level <= LogLevel.WARN) {
-      console.warn(yellow("[WARN]"), ...args);
+      console.warn(yellow("warn: "), ...args);
     }
   }
 
   error(...args: unknown[]) {
     if (this.level <= LogLevel.ERROR) {
-      console.error(red("[ERROR]"), ...args);
+      console.error(red("error: "), ...args);
     }
   }
 
   success(...args: unknown[]) {
     if (this.level <= LogLevel.INFO) {
-      console.log(green("[SUCCESS]"), ...args);
+      console.log(green("success: "), ...args);
     }
   }
 }
