@@ -5,6 +5,11 @@ on:
     tags:
       - "v*.*.*"
   workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag to release (e.g., v1.0.0)"
+        required: true
+        type: string
 
 permissions:
   contents: write
@@ -46,6 +51,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: dist/${{ matrix.config.artifact_name }}
+          tag_name: ${{ github.event.inputs.tag || github.ref_name }}
           draft: false
           prerelease: false
         env:
@@ -60,6 +66,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.tag || github.ref }}
 
       - name: Setup Deno
         uses: denoland/setup-deno@v1
