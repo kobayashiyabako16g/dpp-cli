@@ -4,7 +4,7 @@
   "exports": "./main.ts",
   "tasks": {
     "test": "deno test --allow-read --allow-write --allow-env --allow-run",
-    "test:publish":"deno publish --dry-run --allow-dirty --set-version 0.0.0",
+    "test:publish": "deno publish --dry-run --allow-dirty --set-version 0.0.0",
     "lint": "deno lint",
     "check": "deno check main.ts src/**/*.ts",
     "fmt": "deno fmt",

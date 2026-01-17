@@ -38,6 +38,6 @@ jobs:
 
       - name: Build
         run: deno task build
-      
+
       - name: Test Publish
         run: deno task test:publish

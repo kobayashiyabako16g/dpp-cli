@@ -1,12 +1,11 @@
 # dpp-cli
 
-> [!WARNING]  
+> [!WARNING]\
 > dpp.vim's author explicitly states it "does not work with zero configuration." By using this CLI, you are technically betraying that philosophy. You should close this tab immediately and configure dpp.vim manually.
-> 
-> ...Still here? Good. While this tool goes against dpp.vim's minimalist spirit, we hope it serves as training wheels for understanding how dpp.vim actually works. Once you get comfortable, please do the right thing: delete this CLI and configure everything yourself. 
+>
+> ...Still here? Good. While this tool goes against dpp.vim's minimalist spirit, we hope it serves as training wheels for understanding how dpp.vim actually works. Once you get comfortable, please do the right thing: delete this CLI and configure everything yourself.
 
 A modern CLI tool for managing [dpp.vim](https://github.com/Shougo/dpp.vim) plugins with type safety and ease of use.
-
 
 ## Installation
 
@@ -29,7 +28,7 @@ deno install --allow-read --allow-write --allow-env --allow-run --allow-net -n d
 ### 1. Initialize a new configuration
 
 ```bash
-# Neovim (creates Lua + TOML + TypeScript config)
+# Neovim (creates Lua + TypeScript config)
 dpp init -t minimal -e nvim
 
 # Vim (creates Vim script + TOML + TypeScript config)
@@ -244,7 +243,7 @@ deno compile --allow-read --allow-write --allow-env --allow-run --allow-net -o d
 
 ## Contributing
 
-Contributions are welcome! 
+Contributions are welcome!
 
 ## License
 

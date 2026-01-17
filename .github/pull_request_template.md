@@ -9,5 +9,5 @@
 # Implications
 
 <!--
-Does this change existing behavior? 
+Does this change existing behavior?
 -->
