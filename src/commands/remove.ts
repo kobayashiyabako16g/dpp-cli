@@ -62,8 +62,12 @@ export const removeCommand = define({
 
     logger.info(`
 Plugin removed successfully!
-Note: The plugin directory will be kept in cache.
-To clean up, manually delete the plugin directory in your cache.
+Next steps:
+1. Open Vim/Neovim and run:
+   :DppMakeState
+   (or restart your editor)
+2. Note: The plugin directory remains in cache.
+   Use 'dpp clean' to remove all cached plugins.
     `);
   },
 });

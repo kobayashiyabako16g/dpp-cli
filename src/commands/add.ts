@@ -107,12 +107,20 @@ export const addCommand = define({
       Deno.exit(1);
     }
 
+    // Show appropriate next steps based on template type
+    const hasInstallCommand = profile.template === "scaffold";
+    const commands = hasInstallCommand
+      ? ":DppMakeState and :DppInstall"
+      : ":DppMakeState";
+
     logger.info(`
 Plugin added successfully!
 Next steps:
 1. Review your plugins:
    ${tomlPath}
-2. Restart Vim/Neovim to load the new plugin
+2. Open Vim/Neovim and run:
+   ${commands}
+   (or restart your editor)
     `);
   },
 });
