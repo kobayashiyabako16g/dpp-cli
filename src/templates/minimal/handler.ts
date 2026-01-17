@@ -25,7 +25,6 @@ export class MinimalHandler implements TemplateHandler {
       format,
       paths,
       generatedAt,
-      tomlFileName: "dpp.toml",
     });
     await safeWriteTextFile(paths.configFile, mainContent);
     logger.success(`Created configuration file: ${paths.configFile}`);
