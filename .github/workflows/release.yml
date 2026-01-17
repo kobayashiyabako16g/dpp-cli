@@ -39,15 +39,7 @@ jobs:
           deno-version: 2.x
 
       - name: Build binary
-        run: |
-          deno compile \
-            --allow-read \
-            --allow-write \
-            --allow-env \
-            --allow-run \
-            --output dist/${{ matrix.config.artifact_name }} \
-            --target ${{ matrix.config.target }} \
-            main.ts
+        run: deno task build:target dist/${{ matrix.config.artifact_name }} --target ${{ matrix.config.target }} main.ts
 
       - name: Upload Release Asset
         uses: softprops/action-gh-release@v1

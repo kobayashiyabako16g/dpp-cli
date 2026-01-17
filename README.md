@@ -9,10 +9,16 @@ A modern CLI tool for managing [dpp.vim](https://github.com/Shougo/dpp.vim) plug
 
 ## Installation
 
-### Using Deno
+### Using JSR (Recommended)
 
 ```bash
-deno install --allow-read --allow-write --allow-env --allow-run --allow-net -n dpp https://raw.githubusercontent.com/yourusername/dpp-cli/main/main.ts
+deno install -gA jsr:@yabako/dpp-cli
+```
+
+Or with explicit permissions:
+
+```bash
+deno install -g --allow-read --allow-write --allow-env --allow-run --allow-net jsr:@yabako/dpp-cli
 ```
 
 ### From Source

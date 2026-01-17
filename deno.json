@@ -9,7 +9,8 @@
     "lint": "deno lint",
     "check": "deno check main.ts src/**/*.ts",
     "fmt": "deno fmt",
-    "build": "deno compile --unstable --allow-read --allow-write --allow-env --allow-run --output ./dist/dpp ./main.ts"
+    "build": "deno compile --unstable --allow-read --allow-write --allow-env --allow-run --output ./dist/dpp ./main.ts",
+    "build:target": "deno compile --allow-read --allow-write --allow-env --allow-run --output"
   },
   "imports": {
     "@cliffy/prompt": "jsr:@cliffy/prompt@^1.0.0-rc.5",
