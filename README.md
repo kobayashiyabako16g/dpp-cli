@@ -113,7 +113,11 @@ Add a plugin to your configuration.
 
 **Arguments:**
 
-- `<repo>` - Plugin repository (e.g., Shougo/ddu.vim)
+- `<repo>` - Plugin repository (supports multiple formats):
+  - `owner/repo` (e.g., `Shougo/ddu.vim`)
+  - `https://github.com/owner/repo`
+  - `https://github.com/owner/repo.git`
+  - `git@github.com:owner/repo.git`
 
 **Options:**
 
@@ -128,8 +132,10 @@ Add a plugin to your configuration.
 **Examples:**
 
 ```bash
-# Simple add
+# Simple add (all formats work)
 dpp add Shougo/ddu.vim
+dpp add https://github.com/Shougo/ddu.vim
+dpp add git@github.com:Shougo/ddu.vim.git
 
 # With lazy loading
 dpp add Shougo/ddc.vim --on-event InsertEnter
@@ -144,12 +150,18 @@ Remove a plugin from your configuration.
 
 **Arguments:**
 
-- `<repo>` - Plugin repository to remove
+- `<repo>` - Plugin repository to remove (supports multiple formats):
+  - `owner/repo` (e.g., `Shougo/ddu.vim`)
+  - `https://github.com/owner/repo`
+  - `https://github.com/owner/repo.git`
+  - `git@github.com:owner/repo.git`
 
-**Example:**
+**Examples:**
 
 ```bash
+# All formats work for removal
 dpp remove Shougo/ddu-ui-ff
+dpp remove https://github.com/Shougo/ddu-ui-ff.git
 ```
 
 ### `dpp edit`

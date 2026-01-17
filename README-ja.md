@@ -113,7 +113,11 @@ dpp init -t scaffold -e nvim
 
 **引数:**
 
-- `<repo>` - プラグインリポジトリ（例: Shougo/ddu.vim）
+- `<repo>` - プラグインリポジトリ（複数の形式をサポート）:
+  - `owner/repo` (例: `Shougo/ddu.vim`)
+  - `https://github.com/owner/repo`
+  - `https://github.com/owner/repo.git`
+  - `git@github.com:owner/repo.git`
 
 **オプション:**
 
@@ -128,8 +132,10 @@ dpp init -t scaffold -e nvim
 **例:**
 
 ```bash
-# シンプルな追加
+# シンプルな追加（すべての形式が使用可能）
 dpp add Shougo/ddu.vim
+dpp add https://github.com/Shougo/ddu.vim
+dpp add git@github.com:Shougo/ddu.vim.git
 
 # 遅延読み込みあり
 dpp add Shougo/ddc.vim --on-event InsertEnter
@@ -144,12 +150,18 @@ dpp add Shougo/ddu-ui-ff --depends denops.vim
 
 **引数:**
 
-- `<repo>` - 削除するプラグインリポジトリ
+- `<repo>` - 削除するプラグインリポジトリ（複数の形式をサポート）:
+  - `owner/repo` (例: `Shougo/ddu.vim`)
+  - `https://github.com/owner/repo`
+  - `https://github.com/owner/repo.git`
+  - `git@github.com:owner/repo.git`
 
 **例:**
 
 ```bash
+# すべての形式で削除可能
 dpp remove Shougo/ddu-ui-ff
+dpp remove https://github.com/Shougo/ddu-ui-ff.git
 ```
 
 ### `dpp edit`

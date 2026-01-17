@@ -44,6 +44,16 @@ export const ERROR_MESSAGES = {
     `Failed to write file ${path}: ${error}`,
   PLUGIN_NOT_FOUND: (repo: string) =>
     `Plugin ${repo} not found in configuration`,
+  INVALID_REPO_FORMAT: (repo: string) =>
+    `Invalid repository format: "${repo}"
+
+Supported formats:
+  - owner/repo (e.g., Shougo/ddu.vim)
+  - https://github.com/owner/repo
+  - https://github.com/owner/repo.git
+  - git@github.com:owner/repo.git
+
+Please provide a valid GitHub repository.`,
   UNSUPPORTED_FORMAT_OPERATION: (format: string, operation: string) =>
     `${operation} for ${format} format is not yet supported. Please manually edit the configuration file.`,
   TOML_NOT_FOUND: (path: string) =>

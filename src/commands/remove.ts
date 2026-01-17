@@ -1,6 +1,7 @@
 import { define } from "gunshi";
 import { logger } from "../utils/logger.ts";
 import {
+  normalizeRepoFormat,
   requireProfile,
   validateCommandForTemplate,
 } from "../utils/validators.ts";
@@ -33,6 +34,9 @@ export const removeCommand = define({
     const profile = await requireProfile(profileName);
     validateCommandForTemplate(profile, "remove");
 
+    // Normalize repository format
+    const normalizedRepo = normalizeRepoFormat(repo);
+
     // Get TOML path from profile
     const tomlPath = getTomlPath(profile);
     const fileExt = profile.mainConfig.split(".").pop()!;
@@ -43,14 +47,14 @@ export const removeCommand = define({
     try {
       // All formats use TOML for plugin management
       const handler = getConfigHandler();
-      const removed = await handler.removePlugin(tomlPath, repo);
+      const removed = await handler.removePlugin(tomlPath, normalizedRepo);
 
       if (!removed) {
-        logger.warn(ERROR_MESSAGES.PLUGIN_NOT_FOUND(repo));
+        logger.warn(ERROR_MESSAGES.PLUGIN_NOT_FOUND(normalizedRepo));
         Deno.exit(1);
       }
 
-      logger.success(`Removed ${repo} from dpp.toml`);
+      logger.success(`Removed ${normalizedRepo} from dpp.toml`);
     } catch (error) {
       logger.error(`Failed to remove plugin: ${error}`);
       Deno.exit(1);

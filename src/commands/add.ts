@@ -2,6 +2,7 @@ import { define } from "gunshi";
 import { logger } from "../utils/logger.ts";
 import type { Plugin } from "@shougo/dpp-vim/types";
 import {
+  normalizeRepoFormat,
   requireProfile,
   validateCommandForTemplate,
 } from "../utils/validators.ts";
@@ -66,8 +67,11 @@ export const addCommand = define({
     const profile = await requireProfile(profileName);
     validateCommandForTemplate(profile, "add");
 
+    // Normalize repository format
+    const normalizedRepo = normalizeRepoFormat(repo);
+
     // Build plugin configuration
-    const plugin: Partial<Plugin> & { repo: string } = { repo };
+    const plugin: Partial<Plugin> & { repo: string } = { repo: normalizedRepo };
 
     if (onCmd) {
       plugin.on_cmd = onCmd.split(",").map((s) => s.trim());
@@ -97,7 +101,7 @@ export const addCommand = define({
       // All formats use TOML for plugin management
       const handler = getConfigHandler();
       await handler.addPlugin(tomlPath, plugin);
-      logger.success(`Added ${repo} to dpp.toml`);
+      logger.success(`Added ${normalizedRepo} to dpp.toml`);
     } catch (error) {
       logger.error(`Failed to add plugin: ${error}`);
       Deno.exit(1);

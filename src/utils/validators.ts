@@ -75,3 +75,43 @@ To manage plugins dynamically, please re-initialize with:
     Deno.exit(1);
   }
 }
+
+/**
+ * Normalize repository format to owner/repo.
+ * Accepts:
+ *  - owner/repo (returned as-is)
+ *  - https://github.com/owner/repo
+ *  - https://github.com/owner/repo.git
+ *  - git@github.com:owner/repo
+ *  - git@github.com:owner/repo.git
+ *
+ * Only supports GitHub repositories.
+ * Exits with error if format is invalid.
+ */
+export function normalizeRepoFormat(repo: string): string {
+  // Pattern 1: HTTPS URL - https://github.com/owner/repo(.git)?
+  const httpsMatch = repo.match(
+    /^https:\/\/github\.com\/([\w-]+\/[\w.-]+?)(\.git)?$/i,
+  );
+  if (httpsMatch) {
+    return httpsMatch[1];
+  }
+
+  // Pattern 2: SSH URL - git@github.com:owner/repo(.git)?
+  const sshMatch = repo.match(
+    /^git@github\.com:([\w-]+\/[\w.-]+?)(\.git)?$/i,
+  );
+  if (sshMatch) {
+    return sshMatch[1];
+  }
+
+  // Pattern 3: owner/repo format (validate and return)
+  const ownerRepoPattern = /^[\w-]+\/[\w.-]+$/;
+  if (ownerRepoPattern.test(repo)) {
+    return repo;
+  }
+
+  // Invalid format
+  logger.error(ERROR_MESSAGES.INVALID_REPO_FORMAT(repo));
+  Deno.exit(1);
+}
