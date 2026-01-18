@@ -1,0 +1,53 @@
+class DppCli < Formula
+  desc "CLI tool for managing dpp.vim plugins."
+  homepage "https://github.com/kobayashiyabako16g/dpp-cli"
+  version "${VERSION}"
+  license "MIT"
+
+  on_macos do
+    if Hardware::CPU.arm?
+      url "${ARM64_URL}"
+      sha256 "${SHA256_ARM64}"
+    else
+      url "${AMD64_URL}"
+      sha256 "${SHA256_AMD64}"
+    end
+  end
+
+  on_linux do
+    if Hardware::CPU.intel?
+      url "${LINUX_URL}"
+      sha256 "${SHA256_LINUX}"
+    end
+  end
+
+  def install
+    if OS.mac?
+      if Hardware::CPU.arm?
+        bin.install "dpp-macos-aarch64" => "dpp"
+      else
+        bin.install "dpp-macos-x86_64" => "dpp"
+      end
+    elsif OS.linux?
+      bin.install "dpp-linux-x86_64" => "dpp"
+    end
+  end
+
+  test do
+    assert_match version.to_s, shell_output("#{bin}/dpp --version")
+  end
+
+  def caveats
+    <<~EOS
+      dpp-cli requires Deno 2.0 or later to run.
+      You can install Deno via Homebrew:
+        brew install deno
+
+      To get started with dpp.vim:
+        dpp init -t scaffold -e nvim
+
+      For more information, visit:
+        https://github.com/kobayashiyabako16g/dpp-cli
+    EOS
+  end
+end

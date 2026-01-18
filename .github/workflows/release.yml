@@ -24,16 +24,16 @@ jobs:
         config:
           - os: ubuntu-latest
             target: x86_64-unknown-linux-gnu
-            artifact_name: dpp-linux-x86_64
+            artifact_name: dpp-cli-linux-x86_64
           - os: macos-latest
             target: x86_64-apple-darwin
-            artifact_name: dpp-macos-x86_64
+            artifact_name: dpp-cli-macos-x86_64
           - os: macos-latest
             target: aarch64-apple-darwin
-            artifact_name: dpp-macos-aarch64
+            artifact_name: dpp-cli-macos-aarch64
           - os: windows-latest
             target: x86_64-pc-windows-msvc
-            artifact_name: dpp-windows-x86_64.exe
+            artifact_name: dpp-cli-windows-x86_64.exe
 
     steps:
       - name: Checkout code
@@ -47,13 +47,23 @@ jobs:
       - name: Build binary
         run: deno task build:target dist/${{ matrix.config.artifact_name }} --target ${{ matrix.config.target }} main.ts
 
+      - name: Create tarball for macOS
+        if: runner.os == 'macOS'
+        run: |
+          cd dist
+          tar czf ${{ matrix.config.artifact_name }}.tar.gz ${{ matrix.config.artifact_name }}
+          cd ..
+
       - name: Upload Release Asset
         uses: softprops/action-gh-release@v1
         with:
-          files: dist/${{ matrix.config.artifact_name }}
+          files: |
+            dist/${{ matrix.config.artifact_name }}
+            dist/${{ matrix.config.artifact_name }}.tar.gz
           tag_name: ${{ github.event.inputs.tag || github.ref_name }}
           draft: false
           prerelease: false
+          make_latest: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -76,3 +86,91 @@ jobs:
 
       - name: Publish to JSR
         run: deno publish
+
+  update-homebrew:
+    name: Update Homebrew Formula
+    needs: release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main repository
+        uses: actions/checkout@v4
+
+      - name: Update Homebrew Formula via PR
+        env:
+          GH_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+          VERSION_TAG: ${{ github.event.inputs.tag || github.ref_name }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          export VERSION="${VERSION_TAG#v}"
+          export ARM64_URL="https://github.com/${REPOSITORY}/releases/download/v${VERSION}/dpp-cli-macos-aarch64.tar.gz"
+          export AMD64_URL="https://github.com/${REPOSITORY}/releases/download/v${VERSION}/dpp-cli-macos-x86_64.tar.gz"
+          export LINUX_URL="https://github.com/${REPOSITORY}/releases/download/v${VERSION}/dpp-cli-linux-x86_64.tar.gz"
+
+          export SHA256_ARM64=$(curl -sL "$ARM64_URL" | shasum -a 256 | cut -d ' ' -f 1)
+          export SHA256_AMD64=$(curl -sL "$AMD64_URL" | shasum -a 256 | cut -d ' ' -f 1)
+          export SHA256_LINUX=$(curl -sL "$LINUX_URL" | shasum -a 256 | cut -d ' ' -f 1)
+
+          echo "ARM64 SHA256: ${SHA256_ARM64}"
+          echo "AMD64 SHA256: ${SHA256_AMD64}"
+          echo "Linux SHA256: ${SHA256_LINUX}"
+
+          BRANCH_NAME="update-dpp-cli-${VERSION}"
+
+          # Check if PR already exists
+          EXISTING_PR=$(gh api repos/${{ github.repository_owner }}/homebrew-tap/pulls \
+            --jq ".[] | select(.head.ref == \"${BRANCH_NAME}\") | .number" 2>/dev/null || echo "")
+
+          if [ -n "$EXISTING_PR" ]; then
+            echo "PR #${EXISTING_PR} already exists for ${BRANCH_NAME}, closing it"
+            gh api repos/${{ github.repository_owner }}/homebrew-tap/pulls/${EXISTING_PR} \
+              --method PATCH \
+              --field state="closed"
+          fi
+
+          # Generate formula content
+          FORMULA_CONTENT=$(envsubst < .github/homebrew/dpp-cli.rb.template | base64)
+
+          # Get main branch SHA
+          MAIN_SHA=$(gh api repos/${{ github.repository_owner }}/homebrew-tap/git/refs/heads/main \
+            --jq '.object.sha')
+
+          # Create or update branch
+          gh api repos/${{ github.repository_owner }}/homebrew-tap/git/refs \
+            --method POST \
+            --field ref="refs/heads/${BRANCH_NAME}" \
+            --field sha="${MAIN_SHA}" 2>/dev/null || \
+          gh api repos/${{ github.repository_owner }}/homebrew-tap/git/refs/heads/${BRANCH_NAME} \
+            --method PATCH \
+            --field sha="${MAIN_SHA}" \
+            --field force=true
+
+          # Get current file SHA on the branch
+          FILE_SHA=$(gh api repos/${{ github.repository_owner }}/homebrew-tap/contents/Formula/dpp-cli.rb?ref=${BRANCH_NAME} \
+            --jq '.sha' 2>/dev/null || echo "")
+
+          # Update file on branch
+          if [ -n "$FILE_SHA" ]; then
+            gh api repos/${{ github.repository_owner }}/homebrew-tap/contents/Formula/dpp-cli.rb \
+              --method PUT \
+              --field message="Update dpp-cli to ${VERSION}" \
+              --field content="$FORMULA_CONTENT" \
+              --field sha="$FILE_SHA" \
+              --field branch="${BRANCH_NAME}"
+              --field tags="dpp-cli"
+          else
+            gh api repos/${{ github.repository_owner }}/homebrew-tap/contents/Formula/dpp-cli.rb \
+              --method PUT \
+              --field message="Update dpp-cli to ${VERSION}" \
+              --field content="$FORMULA_CONTENT" \
+              --field branch="${BRANCH_NAME}"
+              --field tags="dpp-cli"
+          fi
+
+          # Create new PR
+          gh api repos/${{ github.repository_owner }}/homebrew-tap/pulls \
+            --method POST \
+            --field title="Update dpp-cli to ${VERSION}" \
+            --field head="${BRANCH_NAME}" \
+            --field base="main" \
+            --field body="Auto-generated PR to update dpp-cli to version ${VERSION}" \
+            --field draft=false
