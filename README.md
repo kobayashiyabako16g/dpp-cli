@@ -15,6 +15,13 @@ A modern CLI tool for managing [dpp.vim](https://github.com/Shougo/dpp.vim) plug
 deno install -gA jsr:@yabako/dpp-cli
 ```
 
+### Using Homebrew
+
+```bash
+brew tap kobayashiyabako16g/tap
+brew install dpp-cli
+```
+
 Or with explicit permissions:
 
 ```bash
