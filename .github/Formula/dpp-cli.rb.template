@@ -24,12 +24,12 @@ class DppCli < Formula
   def install
     if OS.mac?
       if Hardware::CPU.arm?
-        bin.install "dpp-macos-aarch64" => "dpp-cli"
+        bin.install "dpp-cli-macos-aarch64" => "dpp-cli"
       else
-        bin.install "dpp-macos-x86_64" => "dpp-cli"
+        bin.install "dpp-cli-macos-x86_64" => "dpp-cli"
       end
     elsif OS.linux?
-      bin.install "dpp-linux-x86_64" => "dpp-cli"
+      bin.install "dpp-cli-linux-x86_64" => "dpp-cli"
     end
   end
 
