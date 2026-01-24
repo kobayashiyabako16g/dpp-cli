@@ -1,0 +1,75 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "labels": ["dependencies"],
+  "timezone": "Asia/Tokyo",
+  "schedule": ["before 9am on monday"],
+  "minimumReleaseAge": "4 days",
+  "packageRules": [
+    {
+      "description": "Deno dependencies from deno.json",
+      "matchManagers": ["deno"],
+      "groupName": "Deno dependencies",
+      "automerge": false,
+      "rangeStrategy": "bump",
+      "minimumReleaseAge": "4 days"
+    },
+    {
+      "description": "Deno runtime updates",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["denoland/deno"],
+      "groupName": "Deno runtime",
+      "automerge": false,
+      "minimumReleaseAge": "4 days"
+    },
+    {
+      "description": "GitHub Actions",
+      "matchManagers": ["github-actions"],
+      "groupName": "GitHub Actions",
+      "automerge": true,
+      "automergeType": "pr",
+      "matchUpdateTypes": ["minor", "patch"]
+    },
+    {
+      "description": "Nix dependencies",
+      "matchManagers": ["nix"],
+      "groupName": "Nix dependencies",
+      "automerge": false,
+      "minimumReleaseAge": "4 days"
+    },
+    {
+      "description": "Major updates require manual review",
+      "matchUpdateTypes": ["major"],
+      "automerge": false,
+      "labels": ["dependencies", "major"]
+    },
+    {
+      "description": "Auto-merge minor and patch updates for dev dependencies",
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true,
+      "automergeType": "pr"
+    }
+  ],
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["before 9am on the first day of the month"]
+  },
+  "prConcurrentLimit": 5,
+  "prHourlyLimit": 2,
+  "semanticCommits": "enabled",
+  "commitMessagePrefix": "chore(deps):",
+  "commitMessageAction": "update",
+  "dependencyDashboard": true,
+  "platformAutomerge": true,
+  "ignorePaths": [
+    "**/node_modules/**",
+    "**/vendor/**"
+  ],
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "labels": ["security"]
+  }
+}
