@@ -26,7 +26,7 @@ deno install -g --allow-read --allow-write --allow-env --allow-run --allow-net j
 ```bash
 git clone https://github.com/kobayashiyabako16g/dpp-cli.git
 cd dpp-cli
-deno install --allow-read --allow-write --allow-env --allow-run --allow-net -n dpp main.ts
+deno install --allow-read --allow-write --allow-env --allow-run --allow-net -n dpp-cli main.ts
 ```
 
 ## Quick Start
@@ -35,13 +35,13 @@ deno install --allow-read --allow-write --allow-env --allow-run --allow-net -n d
 
 ```bash
 # Neovim (creates Lua + TypeScript config)
-dpp init -t minimal -e nvim
+dpp-cli init -t minimal -e nvim
 
 # Vim (creates Vim script + TOML + TypeScript config)
-dpp init -t minimal -e vim
+dpp-cli init -t minimal -e vim
 
 # Scaffold template with more features
-dpp init -t scaffold -e nvim
+dpp-cli init -t scaffold -e nvim
 ```
 
 ### 2. Add plugins
@@ -50,29 +50,29 @@ All plugins are managed in `dpp.toml` regardless of your configuration format:
 
 ```bash
 # Add a plugin
-dpp add Shougo/ddu.vim
+dpp-cli add Shougo/ddu.vim
 
 # Add with lazy loading
-dpp add Shougo/ddc.vim --on-cmd Ddc
+dpp-cli add Shougo/ddc.vim --on-cmd Ddc
 
 # Add with dependencies
-dpp add Shougo/ddu-ui-ff --depends denops.vim
+dpp-cli add Shougo/ddu-ui-ff --depends denops.vim
 ```
 
 ### 3. Remove plugins
 
 ```bash
-dpp remove Shougo/ddu-ui-ff
+dpp-cli remove Shougo/ddu-ui-ff
 ```
 
 ### 4. Edit plugin configuration
 
 ```bash
 # Edit configuration in your preferred editor
-dpp edit
+dpp-cli edit
 
 # Edit specific profile
-dpp edit -p myprofile
+dpp-cli edit -p myprofile
 ```
 
 The editor is determined by the `$EDITOR` or `$VISUAL` environment variable, falling back to `vi` (Unix) or `notepad` (Windows).
@@ -81,15 +81,15 @@ The editor is determined by the `$EDITOR` or `$VISUAL` environment variable, fal
 
 ```bash
 # Remove all configuration files, cache, and profile
-dpp clean
+dpp-cli clean
 
 # Skip confirmation prompt
-dpp clean --force
+dpp-cli clean --force
 ```
 
 ## Commands
 
-### `dpp init`
+### `dpp-cli init`
 
 Initialize a new dpp.vim configuration.
 
@@ -108,10 +108,10 @@ Initialize a new dpp.vim configuration.
 **Example:**
 
 ```bash
-dpp init -t scaffold -e nvim
+dpp-cli init -t scaffold -e nvim
 ```
 
-### `dpp add`
+### `dpp-cli add`
 
 Add a plugin to your configuration.
 
@@ -137,18 +137,18 @@ Add a plugin to your configuration.
 
 ```bash
 # Simple add (all formats work)
-dpp add Shougo/ddu.vim
-dpp add https://github.com/Shougo/ddu.vim
-dpp add git@github.com:Shougo/ddu.vim.git
+dpp-cli add Shougo/ddu.vim
+dpp-cli add https://github.com/Shougo/ddu.vim
+dpp-cli add git@github.com:Shougo/ddu.vim.git
 
 # With lazy loading
-dpp add Shougo/ddc.vim --on-event InsertEnter
+dpp-cli add Shougo/ddc.vim --on-event InsertEnter
 
 # With dependencies
-dpp add Shougo/ddu-ui-ff --depends denops.vim
+dpp-cli add Shougo/ddu-ui-ff --depends denops.vim
 ```
 
-### `dpp remove`
+### `dpp-cli remove`
 
 Remove a plugin from your configuration.
 
@@ -164,11 +164,11 @@ Remove a plugin from your configuration.
 
 ```bash
 # All formats work for removal
-dpp remove Shougo/ddu-ui-ff
-dpp remove https://github.com/Shougo/ddu-ui-ff.git
+dpp-cli remove Shougo/ddu-ui-ff
+dpp-cli remove https://github.com/Shougo/ddu-ui-ff.git
 ```
 
-### `dpp edit`
+### `dpp-cli edit`
 
 Edit the TOML configuration file in your preferred editor.
 
@@ -180,13 +180,13 @@ Edit the TOML configuration file in your preferred editor.
 
 ```bash
 # Edit active profile's configuration
-dpp edit
+dpp-cli edit
 
 # Edit specific profile
-dpp edit -p myprofile
+dpp-cli edit -p myprofile
 
 # Use custom editor
-EDITOR="code --wait" dpp edit
+EDITOR="code --wait" dpp-cli edit
 ```
 
 **Notes:**
@@ -196,9 +196,9 @@ EDITOR="code --wait" dpp edit
 - Opens the profile's default TOML file (`dpp.toml`)
 - No validation or backup is performed (manual editing is trusted)
 
-### `dpp clean`
+### `dpp-cli clean`
 
-Remove all dpp configuration files, cache directory, and profile.
+Remove all dpp-cli configuration files, cache directory, and profile.
 
 **Options:**
 
@@ -215,13 +215,13 @@ Remove all dpp configuration files, cache directory, and profile.
 
 ```bash
 # Clean with confirmation prompt
-dpp clean
+dpp-cli clean
 
 # Clean specific profile
-dpp clean --profile my-profile
+dpp-cli clean --profile my-profile
 
 # Clean without confirmation (useful for scripts)
-dpp clean --force
+dpp-cli clean --force
 ```
 
 **Note:** In non-interactive mode (e.g., CI/CD), the `--force` flag is required.
@@ -244,7 +244,7 @@ deno test --allow-read --allow-write --allow-env --allow-run --allow-net
 ### Building
 
 ```bash
-deno compile --allow-read --allow-write --allow-env --allow-run --allow-net -o dpp main.ts
+deno compile --allow-read --allow-write --allow-env --allow-run --allow-net -o dpp-cli main.ts
 ```
 
 ## Contributing
