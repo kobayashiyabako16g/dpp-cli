@@ -155,14 +155,14 @@ jobs:
               --field message="Update dpp-cli to ${VERSION}" \
               --field content="$FORMULA_CONTENT" \
               --field sha="$FILE_SHA" \
-              --field branch="${BRANCH_NAME}"
+              --field branch="${BRANCH_NAME}" \
               --field tags="dpp-cli"
           else
             gh api repos/${{ github.repository_owner }}/homebrew-tap/contents/Formula/dpp-cli.rb \
               --method PUT \
               --field message="Update dpp-cli to ${VERSION}" \
               --field content="$FORMULA_CONTENT" \
-              --field branch="${BRANCH_NAME}"
+              --field branch="${BRANCH_NAME}" \
               --field tags="dpp-cli"
           fi
 
