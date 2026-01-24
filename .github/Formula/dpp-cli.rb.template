@@ -24,27 +24,30 @@ class DppCli < Formula
   def install
     if OS.mac?
       if Hardware::CPU.arm?
-        bin.install "dpp-macos-aarch64" => "dpp"
+        bin.install "dpp-macos-aarch64" => "dpp-cli"
       else
-        bin.install "dpp-macos-x86_64" => "dpp"
+        bin.install "dpp-macos-x86_64" => "dpp-cli"
       end
     elsif OS.linux?
-      bin.install "dpp-linux-x86_64" => "dpp"
+      bin.install "dpp-linux-x86_64" => "dpp-cli"
     end
   end
 
   test do
-    assert_match version.to_s, shell_output("#{bin}/dpp --version")
+    assert_match version.to_s, shell_output("#{bin}/dpp-cli --version")
   end
 
   def caveats
     <<~EOS
-      dpp-cli requires Deno 2.0 or later to run.
-      You can install Deno via Homebrew:
-        brew install deno
+      dpp-cli requires Neovim or Vim to run.
+      You can install Neovim via Homebrew:
+        brew install neovim
+
+      Or Vim:
+        brew install vim
 
       To get started with dpp.vim:
-        dpp init -t scaffold -e nvim
+        dpp-cli init -t scaffold -e nvim
 
       For more information, visit:
         https://github.com/kobayashiyabako16g/dpp-cli

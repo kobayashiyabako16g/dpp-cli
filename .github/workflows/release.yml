@@ -128,7 +128,7 @@ jobs:
           fi
 
           # Generate formula content
-          FORMULA_CONTENT=$(envsubst < .github/homebrew/dpp-cli.rb.template | base64)
+          FORMULA_CONTENT=$(envsubst < .github/Formula/dpp-cli.rb.template | base64)
 
           # Get main branch SHA
           MAIN_SHA=$(gh api repos/${{ github.repository_owner }}/homebrew-tap/git/refs/heads/main \
