@@ -6,7 +6,7 @@
   "labels": ["dependencies"],
   "timezone": "Asia/Tokyo",
   "schedule": [
-    "every weekday after 9am and before 10am" 
+    "every weekday after 9am and before 10am"
   ],
   "minimumReleaseAge": "4 days",
   "packageRules": [
