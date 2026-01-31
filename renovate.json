@@ -5,7 +5,9 @@
   ],
   "labels": ["dependencies"],
   "timezone": "Asia/Tokyo",
-  "schedule": ["before 9am on monday"],
+  "schedule": [
+    "at 9am"
+  ],
   "minimumReleaseAge": "4 days",
   "packageRules": [
     {
@@ -54,8 +56,7 @@
     }
   ],
   "lockFileMaintenance": {
-    "enabled": true,
-    "schedule": ["before 9am on the first day of the month"]
+    "enabled": true
   },
   "prConcurrentLimit": 5,
   "prHourlyLimit": 2,
