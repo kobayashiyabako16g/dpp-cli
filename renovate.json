@@ -73,5 +73,25 @@
   "vulnerabilityAlerts": {
     "enabled": true,
     "labels": ["security"]
-  }
+  },
+  "regexManagers": [
+    {
+      "description": "Deno JSR imports",
+      "fileMatch": ["^deno\\.jsonc?$"],
+      "matchStrings": [
+        "\"(?<depName>jsr:@[^\"@]+/[^\"@]+)@(?<currentValue>[^\"^]+)\""
+      ],
+      "datasourceTemplate": "deno",
+      "versioningTemplate": "semver"
+    },
+    {
+      "description": "Deno npm imports",
+      "fileMatch": ["^deno\\.jsonc?$"],
+      "matchStrings": [
+        "\"(?<depName>npm:@?[^\"@]+/[^\"@]+)@(?<currentValue>[^\"^]+)\""
+      ],
+      "datasourceTemplate": "deno",
+      "versioningTemplate": "semver"
+    }
+  ]
 }
