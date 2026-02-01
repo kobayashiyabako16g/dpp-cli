@@ -81,7 +81,7 @@
       "matchStrings": [
         "\"(?<depName>jsr:@[^\"@]+/[^\"@]+)@(?<currentValue>[^\"^]+)\""
       ],
-      "datasourceTemplate": "deno",
+      "datasourceTemplate": "jsr",
       "versioningTemplate": "semver"
     },
     {
@@ -90,7 +90,7 @@
       "matchStrings": [
         "\"(?<depName>npm:@?[^\"@]+/[^\"@]+)@(?<currentValue>[^\"^]+)\""
       ],
-      "datasourceTemplate": "deno",
+      "datasourceTemplate": "npm",
       "versioningTemplate": "semver"
     }
   ]
