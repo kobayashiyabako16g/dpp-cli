@@ -84,7 +84,7 @@
     {
       "customType": "regex",
       "description": "Deno JSR imports",
-      "managerFilePatterns": ["^deno\\.jsonc?$"],
+      "managerFilePatterns": ["/deno.json$/","/deno.jsonc$/"],
       "matchStrings": [
         "\"(?<depName>jsr:@[^\"@]+/[^\"@]+)@(?<currentValue>[^\"^]+)\""
       ],
@@ -94,7 +94,7 @@
     {
       "customType": "regex",
       "description": "Deno npm imports",
-      "managerFilePatterns": ["^deno\\.jsonc?$"],
+      "managerFilePatterns": ["/deno.json$/","/deno.jsonc$/"],
       "matchStrings": [
         "\"(?<depName>npm:@?[^\"@]+/[^\"@]+)@(?<currentValue>[^\"^]+)\""
       ],
