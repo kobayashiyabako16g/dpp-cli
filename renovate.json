@@ -53,6 +53,12 @@
       "matchUpdateTypes": ["minor", "patch"],
       "automerge": true,
       "automergeType": "pr"
+    },
+    {
+      "description": "Deno imports (jsr + npm)",
+      "matchManagers": ["regex"],
+      "groupName": "Deno imports",
+      "automerge": false
     }
   ],
   "lockFileMaintenance": {
@@ -74,10 +80,11 @@
     "enabled": true,
     "labels": ["security"]
   },
-  "regexManagers": [
+  "customManagers": [
     {
+      "customType": "regex",
       "description": "Deno JSR imports",
-      "fileMatch": ["^deno\\.jsonc?$"],
+      "managerFilePatterns": ["^deno\\.jsonc?$"],
       "matchStrings": [
         "\"(?<depName>jsr:@[^\"@]+/[^\"@]+)@(?<currentValue>[^\"^]+)\""
       ],
@@ -85,8 +92,9 @@
       "versioningTemplate": "semver"
     },
     {
+      "customType": "regex",
       "description": "Deno npm imports",
-      "fileMatch": ["^deno\\.jsonc?$"],
+      "managerFilePatterns": ["^deno\\.jsonc?$"],
       "matchStrings": [
         "\"(?<depName>npm:@?[^\"@]+/[^\"@]+)@(?<currentValue>[^\"^]+)\""
       ],
