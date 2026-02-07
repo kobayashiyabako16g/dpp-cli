@@ -86,7 +86,7 @@
       "description": "Deno JSR imports",
       "managerFilePatterns": ["/deno.json$/", "/deno.jsonc$/"],
       "matchStrings": [
-        "\"(?<depName>jsr:@[^\"@]+/[^\"@]+)@(?<currentValue>[^\"^]+)\""
+        "\"(?<depName>jsr:@[^\"@]+/[^\"@]+)@(?:\\^)?(?<currentValue>[^\"]+)\""
       ],
       "datasourceTemplate": "jsr",
       "versioningTemplate": "semver"
@@ -96,7 +96,7 @@
       "description": "Deno npm imports",
       "managerFilePatterns": ["/deno.json$/", "/deno.jsonc$/"],
       "matchStrings": [
-        "\"(?<depName>npm:@?[^\"@]+/[^\"@]+)@(?<currentValue>[^\"^]+)\""
+        "\"(?<depName>npm:@?[^\"@]+(?:/[^\"@]+)?)@(?:\\^)?(?<currentValue>[^\"]+)\""
       ],
       "datasourceTemplate": "npm",
       "versioningTemplate": "semver"
