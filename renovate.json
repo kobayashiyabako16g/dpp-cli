@@ -80,6 +80,11 @@
     "enabled": true,
     "labels": ["security"]
   },
+  "postUpgradeTasks": {
+    "commands": ["deno install --lockfile-only"],
+    "fileFilters": ["deno.lock"],
+    "executionMode": "branch"
+  },
   "customManagers": [
     {
       "customType": "jsonata",
