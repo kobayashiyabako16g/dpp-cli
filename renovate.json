@@ -9,6 +9,7 @@
     "every weekday after 9am and before 10am"
   ],
   "minimumReleaseAge": "4 days",
+  "allowedCommands": ["^deno install"],
   "packageRules": [
     {
       "description": "Deno dependencies from deno.json",
