@@ -9,8 +9,8 @@
     "lint": "deno lint",
     "check": "deno check main.ts src/**/*.ts",
     "fmt": "deno fmt",
-    "build": "deno compile --unstable --allow-read --allow-write --allow-env --allow-run --output ./dist/dpp-cli ./main.ts",
-    "build:target": "deno compile --allow-read --allow-write --allow-env --allow-run --output"
+    "build": "deno compile --unstable --allow-read --allow-write --allow-env --allow-run --include=src/templates/minimal/lua.eta --include=src/templates/minimal/ts.eta --include=src/templates/minimal/vim.eta --include=src/templates/scaffold/lua.eta --include=src/templates/scaffold/toml.eta --include=src/templates/scaffold/ts.eta --include=src/templates/scaffold/vim.eta --output ./dist/dpp-cli ./main.ts",
+    "build:target": "deno compile --allow-read --allow-write --allow-env --allow-run --include=src/templates/minimal/lua.eta --include=src/templates/minimal/ts.eta --include=src/templates/minimal/vim.eta --include=src/templates/scaffold/lua.eta --include=src/templates/scaffold/toml.eta --include=src/templates/scaffold/ts.eta --include=src/templates/scaffold/vim.eta --output"
   },
   "imports": {
     "@cliffy/prompt": "jsr:@cliffy/prompt@^1.0.0-rc.5",
