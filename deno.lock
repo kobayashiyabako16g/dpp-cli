@@ -1,130 +1,204 @@
 {
-  "version": "4",
+  "version": "5",
   "specifiers": {
-    "jsr:@bgub/eta@^4.5.0": "4.5.0",
-    "jsr:@cliffy/ansi@1.0.0-rc.8": "1.0.0-rc.8",
-    "jsr:@cliffy/internal@1.0.0-rc.8": "1.0.0-rc.8",
-    "jsr:@cliffy/keycode@1.0.0-rc.8": "1.0.0-rc.8",
-    "jsr:@cliffy/prompt@^1.0.0-rc.5": "1.0.0-rc.8",
+    "jsr:@bgub/eta@^4.6.0": "4.6.0",
+    "jsr:@cliffy/ansi@1.2.1": "1.2.1",
+    "jsr:@cliffy/internal@1.2.1": "1.2.1",
+    "jsr:@cliffy/keycode@1.2.1": "1.2.1",
+    "jsr:@cliffy/prompt@^1.2.1": "1.2.1",
+    "jsr:@core/unknownutil@^4.3.0": "4.3.0",
+    "jsr:@deno/cache-dir@~0.13.2": "0.13.2",
+    "jsr:@deno/graph@~0.73.1": "0.73.1",
+    "jsr:@deno/graph@~0.96.2": "0.96.2",
     "jsr:@denops/core@^8.0.1": "8.0.1",
-    "jsr:@denops/std@~8.1.1": "8.1.1",
-    "jsr:@gunshi/gunshi@~0.27.0-beta.6": "0.27.0-beta.6",
-    "jsr:@shougo/dpp-vim@5.1": "5.1.0",
-    "jsr:@std/assert@1": "1.0.16",
-    "jsr:@std/assert@~1.0.6": "1.0.16",
-    "jsr:@std/collections@^1.1.3": "1.1.3",
-    "jsr:@std/encoding@~1.0.5": "1.0.10",
-    "jsr:@std/fmt@^1.0.8": "1.0.8",
-    "jsr:@std/fmt@~1.0.2": "1.0.8",
-    "jsr:@std/fs@1": "1.0.20",
-    "jsr:@std/internal@^1.0.12": "1.0.12",
-    "jsr:@std/io@~0.224.9": "0.224.9",
-    "jsr:@std/path@1": "1.1.3",
-    "jsr:@std/path@^1.1.3": "1.1.3",
-    "jsr:@std/path@~1.0.6": "1.0.9",
-    "jsr:@std/text@~1.0.7": "1.0.16",
-    "jsr:@std/toml@1": "1.0.11",
-    "npm:@gunshi/docs@0.27": "0.27.0",
-    "npm:@gunshi/plugin-global@0.27.0-beta.6": "0.27.0-beta.6",
-    "npm:@gunshi/plugin-i18n@0.27.0-beta.6": "0.27.0-beta.6_@gunshi+plugin-global@0.27.0-beta.6",
-    "npm:@gunshi/plugin-renderer@0.27.0-beta.6": "0.27.0-beta.6_@gunshi+plugin-i18n@0.27.0-beta.6__@gunshi+plugin-global@0.27.0-beta.6_@gunshi+plugin-global@0.27.0-beta.6",
+    "jsr:@denops/std@8.2": "8.2.0",
+    "jsr:@gunshi/gunshi@~0.35.1": "0.35.1",
+    "jsr:@lambdalisue/import-map-importer@~0.5.1": "0.5.1",
+    "jsr:@shougo/dpp-vim@5.3": "5.3.0",
+    "jsr:@std/assert@0.223": "0.223.0",
+    "jsr:@std/assert@1.0.19": "1.0.19",
+    "jsr:@std/assert@^1.0.19": "1.0.19",
+    "jsr:@std/assert@~1.0.7": "1.0.19",
+    "jsr:@std/bytes@0.223": "0.223.0",
+    "jsr:@std/collections@^1.1.3": "1.2.0",
+    "jsr:@std/crypto@^1.0.5": "1.1.0",
+    "jsr:@std/encoding@^1.0.10": "1.0.10",
+    "jsr:@std/fmt@0.223": "0.223.0",
+    "jsr:@std/fmt@^1.0.10": "1.0.10",
+    "jsr:@std/fs@0.223": "0.223.0",
+    "jsr:@std/fs@^1.0.1": "1.0.24",
+    "jsr:@std/fs@^1.0.24": "1.0.24",
+    "jsr:@std/internal@^1.0.12": "1.0.14",
+    "jsr:@std/internal@^1.0.14": "1.0.14",
+    "jsr:@std/io@0.223": "0.223.0",
+    "jsr:@std/io@~0.225.3": "0.225.3",
+    "jsr:@std/path@0.223": "0.223.0",
+    "jsr:@std/path@1.1": "1.1.5",
+    "jsr:@std/path@^1.0.1": "1.1.5",
+    "jsr:@std/path@^1.1.5": "1.1.5",
+    "jsr:@std/text@^1.0.19": "1.0.19",
+    "jsr:@std/toml@^1.0.11": "1.0.11",
+    "npm:@gunshi/docs@~0.35.1": "0.35.1",
+    "npm:@gunshi/plugin-global@0.35.1": "0.35.1",
+    "npm:@gunshi/plugin-i18n@0.35.1": "0.35.1_@gunshi+plugin-global@0.35.1",
+    "npm:@gunshi/plugin-renderer@0.35.1": "0.35.1_@gunshi+plugin-i18n@0.35.1__@gunshi+plugin-global@0.35.1_@gunshi+plugin-global@0.35.1",
     "npm:@types/node@*": "22.12.0",
-    "npm:args-tokens@0.23": "0.23.0"
+    "npm:args-tokens@0.27": "0.27.0",
+    "npm:std-env@^4.1.0": "4.1.0"
   },
   "jsr": {
-    "@bgub/eta@4.5.0": {
-      "integrity": "3af12dad33888fddca0fc4330687e4eccc84695ec3abaf069d977281c5384c0f"
+    "@bgub/eta@4.6.0": {
+      "integrity": "fe872004cd6c64ca25c7e71fd80bbbad7d8d552cefd31828bddddb7db0f79eb1"
     },
-    "@cliffy/ansi@1.0.0-rc.8": {
-      "integrity": "ba37f10ce55bbfbdd8ddd987f91f029b17bce88385b98ba3058870f3b007b80c",
+    "@cliffy/ansi@1.2.1": {
+      "integrity": "b8702def9c0110b6eeb2b3b71e0b26cbe0a427facbb4f9c0189da0ba19feb549",
       "dependencies": [
         "jsr:@cliffy/internal",
         "jsr:@std/encoding",
-        "jsr:@std/io"
+        "jsr:@std/io@~0.225.3"
       ]
     },
-    "@cliffy/internal@1.0.0-rc.8": {
-      "integrity": "34cdf2fad9b084b5aed493b138d573f52d4e988767215f7460daf0b918ff43d8"
+    "@cliffy/internal@1.2.1": {
+      "integrity": "e398f41c6839d3d4d249c963bfcb1058013091425926d53a3cb482b1ca70684b"
     },
-    "@cliffy/keycode@1.0.0-rc.8": {
-      "integrity": "76dbf85a67ec0aea2e29ca049b8507b6b3f62a2a971bd744d8d3fc447c177cd9"
+    "@cliffy/keycode@1.2.1": {
+      "integrity": "ce0a1e00986054da31bc767274acefdc923338a47e75ad1fc2046a11c87ace16"
     },
-    "@cliffy/prompt@1.0.0-rc.8": {
-      "integrity": "eba403ea1d47b9971bf2210fa35f4dc7ebd2aba87beec9540ae47552806e2f25",
+    "@cliffy/prompt@1.2.1": {
+      "integrity": "e468fae0f52093ff2099f5be0bbc7632348ab82a3b7337b12ddd888aeb5d6eed",
       "dependencies": [
         "jsr:@cliffy/ansi",
         "jsr:@cliffy/internal",
         "jsr:@cliffy/keycode",
-        "jsr:@std/assert@~1.0.6",
-        "jsr:@std/fmt@~1.0.2",
-        "jsr:@std/io",
-        "jsr:@std/path@~1.0.6",
+        "jsr:@std/assert@^1.0.19",
+        "jsr:@std/fmt@^1.0.10",
+        "jsr:@std/io@~0.225.3",
+        "jsr:@std/path@^1.1.5",
         "jsr:@std/text"
       ]
+    },
+    "@core/unknownutil@4.3.0": {
+      "integrity": "538a3687ffa81028e91d148818047df219663d0da671d906cecd165581ae55cc"
+    },
+    "@deno/cache-dir@0.13.2": {
+      "integrity": "c22419dfe27ab85f345bee487aaaadba498b005cce3644e9d2528db035c5454d",
+      "dependencies": [
+        "jsr:@deno/graph@~0.73.1",
+        "jsr:@std/fmt@0.223",
+        "jsr:@std/fs@0.223",
+        "jsr:@std/io@0.223",
+        "jsr:@std/path@0.223"
+      ]
+    },
+    "@deno/graph@0.73.1": {
+      "integrity": "cd69639d2709d479037d5ce191a422eabe8d71bb68b0098344f6b07411c84d41"
+    },
+    "@deno/graph@0.96.2": {
+      "integrity": "db21e52fc5b2850cc5fe92528f4f84dd460c5e40678a6bd23ece5c9c53193090"
     },
     "@denops/core@8.0.1": {
       "integrity": "699c70b07b2347febb96972c857fb8325ad8efa99936a0a8c0bb2be82a8b8f32"
     },
-    "@denops/std@8.1.1": {
-      "integrity": "c9817c07c06a6aa2f6c56b56da4b1679daa59169ed78b147ef28cee75ef4aa20",
+    "@denops/std@8.2.0": {
+      "integrity": "6b473515c30a15b3ffe88accf11eabb7ed6210a1042311b563875bb10882f729",
       "dependencies": [
         "jsr:@denops/core"
       ]
     },
-    "@gunshi/gunshi@0.27.0-beta.6": {
-      "integrity": "031e128230203650683ae9ebb1e543c2068886e2b360f84f921d1dc505093c0a",
+    "@gunshi/gunshi@0.35.1": {
+      "integrity": "d9d1f2543eba652c33cce0c0329177258d122452a5c9d8b6b1da51b5af45f4c7",
       "dependencies": [
         "npm:@gunshi/plugin-global",
         "npm:@gunshi/plugin-i18n",
         "npm:@gunshi/plugin-renderer",
-        "npm:args-tokens"
+        "npm:args-tokens",
+        "npm:std-env"
       ]
     },
-    "@shougo/dpp-vim@5.1.0": {
-      "integrity": "30a688a0c392052ed544f2b61036769f0b8b37a22dce6016931ec362ac0cb005",
+    "@lambdalisue/import-map-importer@0.5.1": {
+      "integrity": "e4822500c8619c5cead6003e502d872eaec9d2216b01c72790933996e7ddf696",
       "dependencies": [
-        "jsr:@denops/std"
+        "jsr:@core/unknownutil",
+        "jsr:@deno/cache-dir",
+        "jsr:@deno/graph@~0.96.2",
+        "jsr:@std/crypto",
+        "jsr:@std/fs@^1.0.1",
+        "jsr:@std/path@^1.0.1"
       ]
     },
-    "@std/assert@1.0.16": {
-      "integrity": "6a7272ed1eaa77defe76e5ff63ca705d9c495077e2d5fd0126d2b53fc5bd6532",
+    "@shougo/dpp-vim@5.3.0": {
+      "integrity": "7d3976592058e2c2e4d3a756f69470b252b8f5256e4ce7b2f5b1fe2dbd3c7db7",
       "dependencies": [
-        "jsr:@std/internal"
+        "jsr:@denops/std",
+        "jsr:@lambdalisue/import-map-importer",
+        "jsr:@std/assert@~1.0.7",
+        "jsr:@std/path@1.1"
       ]
     },
-    "@std/collections@1.1.3": {
-      "integrity": "bf8b0818886df6a32b64c7d3b037a425111f28278d69fd0995aeb62777c986b0"
+    "@std/assert@0.223.0": {
+      "integrity": "eb8d6d879d76e1cc431205bd346ed4d88dc051c6366365b1af47034b0670be24"
+    },
+    "@std/assert@1.0.19": {
+      "integrity": "eaada96ee120cb980bc47e040f82814d786fe8162ecc53c91d8df60b8755991e",
+      "dependencies": [
+        "jsr:@std/internal@^1.0.12"
+      ]
+    },
+    "@std/bytes@0.223.0": {
+      "integrity": "84b75052cd8680942c397c2631318772b295019098f40aac5c36cead4cba51a8"
+    },
+    "@std/collections@1.2.0": {
+      "integrity": "47627a21d3a13138b77fd0e4d790ba9d2e603c3510b686cde6b132fe9aa98a88"
+    },
+    "@std/crypto@1.1.0": {
+      "integrity": "b8d6d0a6377a32b213af2661ed7bf1062d94feac0c57def5526a8e74a95c3ec8"
     },
     "@std/encoding@1.0.10": {
       "integrity": "8783c6384a2d13abd5e9e87a7ae0520a30e9f56aeeaa3bdf910a3eaaf5c811a1"
     },
-    "@std/fmt@1.0.8": {
-      "integrity": "71e1fc498787e4434d213647a6e43e794af4fd393ef8f52062246e06f7e372b7"
+    "@std/fmt@0.223.0": {
+      "integrity": "6deb37794127dfc7d7bded2586b9fc6f5d50e62a8134846608baf71ffc1a5208"
     },
-    "@std/fs@1.0.20": {
-      "integrity": "e953206aae48d46ee65e8783ded459f23bec7dd1f3879512911c35e5484ea187",
+    "@std/fmt@1.0.10": {
+      "integrity": "90dfba288802ac6de82fb31d0917eb9e4450b9925b954d5e51fc29ac07419db5"
+    },
+    "@std/fs@0.223.0": {
+      "integrity": "3b4b0550b2c524cbaaa5a9170c90e96cbb7354e837ad1bdaf15fc9df1ae9c31c"
+    },
+    "@std/fs@1.0.24": {
+      "integrity": "f3061b45b81673a2bece689da041df32d174be064c89eb6397fb5718d3fb7877",
       "dependencies": [
-        "jsr:@std/internal",
-        "jsr:@std/path@^1.1.3"
+        "jsr:@std/internal@^1.0.14",
+        "jsr:@std/path@^1.1.5"
       ]
     },
-    "@std/internal@1.0.12": {
-      "integrity": "972a634fd5bc34b242024402972cd5143eac68d8dffaca5eaa4dba30ce17b027"
+    "@std/internal@1.0.14": {
+      "integrity": "291516b3d4c35024d6ffbc0a9df5bf4c64116e05b50012cf846710152d2ffdf7"
     },
-    "@std/io@0.224.9": {
-      "integrity": "4414664b6926f665102e73c969cfda06d2c4c59bd5d0c603fd4f1b1c840d6ee3"
-    },
-    "@std/path@1.0.9": {
-      "integrity": "260a49f11edd3db93dd38350bf9cd1b4d1366afa98e81b86167b4e3dd750129e"
-    },
-    "@std/path@1.1.3": {
-      "integrity": "b015962d82a5e6daea980c32b82d2c40142149639968549c649031a230b1afb3",
+    "@std/io@0.223.0": {
+      "integrity": "2d8c3c2ab3a515619b90da2c6ff5ea7b75a94383259ef4d02116b228393f84f1",
       "dependencies": [
-        "jsr:@std/internal"
+        "jsr:@std/assert@0.223",
+        "jsr:@std/bytes"
       ]
     },
-    "@std/text@1.0.16": {
-      "integrity": "ddb9853b75119a2473857d691cf1ec02ad90793a2e8b4a4ac49d7354281a0cf8"
+    "@std/io@0.225.3": {
+      "integrity": "27b07b591384d12d7b568f39e61dff966b8230559122df1e9fd11cc068f7ddd1"
+    },
+    "@std/path@0.223.0": {
+      "integrity": "593963402d7e6597f5a6e620931661053572c982fc014000459edc1f93cc3989",
+      "dependencies": [
+        "jsr:@std/assert@0.223"
+      ]
+    },
+    "@std/path@1.1.5": {
+      "integrity": "ccea00982ea28c36becaf6e62f855406c76a8c32d462f66f415bbb7d83a271bc",
+      "dependencies": [
+        "jsr:@std/internal@^1.0.14"
+      ]
+    },
+    "@std/text@1.0.19": {
+      "integrity": "003a0e032d360e8c3a4e0410fb792c77a66bd6553fee9d60c6ec1bce30d29223"
     },
     "@std/toml@1.0.11": {
       "integrity": "e084988b872ca4bad6aedfb7350f6eeed0e8ba88e9ee5e1590621c5b5bb8f715",
@@ -141,35 +215,39 @@
         "tinyexec"
       ]
     },
-    "@gunshi/docs@0.27.0": {
-      "integrity": "sha512-5353dCkPzAbScCtUO/i2rge0E8BGupeeV/H8kLPHWHHGV9i/K4FRu57RepEgNZ8mag8qn7YFli/kg6HCXPN62g==",
+    "@gunshi/docs@0.35.1": {
+      "integrity": "sha512-648eDGsMSsdMgaUGVXsLzrhh3CPlsh3IBdXvVegR1vm6kXQS+pSt3P1Ja9TMW869MwklJu+PKM97fSI9CTjaDA==",
       "dependencies": [
         "@antfu/install-pkg",
         "tinyexec"
-      ]
+      ],
+      "bin": true
     },
-    "@gunshi/plugin-global@0.27.0-beta.6": {
-      "integrity": "sha512-sG4m5+l3bg21vlBABKNW7te6pYEvu0sln4V8lu8lU2R5YUrvHh4WrpNDHhjgRFz54zzGrQ1l1cl89aDeUq4MCw==",
+    "@gunshi/plugin-global@0.35.1": {
+      "integrity": "sha512-7ItgKOr1CDdiZcc/5/CTkcN8cBLt3++8E5P8BEA+RYgl0q8pkfXq7hRJzt5Q0nyg9WYc9DE5PzSVeNwfR1SKMA==",
       "dependencies": [
         "@gunshi/plugin"
       ]
     },
-    "@gunshi/plugin-i18n@0.27.0-beta.6_@gunshi+plugin-global@0.27.0-beta.6": {
-      "integrity": "sha512-+/EqLdHoRtnxHxmliayK2SIy+GSackkXibVxEs0kxgKFPPnXc37yQLgkRRqpK3rCcNFsWMpQdyh3c7qtxBObNQ==",
+    "@gunshi/plugin-i18n@0.35.1_@gunshi+plugin-global@0.35.1": {
+      "integrity": "sha512-fmLDCceUnpx/O/6/CZKve2JB9sSAEPE7ZU6zcyjfohQiU9XeOVGIJXj3VBYx5VDJzT9DxjzXTnWcwKxUW5cE+Q==",
       "dependencies": [
         "@gunshi/plugin",
         "@gunshi/plugin-global"
+      ],
+      "optionalPeers": [
+        "@gunshi/plugin-global"
       ]
     },
-    "@gunshi/plugin-renderer@0.27.0-beta.6_@gunshi+plugin-i18n@0.27.0-beta.6__@gunshi+plugin-global@0.27.0-beta.6_@gunshi+plugin-global@0.27.0-beta.6": {
-      "integrity": "sha512-RmiMPvYFDKQBg+z6PkDZbBjJ0XxSSxkcDoL6XixF45dq1/ewBcdxp0JBTkTik4n014fcx2ulOeSqsXVYObUoSA==",
+    "@gunshi/plugin-renderer@0.35.1_@gunshi+plugin-i18n@0.35.1__@gunshi+plugin-global@0.35.1_@gunshi+plugin-global@0.35.1": {
+      "integrity": "sha512-C5PJmSDIuvda3DzgSYG8QmdCRNvwv+pdO+ZWmpybpb2ycn/KHpx10uXCqpntZCPZbEHVydui20jWp5W69cs3vg==",
       "dependencies": [
         "@gunshi/plugin",
         "@gunshi/plugin-i18n"
       ]
     },
-    "@gunshi/plugin@0.27.0-beta.6": {
-      "integrity": "sha512-0Q9gTm1K4uY+vEuPCj1C8v1XxHKYSl37MCeho7uTb5ca06tGfc1FL3W3oeJW6yjIeaD7n4P4RKxx8Bm7ZWKy4w=="
+    "@gunshi/plugin@0.35.1": {
+      "integrity": "sha512-N6q4zIDiuRU0CM1CpTPFLUzxOW3T2XsUtnEjxFCIp+sTGfbH0jkejUKeUWynZfX5Blao5Ww45K4f66giQ6AJFA=="
     },
     "@types/node@22.12.0": {
       "integrity": "sha512-Fll2FZ1riMjNmlmJOdAyY5pUbkftXslB5DgEzlIuNaiWhXd00FhWxVC/r4yV/4wBb9JfImTu+jiSvXTkJ7F/gA==",
@@ -177,14 +255,17 @@
         "undici-types"
       ]
     },
-    "args-tokens@0.23.0": {
-      "integrity": "sha512-VZETsQmpEGO7A9adjfIOTyZuxKzurUas9kh1Hm0WGhFq8dOyw50P6OjiTwKyURwnmDabw0DbFjI+BUucJfCtnQ=="
+    "args-tokens@0.27.0": {
+      "integrity": "sha512-bA4QwSNK94NG99lTZSxqCpKwQOMAfmK9If3nt1udvFTIY3b6Vj/3QzpXuOtegiYh2197zQLc8eejKDJm8Emj/g=="
     },
     "package-manager-detector@1.6.0": {
       "integrity": "sha512-61A5ThoTiDG/C8s8UMZwSorAGwMJ0ERVGj2OjoW5pAalsNOg15+iQiPzrLJ4jhZ1HJzmC2PIHT2oEiH3R5fzNA=="
     },
-    "tinyexec@1.0.2": {
-      "integrity": "sha512-W/KYk+NFhkmsYpuHq5JykngiOCnxeVL8v8dFnqxSD8qEEdRfXk1SDM6JzNqcERbcGYj9tMrDQBYV9cjgnunFIg=="
+    "std-env@4.1.0": {
+      "integrity": "sha512-Rq7ybcX2RuC55r9oaPVEW7/xu3tj8u4GeBYHBWCychFtzMIr86A7e3PPEBPT37sHStKX3+TiX/Fr/ACmJLVlLQ=="
+    },
+    "tinyexec@1.2.4": {
+      "integrity": "sha512-SHf/r48b7vOrjve9PxJo3MN5v5yuyjHvdUcrQffT3WXMUfnGmHDVbC4k3sHJaJTgZCwpUplIaAo5ANtMyp3YHg=="
     },
     "undici-types@6.20.0": {
       "integrity": "sha512-Ny6QZ2Nju20vw1SRHe3d9jVu6gJ+4e3+MMpqu7pqE5HT6WsTSlce++GQmK5UXS8mzV8DSYHrQH+Xrf2jVcuKNg=="
@@ -192,16 +273,16 @@
   },
   "workspace": {
     "dependencies": [
-      "jsr:@bgub/eta@^4.5.0",
-      "jsr:@cliffy/prompt@^1.0.0-rc.5",
-      "jsr:@gunshi/gunshi@~0.27.0-beta.6",
-      "jsr:@shougo/dpp-vim@5.1",
-      "jsr:@std/assert@1",
-      "jsr:@std/fmt@^1.0.8",
-      "jsr:@std/fs@1",
-      "jsr:@std/path@1",
-      "jsr:@std/toml@1",
-      "npm:@gunshi/docs@0.27"
+      "jsr:@bgub/eta@^4.6.0",
+      "jsr:@cliffy/prompt@^1.2.1",
+      "jsr:@gunshi/gunshi@~0.35.1",
+      "jsr:@shougo/dpp-vim@5.3",
+      "jsr:@std/assert@1.0.19",
+      "jsr:@std/fmt@^1.0.10",
+      "jsr:@std/fs@^1.0.24",
+      "jsr:@std/path@^1.1.5",
+      "jsr:@std/toml@^1.0.11",
+      "npm:@gunshi/docs@~0.35.1"
     ]
   }
 }
