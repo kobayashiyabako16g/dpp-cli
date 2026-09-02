@@ -20,7 +20,7 @@
     "jsr:@std/assert@^1.0.19": "1.0.19",
     "jsr:@std/assert@~1.0.7": "1.0.19",
     "jsr:@std/bytes@0.223": "0.223.0",
-    "jsr:@std/collections@^1.1.3": "1.2.0",
+    "jsr:@std/collections@^1.1.3": "1.3.0",
     "jsr:@std/crypto@^1.0.5": "1.1.0",
     "jsr:@std/encoding@^1.0.10": "1.0.11",
     "jsr:@std/fmt@0.223": "0.223.0",
@@ -42,8 +42,7 @@
     "npm:@gunshi/docs@~0.37.1": "0.37.1",
     "npm:@gunshi/plugin-global@0.37.1": "0.37.1",
     "npm:@gunshi/plugin-i18n@0.37.1": "0.37.1_@gunshi+plugin-global@0.37.1",
-    "npm:@gunshi/plugin-renderer@0.37.1": "0.37.1_@gunshi+plugin-i18n@0.37.1__@gunshi+plugin-global@0.37.1_@gunshi+plugin-global@0.37.1",
-    "npm:@types/node@*": "22.12.0",
+    "npm:@gunshi/plugin-renderer@0.37.1": "0.37.1_@gunshi+plugin-i18n@0.37.1_@gunshi+plugin-global@0.37.1",
     "npm:args-tokens@~0.28.1": "0.28.1",
     "npm:std-env@^4.1.0": "4.2.0"
   },
@@ -148,8 +147,8 @@
     "@std/bytes@0.223.0": {
       "integrity": "84b75052cd8680942c397c2631318772b295019098f40aac5c36cead4cba51a8"
     },
-    "@std/collections@1.2.0": {
-      "integrity": "47627a21d3a13138b77fd0e4d790ba9d2e603c3510b686cde6b132fe9aa98a88"
+    "@std/collections@1.3.0": {
+      "integrity": "eb36b43d784477ea0b476483ac034a14bdd182aff921c812ecf662a1fcef9498"
     },
     "@std/crypto@1.1.0": {
       "integrity": "b8d6d0a6377a32b213af2661ed7bf1062d94feac0c57def5526a8e74a95c3ec8"
@@ -240,7 +239,7 @@
         "@gunshi/plugin-global"
       ]
     },
-    "@gunshi/plugin-renderer@0.37.1_@gunshi+plugin-i18n@0.37.1__@gunshi+plugin-global@0.37.1_@gunshi+plugin-global@0.37.1": {
+    "@gunshi/plugin-renderer@0.37.1_@gunshi+plugin-i18n@0.37.1_@gunshi+plugin-global@0.37.1": {
       "integrity": "sha512-G25KDRpw4ki9/jguQJ9Kaq7AntFEofAhIjC7dyKheU/TjMozwSxVzDsceogXyHcYZLvx0+7d4i8oeI5VZiYQRA==",
       "dependencies": [
         "@gunshi/plugin",
@@ -249,12 +248,6 @@
     },
     "@gunshi/plugin@0.37.1": {
       "integrity": "sha512-ljjBaL15jCwX6tEtWRdmAQ/y/svGcMZa5mVhMPgXFeQFQ++srK/x5dx8uchQFrE2MTqaFhMMjNK9AQowCyRv9A=="
-    },
-    "@types/node@22.12.0": {
-      "integrity": "sha512-Fll2FZ1riMjNmlmJOdAyY5pUbkftXslB5DgEzlIuNaiWhXd00FhWxVC/r4yV/4wBb9JfImTu+jiSvXTkJ7F/gA==",
-      "dependencies": [
-        "undici-types"
-      ]
     },
     "args-tokens@0.28.1": {
       "integrity": "sha512-2L4pJA8XcdRCqkNb5budSdbifzFP0iXexM1rF27kKLp8tWYfzGDV6BaAeBmrU6YLKct3Gt6Kn0njlAogJAdI6w=="
@@ -265,11 +258,8 @@
     "std-env@4.2.0": {
       "integrity": "sha512-oCUKSupKTHX53EyjDtuZQ64pjLJ6yYCtpmEw0goYxtjG9KpbRe8KAsl2tBUGU9DyMcJ0RwJ8GqJAFzMXcXW1Rw=="
     },
-    "tinyexec@1.2.4": {
-      "integrity": "sha512-SHf/r48b7vOrjve9PxJo3MN5v5yuyjHvdUcrQffT3WXMUfnGmHDVbC4k3sHJaJTgZCwpUplIaAo5ANtMyp3YHg=="
-    },
-    "undici-types@6.20.0": {
-      "integrity": "sha512-Ny6QZ2Nju20vw1SRHe3d9jVu6gJ+4e3+MMpqu7pqE5HT6WsTSlce++GQmK5UXS8mzV8DSYHrQH+Xrf2jVcuKNg=="
+    "tinyexec@1.3.0": {
+      "integrity": "sha512-QKAl9m8gWWGHV8jZcPeym6j+XULi6tOf1mT83WYJ4Lk2ytW/uwAWkrP0uFsdoYMdueVJ0qs26wZ+23xeB4ibNQ=="
     }
   },
   "workspace": {
