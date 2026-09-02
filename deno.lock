@@ -14,7 +14,7 @@
     "jsr:@denops/std@8.2": "8.2.0",
     "jsr:@gunshi/gunshi@~0.37.1": "0.37.1",
     "jsr:@lambdalisue/import-map-importer@~0.5.1": "0.5.1",
-    "jsr:@shougo/dpp-vim@5.3": "5.3.0",
+    "jsr:@shougo/dpp-vim@6.6": "6.6.0",
     "jsr:@std/assert@0.223": "0.223.0",
     "jsr:@std/assert@1.0.19": "1.0.19",
     "jsr:@std/assert@^1.0.19": "1.0.19",
@@ -42,7 +42,7 @@
     "npm:@gunshi/docs@~0.37.1": "0.37.1",
     "npm:@gunshi/plugin-global@0.37.1": "0.37.1",
     "npm:@gunshi/plugin-i18n@0.37.1": "0.37.1_@gunshi+plugin-global@0.37.1",
-    "npm:@gunshi/plugin-renderer@0.37.1": "0.37.1_@gunshi+plugin-i18n@0.37.1__@gunshi+plugin-global@0.37.1_@gunshi+plugin-global@0.37.1",
+    "npm:@gunshi/plugin-renderer@0.37.1": "0.37.1_@gunshi+plugin-i18n@0.37.1_@gunshi+plugin-global@0.37.1",
     "npm:@types/node@*": "22.12.0",
     "npm:args-tokens@~0.28.1": "0.28.1",
     "npm:std-env@^4.1.0": "4.2.0"
@@ -127,8 +127,8 @@
         "jsr:@std/path@^1.0.1"
       ]
     },
-    "@shougo/dpp-vim@5.3.0": {
-      "integrity": "7d3976592058e2c2e4d3a756f69470b252b8f5256e4ce7b2f5b1fe2dbd3c7db7",
+    "@shougo/dpp-vim@6.6.0": {
+      "integrity": "72fa3cfdf73af6e724e5035eaa82ece17eb9ff82bc86c8928f7ee1ff4adb6fd0",
       "dependencies": [
         "jsr:@denops/std",
         "jsr:@lambdalisue/import-map-importer",
@@ -240,7 +240,7 @@
         "@gunshi/plugin-global"
       ]
     },
-    "@gunshi/plugin-renderer@0.37.1_@gunshi+plugin-i18n@0.37.1__@gunshi+plugin-global@0.37.1_@gunshi+plugin-global@0.37.1": {
+    "@gunshi/plugin-renderer@0.37.1_@gunshi+plugin-i18n@0.37.1_@gunshi+plugin-global@0.37.1": {
       "integrity": "sha512-G25KDRpw4ki9/jguQJ9Kaq7AntFEofAhIjC7dyKheU/TjMozwSxVzDsceogXyHcYZLvx0+7d4i8oeI5VZiYQRA==",
       "dependencies": [
         "@gunshi/plugin",
@@ -277,7 +277,7 @@
       "jsr:@bgub/eta@^4.6.0",
       "jsr:@cliffy/prompt@^1.2.1",
       "jsr:@gunshi/gunshi@~0.37.1",
-      "jsr:@shougo/dpp-vim@5.3",
+      "jsr:@shougo/dpp-vim@6.6",
       "jsr:@std/assert@1.0.19",
       "jsr:@std/fmt@^1.0.10",
       "jsr:@std/fs@^1.0.24",
