@@ -2,17 +2,17 @@
   "version": "5",
   "specifiers": {
     "jsr:@bgub/eta@^4.6.0": "4.6.0",
-    "jsr:@cliffy/ansi@1.2.1": "1.2.1",
-    "jsr:@cliffy/internal@1.2.1": "1.2.1",
-    "jsr:@cliffy/keycode@1.2.1": "1.2.1",
-    "jsr:@cliffy/prompt@^1.2.1": "1.2.1",
+    "jsr:@cliffy/ansi@^1.3.1": "1.3.1",
+    "jsr:@cliffy/internal@^1.3.1": "1.3.1",
+    "jsr:@cliffy/keycode@^1.3.1": "1.3.1",
+    "jsr:@cliffy/prompt@^1.2.1": "1.3.1",
     "jsr:@core/unknownutil@^4.3.0": "4.3.0",
     "jsr:@deno/cache-dir@~0.13.2": "0.13.2",
     "jsr:@deno/graph@~0.73.1": "0.73.1",
     "jsr:@deno/graph@~0.96.2": "0.96.2",
     "jsr:@denops/core@^8.0.1": "8.0.1",
     "jsr:@denops/std@8.2": "8.2.0",
-    "jsr:@gunshi/gunshi@~0.37.1": "0.37.1",
+    "jsr:@gunshi/gunshi@~0.37.1": "0.37.3",
     "jsr:@lambdalisue/import-map-importer@~0.5.1": "0.5.1",
     "jsr:@shougo/dpp-vim@5.3": "5.3.0",
     "jsr:@std/assert@0.223": "0.223.0",
@@ -20,9 +20,9 @@
     "jsr:@std/assert@^1.0.19": "1.0.19",
     "jsr:@std/assert@~1.0.7": "1.0.19",
     "jsr:@std/bytes@0.223": "0.223.0",
-    "jsr:@std/collections@^1.1.3": "1.2.0",
+    "jsr:@std/collections@^1.1.3": "1.3.0",
     "jsr:@std/crypto@^1.0.5": "1.1.0",
-    "jsr:@std/encoding@^1.0.10": "1.0.11",
+    "jsr:@std/encoding@^1.0.11": "1.0.11",
     "jsr:@std/fmt@0.223": "0.223.0",
     "jsr:@std/fmt@^1.0.10": "1.0.10",
     "jsr:@std/fs@0.223": "0.223.0",
@@ -39,34 +39,33 @@
     "jsr:@std/path@^1.1.6": "1.1.6",
     "jsr:@std/text@^1.0.19": "1.0.19",
     "jsr:@std/toml@^1.0.11": "1.0.11",
-    "npm:@gunshi/docs@~0.37.1": "0.37.1",
-    "npm:@gunshi/plugin-global@0.37.1": "0.37.1",
-    "npm:@gunshi/plugin-i18n@0.37.1": "0.37.1_@gunshi+plugin-global@0.37.1",
-    "npm:@gunshi/plugin-renderer@0.37.1": "0.37.1_@gunshi+plugin-i18n@0.37.1__@gunshi+plugin-global@0.37.1_@gunshi+plugin-global@0.37.1",
-    "npm:@types/node@*": "22.12.0",
-    "npm:args-tokens@~0.28.1": "0.28.1",
+    "npm:@gunshi/docs@~0.37.1": "0.37.3",
+    "npm:@gunshi/plugin-global@0.37.3": "0.37.3",
+    "npm:@gunshi/plugin-i18n@0.37.3": "0.37.3_@gunshi+plugin-global@0.37.3",
+    "npm:@gunshi/plugin-renderer@0.37.3": "0.37.3_@gunshi+plugin-i18n@0.37.3_@gunshi+plugin-global@0.37.3",
+    "npm:args-tokens@0.29": "0.29.0",
     "npm:std-env@^4.1.0": "4.2.0"
   },
   "jsr": {
     "@bgub/eta@4.6.0": {
       "integrity": "fe872004cd6c64ca25c7e71fd80bbbad7d8d552cefd31828bddddb7db0f79eb1"
     },
-    "@cliffy/ansi@1.2.1": {
-      "integrity": "b8702def9c0110b6eeb2b3b71e0b26cbe0a427facbb4f9c0189da0ba19feb549",
+    "@cliffy/ansi@1.3.1": {
+      "integrity": "b6ffd9c79a42cd68fc412d4e520c6bbbdde3c74dba182d017c46790596e003d7",
       "dependencies": [
         "jsr:@cliffy/internal",
         "jsr:@std/encoding",
         "jsr:@std/io@~0.225.3"
       ]
     },
-    "@cliffy/internal@1.2.1": {
-      "integrity": "e398f41c6839d3d4d249c963bfcb1058013091425926d53a3cb482b1ca70684b"
+    "@cliffy/internal@1.3.1": {
+      "integrity": "b309718fbfb8a226e74bc06f151d4459c2bdfa7ce68482decca75106bbf28816"
     },
-    "@cliffy/keycode@1.2.1": {
-      "integrity": "ce0a1e00986054da31bc767274acefdc923338a47e75ad1fc2046a11c87ace16"
+    "@cliffy/keycode@1.3.1": {
+      "integrity": "6e1b1e5f5ef2091d8228dc78dda3afd53187aa25c07a3395467ba6e1ab86cea2"
     },
-    "@cliffy/prompt@1.2.1": {
-      "integrity": "e468fae0f52093ff2099f5be0bbc7632348ab82a3b7337b12ddd888aeb5d6eed",
+    "@cliffy/prompt@1.3.1": {
+      "integrity": "00802daf9735808373b285c003085121053e7acd6d111c1df04812253b2d363f",
       "dependencies": [
         "jsr:@cliffy/ansi",
         "jsr:@cliffy/internal",
@@ -74,7 +73,7 @@
         "jsr:@std/assert@^1.0.19",
         "jsr:@std/fmt@^1.0.10",
         "jsr:@std/io@~0.225.3",
-        "jsr:@std/path@^1.1.5",
+        "jsr:@std/path@^1.1.6",
         "jsr:@std/text"
       ]
     },
@@ -106,8 +105,8 @@
         "jsr:@denops/core"
       ]
     },
-    "@gunshi/gunshi@0.37.1": {
-      "integrity": "99769d56874e0812f42514b939c7c1b37b74fc0e3e391ace41b4e323be2330b6",
+    "@gunshi/gunshi@0.37.3": {
+      "integrity": "f4c053f7ec055f90c8a896a81c2296945d6e9759a740c2b3a0e05cc4936b9a47",
       "dependencies": [
         "npm:@gunshi/plugin-global",
         "npm:@gunshi/plugin-i18n",
@@ -148,8 +147,8 @@
     "@std/bytes@0.223.0": {
       "integrity": "84b75052cd8680942c397c2631318772b295019098f40aac5c36cead4cba51a8"
     },
-    "@std/collections@1.2.0": {
-      "integrity": "47627a21d3a13138b77fd0e4d790ba9d2e603c3510b686cde6b132fe9aa98a88"
+    "@std/collections@1.3.0": {
+      "integrity": "eb36b43d784477ea0b476483ac034a14bdd182aff921c812ecf662a1fcef9498"
     },
     "@std/crypto@1.1.0": {
       "integrity": "b8d6d0a6377a32b213af2661ed7bf1062d94feac0c57def5526a8e74a95c3ec8"
@@ -209,29 +208,29 @@
     }
   },
   "npm": {
-    "@antfu/install-pkg@1.1.0": {
-      "integrity": "sha512-MGQsmw10ZyI+EJo45CdSER4zEb+p31LpDAFp2Z3gkSd1yqVZGi0Ebx++YTEMonJy4oChEMLsxZ64j8FH6sSqtQ==",
+    "@antfu/install-pkg@2.1.0": {
+      "integrity": "sha512-sdg9NxU3zR4Mnawfbc/x6GB5Wf17WYud5qOuEuxXjaKpYpMkISSJEjItGebXJ2bQ4DIcly4NYH23mtkGJjvKUw==",
       "dependencies": [
         "package-manager-detector",
         "tinyexec"
       ]
     },
-    "@gunshi/docs@0.37.1": {
-      "integrity": "sha512-LcLL1ekr8T9177bnEuz7n3f6qeEsupfyVBGSyznQIEKvEFhLleRQeKmA0J/f7EZnMw0aPpafB+Ji5BmDaJ6roQ==",
+    "@gunshi/docs@0.37.3": {
+      "integrity": "sha512-zCnaKuC9pwDwX/miaLfmC0SGtAYbbXE5JvWqfIPNkwFfj+BuZkWKnvWY11Bb2CTiQV6peYkz9JKdw/+YzPqJug==",
       "dependencies": [
         "@antfu/install-pkg",
         "tinyexec"
       ],
       "bin": true
     },
-    "@gunshi/plugin-global@0.37.1": {
-      "integrity": "sha512-GndppCdsIoDxJny6b5dw1hhT8gIpV8GLdK9okwibbsUqQcOhD0Ptz4v+qQxvDnQUuu+z2x2/p/BdXPTxWuoxDw==",
+    "@gunshi/plugin-global@0.37.3": {
+      "integrity": "sha512-GeYuCsMOry0Oa6a9AUH4L1luP9odEXD4LJbuTKzQEAHJ11YQRnh73sfdCyBsQWBDJT7Y/gDhz4+J/Yxp/Tdz1Q==",
       "dependencies": [
         "@gunshi/plugin"
       ]
     },
-    "@gunshi/plugin-i18n@0.37.1_@gunshi+plugin-global@0.37.1": {
-      "integrity": "sha512-K5L5IDeaD5JIGEPn4Wcl0cXyPggmmtj4sSQwCsqzAYc30VfJu+BQscoEt7wIoJ3UR6gnjY7BJh5dxGcmBcUvaA==",
+    "@gunshi/plugin-i18n@0.37.3_@gunshi+plugin-global@0.37.3": {
+      "integrity": "sha512-gR2RT7BfC6YY1D/0oY+4bQbQUHJYm1pyn1sV8TWBj4ZcdIW/1ue6ZdaCQ8HhofxZqRu61bUkfrn+tE8hKETmKA==",
       "dependencies": [
         "@gunshi/plugin",
         "@gunshi/plugin-global"
@@ -240,24 +239,18 @@
         "@gunshi/plugin-global"
       ]
     },
-    "@gunshi/plugin-renderer@0.37.1_@gunshi+plugin-i18n@0.37.1__@gunshi+plugin-global@0.37.1_@gunshi+plugin-global@0.37.1": {
-      "integrity": "sha512-G25KDRpw4ki9/jguQJ9Kaq7AntFEofAhIjC7dyKheU/TjMozwSxVzDsceogXyHcYZLvx0+7d4i8oeI5VZiYQRA==",
+    "@gunshi/plugin-renderer@0.37.3_@gunshi+plugin-i18n@0.37.3_@gunshi+plugin-global@0.37.3": {
+      "integrity": "sha512-Sgsll7MrQxSrzUPhF4ALy06zpUQLl+9SZzmxDPEG8GIbz1GKvOV3+iFUCizenc4hFly+rZjfj+yG2+368jWvuw==",
       "dependencies": [
         "@gunshi/plugin",
         "@gunshi/plugin-i18n"
       ]
     },
-    "@gunshi/plugin@0.37.1": {
-      "integrity": "sha512-ljjBaL15jCwX6tEtWRdmAQ/y/svGcMZa5mVhMPgXFeQFQ++srK/x5dx8uchQFrE2MTqaFhMMjNK9AQowCyRv9A=="
+    "@gunshi/plugin@0.37.3": {
+      "integrity": "sha512-f/P3qigd7P9BW/R4siYzR2WPJ1TPNmKvnN4ZuAQc0GFDn+wtfRGk/Osus9QJVUKR+s0qrrPweP91WI2X3Lq8WA=="
     },
-    "@types/node@22.12.0": {
-      "integrity": "sha512-Fll2FZ1riMjNmlmJOdAyY5pUbkftXslB5DgEzlIuNaiWhXd00FhWxVC/r4yV/4wBb9JfImTu+jiSvXTkJ7F/gA==",
-      "dependencies": [
-        "undici-types"
-      ]
-    },
-    "args-tokens@0.28.1": {
-      "integrity": "sha512-2L4pJA8XcdRCqkNb5budSdbifzFP0iXexM1rF27kKLp8tWYfzGDV6BaAeBmrU6YLKct3Gt6Kn0njlAogJAdI6w=="
+    "args-tokens@0.29.0": {
+      "integrity": "sha512-HCtWnd5abhDNW8LOz09jI58tFO/CWbLMiQPY3kjsoki9Z04pRBr2PV7x2cxt8gV0sl9nH16LAdS7Scocu8fHtA=="
     },
     "package-manager-detector@1.8.0": {
       "integrity": "sha512-yQA4H19AmPEoMUeavPMDIe1higySl/gH/yaQrkT/s07Qp+7pp2hYz30N3z2l5BkjVkF9Ow6o0wjJamm2y7Sn0A=="
@@ -265,11 +258,8 @@
     "std-env@4.2.0": {
       "integrity": "sha512-oCUKSupKTHX53EyjDtuZQ64pjLJ6yYCtpmEw0goYxtjG9KpbRe8KAsl2tBUGU9DyMcJ0RwJ8GqJAFzMXcXW1Rw=="
     },
-    "tinyexec@1.2.4": {
-      "integrity": "sha512-SHf/r48b7vOrjve9PxJo3MN5v5yuyjHvdUcrQffT3WXMUfnGmHDVbC4k3sHJaJTgZCwpUplIaAo5ANtMyp3YHg=="
-    },
-    "undici-types@6.20.0": {
-      "integrity": "sha512-Ny6QZ2Nju20vw1SRHe3d9jVu6gJ+4e3+MMpqu7pqE5HT6WsTSlce++GQmK5UXS8mzV8DSYHrQH+Xrf2jVcuKNg=="
+    "tinyexec@1.3.1": {
+      "integrity": "sha512-GCvB3aoys96IuDFBMcTB46JOR6mdMtAToqwiW8JlWhsoh1mhHi/xn9ss/Dg7N555GiJyEt2qzoG/NHCwM6h1EA=="
     }
   },
   "workspace": {
