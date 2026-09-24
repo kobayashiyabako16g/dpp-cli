@@ -2,10 +2,10 @@
   "version": "5",
   "specifiers": {
     "jsr:@bgub/eta@^4.6.0": "4.6.0",
-    "jsr:@cliffy/ansi@1.2.1": "1.2.1",
-    "jsr:@cliffy/internal@1.2.1": "1.2.1",
-    "jsr:@cliffy/keycode@1.2.1": "1.2.1",
-    "jsr:@cliffy/prompt@^1.2.1": "1.2.1",
+    "jsr:@cliffy/ansi@^1.3.1": "1.3.1",
+    "jsr:@cliffy/internal@^1.3.1": "1.3.1",
+    "jsr:@cliffy/keycode@^1.3.1": "1.3.1",
+    "jsr:@cliffy/prompt@^1.2.1": "1.3.1",
     "jsr:@core/unknownutil@^4.3.0": "4.3.0",
     "jsr:@deno/cache-dir@~0.13.2": "0.13.2",
     "jsr:@deno/graph@~0.73.1": "0.73.1",
@@ -14,7 +14,7 @@
     "jsr:@denops/std@8.2": "8.2.0",
     "jsr:@gunshi/gunshi@~0.37.1": "0.37.1",
     "jsr:@lambdalisue/import-map-importer@~0.5.1": "0.5.1",
-    "jsr:@shougo/dpp-vim@5.3": "5.3.0",
+    "jsr:@shougo/dpp-vim@6.6": "6.6.0",
     "jsr:@std/assert@0.223": "0.223.0",
     "jsr:@std/assert@1.0.19": "1.0.19",
     "jsr:@std/assert@^1.0.19": "1.0.19",
@@ -22,7 +22,7 @@
     "jsr:@std/bytes@0.223": "0.223.0",
     "jsr:@std/collections@^1.1.3": "1.2.0",
     "jsr:@std/crypto@^1.0.5": "1.1.0",
-    "jsr:@std/encoding@^1.0.10": "1.0.11",
+    "jsr:@std/encoding@^1.0.11": "1.0.11",
     "jsr:@std/fmt@0.223": "0.223.0",
     "jsr:@std/fmt@^1.0.10": "1.0.10",
     "jsr:@std/fs@0.223": "0.223.0",
@@ -42,7 +42,7 @@
     "npm:@gunshi/docs@~0.37.1": "0.37.1",
     "npm:@gunshi/plugin-global@0.37.1": "0.37.1",
     "npm:@gunshi/plugin-i18n@0.37.1": "0.37.1_@gunshi+plugin-global@0.37.1",
-    "npm:@gunshi/plugin-renderer@0.37.1": "0.37.1_@gunshi+plugin-i18n@0.37.1__@gunshi+plugin-global@0.37.1_@gunshi+plugin-global@0.37.1",
+    "npm:@gunshi/plugin-renderer@0.37.1": "0.37.1_@gunshi+plugin-i18n@0.37.1_@gunshi+plugin-global@0.37.1",
     "npm:@types/node@*": "22.12.0",
     "npm:args-tokens@~0.28.1": "0.28.1",
     "npm:std-env@^4.1.0": "4.2.0"
@@ -51,22 +51,22 @@
     "@bgub/eta@4.6.0": {
       "integrity": "fe872004cd6c64ca25c7e71fd80bbbad7d8d552cefd31828bddddb7db0f79eb1"
     },
-    "@cliffy/ansi@1.2.1": {
-      "integrity": "b8702def9c0110b6eeb2b3b71e0b26cbe0a427facbb4f9c0189da0ba19feb549",
+    "@cliffy/ansi@1.3.1": {
+      "integrity": "b6ffd9c79a42cd68fc412d4e520c6bbbdde3c74dba182d017c46790596e003d7",
       "dependencies": [
         "jsr:@cliffy/internal",
         "jsr:@std/encoding",
         "jsr:@std/io@~0.225.3"
       ]
     },
-    "@cliffy/internal@1.2.1": {
-      "integrity": "e398f41c6839d3d4d249c963bfcb1058013091425926d53a3cb482b1ca70684b"
+    "@cliffy/internal@1.3.1": {
+      "integrity": "b309718fbfb8a226e74bc06f151d4459c2bdfa7ce68482decca75106bbf28816"
     },
-    "@cliffy/keycode@1.2.1": {
-      "integrity": "ce0a1e00986054da31bc767274acefdc923338a47e75ad1fc2046a11c87ace16"
+    "@cliffy/keycode@1.3.1": {
+      "integrity": "6e1b1e5f5ef2091d8228dc78dda3afd53187aa25c07a3395467ba6e1ab86cea2"
     },
-    "@cliffy/prompt@1.2.1": {
-      "integrity": "e468fae0f52093ff2099f5be0bbc7632348ab82a3b7337b12ddd888aeb5d6eed",
+    "@cliffy/prompt@1.3.1": {
+      "integrity": "00802daf9735808373b285c003085121053e7acd6d111c1df04812253b2d363f",
       "dependencies": [
         "jsr:@cliffy/ansi",
         "jsr:@cliffy/internal",
@@ -74,7 +74,7 @@
         "jsr:@std/assert@^1.0.19",
         "jsr:@std/fmt@^1.0.10",
         "jsr:@std/io@~0.225.3",
-        "jsr:@std/path@^1.1.5",
+        "jsr:@std/path@^1.1.6",
         "jsr:@std/text"
       ]
     },
@@ -127,8 +127,8 @@
         "jsr:@std/path@^1.0.1"
       ]
     },
-    "@shougo/dpp-vim@5.3.0": {
-      "integrity": "7d3976592058e2c2e4d3a756f69470b252b8f5256e4ce7b2f5b1fe2dbd3c7db7",
+    "@shougo/dpp-vim@6.6.0": {
+      "integrity": "72fa3cfdf73af6e724e5035eaa82ece17eb9ff82bc86c8928f7ee1ff4adb6fd0",
       "dependencies": [
         "jsr:@denops/std",
         "jsr:@lambdalisue/import-map-importer",
@@ -240,7 +240,7 @@
         "@gunshi/plugin-global"
       ]
     },
-    "@gunshi/plugin-renderer@0.37.1_@gunshi+plugin-i18n@0.37.1__@gunshi+plugin-global@0.37.1_@gunshi+plugin-global@0.37.1": {
+    "@gunshi/plugin-renderer@0.37.1_@gunshi+plugin-i18n@0.37.1_@gunshi+plugin-global@0.37.1": {
       "integrity": "sha512-G25KDRpw4ki9/jguQJ9Kaq7AntFEofAhIjC7dyKheU/TjMozwSxVzDsceogXyHcYZLvx0+7d4i8oeI5VZiYQRA==",
       "dependencies": [
         "@gunshi/plugin",
@@ -277,7 +277,7 @@
       "jsr:@bgub/eta@^4.6.0",
       "jsr:@cliffy/prompt@^1.2.1",
       "jsr:@gunshi/gunshi@~0.37.1",
-      "jsr:@shougo/dpp-vim@5.3",
+      "jsr:@shougo/dpp-vim@6.6",
       "jsr:@std/assert@1.0.19",
       "jsr:@std/fmt@^1.0.10",
       "jsr:@std/fs@^1.0.24",
